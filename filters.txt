@@ -1,0 +1,60 @@
+! Title: JP RUSH じゃんぱら用フィルタ
+! Expires: 1 hours
+! Description: じゃんぱらの不要な表示を消す（全端末共通。編集は GitHub のこのファイルで）
+! Homepage: https://github.com/seiji1126/jp-rush
+
+! ===== 通信を止める =====
+! Google ショッピングの「認定ストア」バッジ（右下に出る枠）。URL の後ろが毎回変わるので、先頭だけで止める
+||www.google.com/shopping/merchantverse/$subdocument,domain=janpara.co.jp
+
+! 画像
+||www.janpara.co.jp/images/common/icon_hatena.gif$image
+||www.janpara.co.jp/images/sp/default/btn01.png$image
+||www.janpara.co.jp/images/sp/default/btn11.png$image
+||www.janpara.co.jp/images/sp/sale/h2-recommend.png$image
+||gpg0hxpc.user.webaccel.jp/images/sp/common/arw01.jpg$image
+||gpg0hxpc.user.webaccel.jp/images/sp/common/arw02.jpg$image
+
+! ===== 非表示：共通（パソコン版・タブレット） =====
+www.janpara.co.jp###sidebar
+www.janpara.co.jp###shop-all
+www.janpara.co.jp###prvcert
+www.janpara.co.jp##.recommend
+www.janpara.co.jp##.min-wrapper
+www.janpara.co.jp##.fl_r.sns
+www.janpara.co.jp##.order
+www.janpara.co.jp##.adsbygoogle
+www.janpara.co.jp##.meter
+www.janpara.co.jp##.balloon
+www.janpara.co.jp##.moving.containerInner
+www.janpara.co.jp##.nav > ul
+www.janpara.co.jp##.sub_content
+www.janpara.co.jp##.sub_box > p
+
+! 商品ページ
+www.janpara.co.jp##div.itemdetail_exp > div.mb10
+
+! カート
+www.janpara.co.jp##.cart_box > p
+
+! クーポンなどの説明の窓
+www.janpara.co.jp##.c-modal
+www.janpara.co.jp##.c-modal-content
+www.janpara.co.jp###couponDescModal > .c-modal-close.c-modal__bg
+
+! 会社案内・採用などのリンク
+www.janpara.co.jp##div:nth-of-type(1) > [href="https://about.janpara.co.jp/property/"]
+www.janpara.co.jp##[href="https://www.janpara.co.jp/contents/corporation/#shire"]
+www.janpara.co.jp##[href="https://www.janpara.co.jp/contents/corporation/"]
+www.janpara.co.jp##.member [href="https://about.janpara.co.jp/recruit/"]
+www.janpara.co.jp##.member [href="https://about.janpara.co.jp/company/"]
+
+! ===== 非表示：スマホ版 =====
+www.janpara.co.jp###sp_footer
+www.janpara.co.jp##.balloon_sp
+
+! ===== 要注意：位置で指定していて、ページの作りが変わると別のものが消えることがある =====
+! ul:nth-of-type(2) は「兄弟の中で2番目の ul」全部が対象で、範囲がとても広い
+www.janpara.co.jp##ul:nth-of-type(2)
+www.janpara.co.jp##section.content:nth-of-type(4)
+www.janpara.co.jp##div.c-modal-open:nth-of-type(2)
