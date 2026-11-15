@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.346
+// @version      4.10.347
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.346",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.347",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -269,6 +269,8 @@
         v.lastAt = t;
         for (const k of ["name", "shop", "url", "itm"]) o[k] && (v[k] = o[k]);
         o.img && /\.(jpe?g|png|webp|gif)(\?|$)/i.test(o.img) && (v.img = o.img);
+        // 4.10.347：状態コメント（ランク・状態・付属品・保証・備考・スペック・札）。中身のある項目だけ上書きし、取った時刻を付ける
+        if (o.cond) { const c = { ...(v.cond || {}) }; let any = false; for (const [k, x] of Object.entries(o.cond)) if (x && (!Array.isArray(x) || x.length)) c[k] = x, any = true; any && (c.at = t, v.cond = c); }
         const p = Number(o.price) || 0;
         if (p > 0 && p !== v.price) { v.price = p, v.prices.push([t, p]); v.prices.length > 20 && v.prices.splice(0, v.prices.length - 20); }
         if (o.st && o.st !== v.st) v.st = o.st, v.stAt = t;
@@ -293,6 +295,16 @@
           histStQ.clear(), ch && $("cartHist", h);
         } catch (e) {}
       }, 2e3));
+    }
+    // 4.10.347：商品ページを読んだ時（自分で開いた・カートのコピー・完売チェック・見張り・在庫確認）は、必ず状態コメントを台帳へ
+    function lgCond(sr, du, u) {
+      try {
+        if (!sr || !(du || u)) return;
+        const dash = (x) => !x || /^[-－―ー‐\s]*$/.test(String(x));
+        const notes = ((du && du.lines && du.lines.length ? du.lines : u && u.notes) || []).map((x) => N(x)).filter((x) => x && x.length <= 200 && !/会員ページ|商品カテゴリー|メニュー|ログイン|カートを見る/.test(x)).slice(0, 8);
+        const specs = ((u && u.specs) || []).filter((p) => p && !dash(p[1])).slice(0, 20).map(([a, b]) => [N(a), N(b)]);
+        lgItem(sr, { cond: { cond: du && du.cond || "", rank: du && du.rank || "", acc: du && du.acc || "", grt: du && du.grt || "", badges: u && u.badges || "", notes, specs } }, "page");
+      } catch (e) {}
     }
     function lgUrl(url, sr) { const k = lgUrlKey(url), t = w(); k && sr && lgPatch("idx", "url." + k, () => ({ sr: String(sr), at: t })); }
     // 型番ページ（ITMCODE）の一覧の見え方
@@ -559,6 +571,12 @@
         const pr = (L.prices || []).slice(-5).map(([t, p]) => `${T(t)} ${A(p)}`).join(" → ");
         out.push("  " + [`商品番号 ${code}`, v.price || L.price ? A(v.price || L.price) : "", v.store || L.shop || ""].filter(Boolean).join("／"));
         pr && (L.prices || []).length > 1 && out.push(`  価格の変化：${pr}`);
+        const C = L.cond;
+        if (C && (C.rank || C.cond || C.acc || C.badges || (C.notes || []).length)) {
+          out.push("  状態：" + [C.cond, C.rank, C.badges && !C.rank && !C.cond ? C.badges : ""].filter(Boolean).join("・") + (C.acc ? `／付属品：${C.acc}` : "") + (C.grt ? `／保証：${C.grt}` : "") + `（${T(C.at)} 取得）`);
+          (C.notes || []).length && out.push(`  備考：${C.notes.join(" ／ ")}`);
+          (C.specs || []).length && out.push(`  スペック：${C.specs.map(([a, b]) => a + " " + b).join("／")}`);
+        } else out.push("  状態：未取得（URL先で確認）");
         out.push("  " + base);
         const lg = [L.st ? `台帳の状態：${stJ(L.st)}（${T(L.stAt)}）` : "", L.firstAt ? `初めて見た ${T(L.firstAt)}` : "", L.lastAt ? `最後に見た ${T(L.lastAt)}` : "", L.itm ? `型番ページ ITMCODE=${L.itm}` : ""].filter(Boolean);
         lg.length && out.push("  " + lg.join("／"));
@@ -1026,6 +1044,7 @@
         };
         const end = (v) => {
           if (fin) return;
+          v && v.ok && lgCond(it.code, v.du, v.unit);   // 4.10.347：カートのコピーで読んだ状態も台帳へ
           fin = true, clearTimeout(tm), clearInterval(poll), f.remove(), res(v);
         };
         const tryParse = (last) => {
@@ -1867,7 +1886,7 @@
         i = { at: w(), url: location.href, title: ke(), ...En(e) };
       }
       // 4.10.334：商品台帳へ（商品ページ：台ごとの価格・店舗・状態と、型番番号との対応）
-      try { const itm = (t.find((x) => x[0] === "I") || "").slice(1); for (const a of n.units || []) lgItem(a.code, { name: i.title, price: a.sold ? 0 : a.price, shop: a.store, st: a.sold ? "sold" : a.nego ? "nego" : a.price ? "stock" : "", itm, url: srcodeHref(a.code) }, "detail"); } catch (e) {}
+      try { const itm = (t.find((x) => x[0] === "I") || "").slice(1); for (const a of n.units || []) { lgItem(a.code, { name: i.title, price: a.sold ? 0 : a.price, shop: a.store, st: a.sold ? "sold" : a.nego ? "nego" : a.price ? "stock" : "", itm, url: srcodeHref(a.code) }, "detail"); let du = null; try { du = detailUnit(document, a.code); } catch (e) {} lgCond(a.code, du, a); } } catch (e) {}
       On(t, s, i);
       const c = new Set(t);
       for (const l of i.units || []) /^\d{1,18}$/.test(l.code) && c.add("S" + l.code);
@@ -4397,7 +4416,12 @@
       return new Promise((res) => {
         const f = document.createElement("iframe");
         let fin = false, tm = 0, poll = 0, seenAt = 0;
-        const end = (v) => { if (fin) return; fin = true, clearTimeout(tm), clearInterval(poll), f.remove(), res(v); };
+        const end = (v) => {
+          if (fin) return;
+          // 4.10.347：完売チェック・見張り・在庫確認で読んだ商品ページの状態も台帳へ
+          try { const sr = srOf(u), d = f.contentDocument; if (sr && d && d.body && !/アクセス集中/.test(v && v.text || "")) { let P = null; try { P = kn(v.text || ""); } catch (e) {} lgCond(sr, detailUnit(d, sr), P && P.units.find((x) => String(x.code) === sr)); } } catch (e) {}
+          fin = true, clearTimeout(tm), clearInterval(poll), f.remove(), res(v);
+        };
         const read = () => { try { const d = f.contentDocument; return d && d.body && /^https?:/.test(d.URL) ? Sn(d.body) : ""; } catch (e) { return ""; } };
         poll = setInterval(() => {
           const t = read();
