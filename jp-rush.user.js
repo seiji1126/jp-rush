@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.339
+// @version      4.10.340
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.339",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.340",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -476,7 +476,7 @@
       const bst = "padding:6px 12px;min-height:34px;border:1px solid #cdd6e4;border-radius:0;background:#eef2f8;color:#003792;font:700 13px/1.5 system-ui,sans-serif;cursor:pointer;";
       ctl.style.cssText = "display:flex;gap:8px;align-items:center;margin-top:8px;";
       goB.type = "button", goB.style.cssText = bst;
-      const live = () => picks.filter((p) => !p.marked() && !p.done());
+      const live = () => picks.filter((p) => !p.marked() && !p.done() && !p.sold());
       const syncCtl = () => { if (goB.dataset.busy) return; const n = live().length; goB.textContent = `マーク以外を再カート（${n}件）`, goB.disabled = !n, goB.style.opacity = n ? "1" : ".5"; };
       goB.onclick = (ev) => {
         ev.preventDefault();
@@ -485,7 +485,37 @@
         goB.dataset.busy = "1", goB.disabled = true, goB.textContent = "送信中…";
         Promise.all(sel.map((p) => p.run())).then((rs) => { const ok = rs.filter(Boolean).length; goB.textContent = `${ok}件 戻しました` + (ok < rs.length ? `（失敗 ${rs.length - ok}件）` : ""); ok && cartPage() && setTimeout(() => location.reload(), 700); });
       };
-      ctl.append(goB);
+      // 4.10.340：完売チェック。カートの外の商品（削除マーク含む・完売済みは除く）の商品ページを1件ずつ裏で読み、在庫あり・商談中・完売を記録する
+      const chkB = document.createElement("button"), chkRows = new Map();
+      chkB.type = "button", chkB.style.cssText = bst + "background:#fff;";
+      let chkStop = false, chkRun = false;
+      const chkTargets = () => [...chkRows.entries()].filter(([c]) => { const v = (E("cartHist", {}) || {})[c]; return v && !v.sold; });
+      const chkLabel = () => { if (chkRun) return; const n = chkTargets().length; chkB.textContent = `完売チェック（${n}件）`, chkB.disabled = !n, chkB.style.opacity = n ? "1" : ".5"; };
+      chkB.onclick = (ev) => {
+        ev.preventDefault();
+        if (chkRun) { chkStop = true, chkB.textContent = "止めています…"; return; }
+        const tg = chkTargets();
+        if (!tg.length) return;
+        chkRun = true, chkStop = false;
+        let i = 0;
+        const next = () => {
+          if (chkStop || i >= tg.length) { chkRun = false, chkB.textContent = chkStop ? `止めました（${i}/${tg.length}件）` : `確認しました（${tg.length}件）`, setTimeout(chkLabel, 4000); return; }
+          const [code, ref] = tg[i++], v0 = (E("cartHist", {}) || {})[code] || {};
+          chkB.textContent = `確認中 ${i}/${tg.length}（押すと止める）`;
+          framePageText(v0.url || srcodeHref(code)).then((g) => g && g.text ? judgeUnit(g.text, code) : { k: "?" }).catch(() => ({ k: "?" })).then((r) => {
+            const t = w(), st = r.k === "sold" ? "sold" : r.k === "nego" ? "nego" : r.k === "stock" ? "stock" : "";
+            try {
+              const h = E("cartHist", {}) || {}, v = h[code];
+              if (v) { v.chk = { st: st || "?", at: t }; st === "sold" ? (v.sold = t) : st && delete v.sold; v.markAt = Math.max(v.markAt || 0, t); $("cartHist", h); }
+              st && lgItem(code, { st, price: r.price || 0 }, "check");
+            } catch (e) {}
+            ref.paint(st || "?", t), syncCtl();
+            setTimeout(next, 1e3);
+          });
+        };
+        next();
+      };
+      ctl.append(goB, chkB);
       // 4.10.335：完売の台と「削除」マークの台は、いちばん下の「完売・削除済み」にまとめてグレーにする（履歴としては残す）
       const retired = (v) => !!v.sold || !!v.mark, act = list.filter(([, v]) => !retired(v)), ret = list.filter(([, v]) => retired(v));
       const rows = act.concat(ret);
@@ -505,9 +535,16 @@
         soldTag && (soldTag.style.cssText = "display:inline-block;margin-right:6px;padding:0 6px;font-size:11px;font-weight:700;border:1px solid #6b7280;background:#6b7280;color:#fff;");
         tag.textContent = st, tag.style.cssText = "display:inline-block;margin-right:6px;padding:0 6px;font-size:11px;font-weight:700;border:1px solid;" + (other && !v.goneAt ? "color:#5b4aa8;border-color:#c9c1ea;" : inCart ? "color:#003792;border-color:#9fb3d9;" : exp ? "color:#6b7280;border-color:#cfd5dd;" : "color:#c8102e;border-color:#f0b4bd;");
         soldTag && sub.append(soldTag);
-        sub.append(tag, [v.price ? A(v.price) : "", v.store || "", T(v.addAt) + " に入れた" + (v.goneAt ? `・${T(v.goneAt)} までに消えた・${T((v.addAt || 0) + CART_HOLD)} に復活` : "")].filter(Boolean).concat(histWatchNote(code)).join("・"));
+        const chkNote = (x) => x ? `確認：${x.st === "sold" ? "完売" : x.st === "nego" ? "商談中" : x.st === "stock" ? "在庫あり" : "読めず"} ${T(x.at)}` : "";
+        sub.append(tag, [v.price ? A(v.price) : "", v.store || "", T(v.addAt) + " に入れた" + (v.goneAt ? `・${T(v.goneAt)} までに消えた・${T((v.addAt || 0) + CART_HOLD)} に復活` : "")].filter(Boolean).concat(histWatchNote(code), chkNote(v.chk) || []).join("・"));
         sub.style.cssText = "font-size:12px;color:#4a5a6e;margin-top:3px;";
         info.append(nm, sub), row.append(info);
+        if (!inCart) chkRows.set(code, { paint: (st, at) => {
+          const note = Object.assign(document.createElement("span"), { textContent: "・" + chkNote({ st, at }) });
+          note.style.cssText = "font-weight:700;color:" + (st === "sold" ? "#6b7280" : st === "stock" ? "#1e6b3f" : st === "nego" ? "#7a5600" : "#c8102e") + ";";
+          sub.append(note);
+          if (st === "sold") { row.style.background = "#f4f5f7", info.style.opacity = ".55"; const bt = [...row.querySelectorAll("button")].find((x) => /再カート/.test(x.textContent)); bt && bt.remove(); }
+        } });
         if (!inCart) {
           // 「削除」マーク（付け外し）
           const mk = document.createElement("button");
@@ -536,13 +573,13 @@
               }).catch(() => { b.textContent = "失敗", b.disabled = false, syncCtl(), setTimeout(() => { b.textContent = "再カート"; }, 4000); return false; });
             };
             b.onclick = (ev) => { ev.preventDefault(); run().then((ok) => { ok && cartPage() && setTimeout(() => location.reload(), 700); }); };
-            picks.push({ run, marked: () => marked, done: () => done });
+            picks.push({ run, marked: () => marked, done: () => done, sold: () => !!((E("cartHist", {}) || {})[code] || {}).sold });
             row.append(b);
           }
         }
         box.append(row);
       }
-      picks.length && (nt.append(ctl), syncCtl());
+      (picks.length || chkRows.size) && (nt.append(ctl), syncCtl(), chkLabel());
       return { nt, box };
     }
     function histList() { const h = E("cartHist", {}) || {}; return Object.entries(h).sort((x, y) => (y[1].addAt || 0) - (x[1].addAt || 0)); }
