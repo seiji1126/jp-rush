@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.352
+// @version      4.10.353
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.352",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.353",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -315,7 +315,7 @@
         const dash = (x) => !x || /^[-－―ー‐\s]*$/.test(String(x));
         const notes = ((du && du.lines && du.lines.length ? du.lines : u && u.notes) || []).map((x) => N(x)).filter((x) => x && x.length <= 200 && !/会員ページ|商品カテゴリー|メニュー|ログイン|カートを見る/.test(x)).slice(0, 8);
         const specs = ((u && u.specs) || []).filter((p) => p && !dash(p[1])).slice(0, 20).map(([a, b]) => [N(a), N(b)]);
-        lgItem(sr, { cond: { cond: du && du.cond || "", rank: du && du.rank || "", acc: du && du.acc || "", grt: du && du.grt || "", badges: u && u.badges || "", notes, specs }, ...(extra || {}) }, src || "page");
+        lgItem(sr, { cond: { cond: du && du.cond || "", rank: du && du.rank || "", acc: du && du.acc || "", grt: du && du.grt || "", badges: u && recBadgeOk(u.badges) ? u.badges : "", notes, specs }, ...(extra || {}) }, src || "page");
       } catch (e) {}
     }
     function lgUrl(url, sr) { const k = lgUrlKey(url), t = w(); k && sr && lgPatch("idx", "url." + k, () => ({ sr: String(sr), at: t })); }
@@ -1966,6 +1966,8 @@
       }
     }
     // 4.10.336：「前に記録した内容」の表示から、ページのメニューの文字・空のスペック・店舗の電話番号を省く（表示とコピーだけ。保存した記録はそのまま）
+    // 4.10.353：スマホのページでは上のメニューの文字（じゃんぱら 検索 会員ページ メニュー 商品カテゴリー iPhone…）が札に混ざることがあるので出さない
+    const recBadgeOk = (a) => { const s = N(a); return !!s && s.length <= 60 && !/会員ページ|商品カテゴリー|メニュー|ログイン|カートを見る|検索/.test(s); };
     const recNoteOk = (a) => { const s = N(a); return !!s && s.length <= 160 && !/会員ページ|商品カテゴリー|メニュー|ログイン|カートを見る/.test(s); };
     const recSpecOk = (x) => { const v = N(x && x[1]); return !!v && !/^[-－―ー‐]+$/.test(v); };
     const recStore = (s) => N(String(s || "").replace(/[\s（(]*0\d{1,4}-\d{1,4}-\d{3,4}[）)]?/g, ""));
@@ -1979,7 +1981,7 @@
           l.length > 1 && out.push(`【${p + 1}台目】`);
           out.push([`商品番号 ${r.code}`, r.soldAt ? `完売（${T(r.soldAt)} に確認）` : "", r.price ? `${r.price}${r.soldAt ? "（売切れ前）" : ""}` : "価格の記録なし"].filter(Boolean).join("／"));
           r.store && out.push(`店舗：${recStore(r.store)}`);
-          r.badges && out.push(`状態：${N(r.badges)}`);
+          recBadgeOk(r.badges) && out.push(`状態：${N(r.badges)}`);
           for (const a of r.notes || []) recNoteOk(a) && out.push(N(a));
           const sp = (r.specs || []).filter(recSpecOk).map(([a, h]) => `${N(a)} ${N(h)}`);
           sp.length && out.push(`スペック：${sp.join("／")}`);
@@ -2015,7 +2017,7 @@
         l.forEach((r, p) => {
           l.length > 1 && s.push(i(`${p + 1}\u53F0\u76EE`, "sect"));
           const m = r.at ? `${T(r.at)} \u306B\u958B\u3044\u305F\u3068\u304D` : "", u = r.price ? `${r.price}${r.soldAt ? "\uFF08\u58F2\u5207\u308C\u524D\uFF09" : ""}` : "\u4FA1\u683C\u306E\u8A18\u9332\u306A\u3057\uFF08\u958B\u3044\u305F\u3068\u304D\u306B\u306F\u3082\u3046\u5B8C\u58F2\uFF09";
-          s.push(i(`\u5546\u54C1\u756A\u53F7 ${r.code}\u3000${u}${m ? `\u3000${m}` : ""}`, "row")), r.soldAt && s.push(i(`\u58F2\u5207\u308C\uFF08${T(r.soldAt)} \u306B\u78BA\u8A8D\uFF09`, "row")), r.badges && s.push(i(r.badges, "row")), r.store && s.push(i(`\u5728\u5EAB\u5E97\u8217\uFF1A${recStore(r.store)}`, "row"));
+          s.push(i(`\u5546\u54C1\u756A\u53F7 ${r.code}\u3000${u}${m ? `\u3000${m}` : ""}`, "row")), r.soldAt && s.push(i(`\u58F2\u5207\u308C\uFF08${T(r.soldAt)} \u306B\u78BA\u8A8D\uFF09`, "row")), recBadgeOk(r.badges) && s.push(i(r.badges, "row")), r.store && s.push(i(`\u5728\u5EAB\u5E97\u8217\uFF1A${recStore(r.store)}`, "row"));
           for (const a of r.notes || []) recNoteOk(a) && s.push(i(N(a), "row"));
           const sp = (r.specs || []).filter(recSpecOk);
           sp.length && s.push(c(`\u30B9\u30DA\u30C3\u30AF\uFF08${sp.length}\u9805\u76EE\uFF09`, sp.map(([a, h]) => i(`${a}\uFF1A${h}`, "row"))));
@@ -2071,14 +2073,14 @@
       .empty { padding: 10px 12px; color: #667; }
       summary { cursor: pointer; }
           .why { font-size: 13px; color: #cbd5e1; }
-    </style><div class="box"><div class="top"><div class="ttl">\u524D\u306B\u8A18\u9332\u3057\u305F\u5185\u5BB9\uFF08JP RUSH\uFF09</div><button id="cp">コピー</button><button id="more">\u8A73\u3057\u304F</button><button id="x">\xD7</button></div><div class="why" id="why"></div><div class="sum" id="sum"></div><div class="body" id="body" hidden></div></div>`;
+    </style><div class="box"><div class="top"><div class="ttl">\u524D\u306B\u8A18\u9332\u3057\u305F\u5185\u5BB9\uFF08JP RUSH\uFF09</div><button id="cp">コピー</button><button id="more">\u8A73\u3057\u304F</button></div><div class="why" id="why"></div><div class="sum" id="sum"></div><div class="body" id="body" hidden></div></div>`;
       const p = e.units.find((a) => "S" + a.code === d) || e.units[0];
       r.getElementById("why").textContent = p && p.nego ? "\u3053\u306E\u53F0\u306F\u5546\u8AC7\u4E2D\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u306B\u5165\u3063\u3066\u3044\u307E\u3059\u30021\u6642\u9593\u307B\u3069\u3067\u623B\u308B\u3053\u3068\u304C\u3042\u308A\u307E\u3059\uFF09" : p && p.sold ? "\u3053\u306E\u53F0\u306F\u5B8C\u58F2\u3067\u3059" : e.units.length ? "\u3053\u306E\u30DA\u30FC\u30B8\u304B\u3089\u6D88\u3048\u305F\u53F0\u304C\u3042\u308A\u307E\u3059\uFF08\u5546\u8AC7\u4E2D\u304B\u5B8C\u58F2\uFF09" : d[0] === "I" ? "\u3053\u306E\u30DA\u30FC\u30B8\u3067\u306F\u53F0\u304C\u8868\u793A\u3055\u308C\u307E\u305B\u3093\uFF08\u5168\u90E8\u304C\u5546\u8AC7\u4E2D\u304B\u5B8C\u58F2\u3002\u691C\u7D22\u6761個\u306E\u305B\u3044\u3067\u51FA\u306A\u3044\u3053\u3068\u3082\u3042\u308A\u307E\u3059\uFF09" : "\u3053\u306E\u30DA\u30FC\u30B8\u3067\u306F\u53F0\u304C\u8868\u793A\u3055\u308C\u307E\u305B\u3093\uFF08\u691C\u7D22\u6761個\u306E\u305B\u3044\u3067\u51FA\u306A\u3044\u3053\u3068\u3082\u3042\u308A\u307E\u3059\uFF09";
       const m = o && o.units && (o.units.find((a) => "S" + a.code === d) || o.units.find((a) => a.price)), u = i && Object.entries(i.prices || {}).map(([a, h]) => `${a} ${A(h)}\u301C`).join(" / ");
-      r.getElementById("sum").textContent = m && m.price ? `${m.price}${m.store ? `\u30FB${m.store.replace(/\s.*$/, "")}` : ""}${m.badges ? `\u30FB${m.badges}` : ""}\uFF08${T(m.at)} \u306B\u958B\u3044\u305F\u3068\u304D\uFF09` : u ? `\u4E00\u89A7\u3067\u6700\u5F8C\u306B\u898B\u305F\u4FA1\u683C\uFF1A${u}\uFF08${T(i.at)}\uFF09` : "\u4FA1\u683C\u306E\u8A18\u9332\u306F\u3042\u308A\u307E\u305B\u3093", r.getElementById("body").replaceChildren(...Ee(d, i, o, i && i.name)), r.getElementById("more").onclick = () => {
+      r.getElementById("sum").textContent = m && m.price ? `${m.price}${m.store ? `\u30FB${m.store.replace(/\s.*$/, "")}` : ""}${recBadgeOk(m.badges) ? `\u30FB${m.badges}` : ""}\uFF08${T(m.at)} \u306B\u958B\u3044\u305F\u3068\u304D\uFF09` : u ? `\u4E00\u89A7\u3067\u6700\u5F8C\u306B\u898B\u305F\u4FA1\u683C\uFF1A${u}\uFF08${T(i.at)}\uFF09` : "\u4FA1\u683C\u306E\u8A18\u9332\u306F\u3042\u308A\u307E\u305B\u3093", r.getElementById("body").replaceChildren(...Ee(d, i, o, i && i.name)), r.getElementById("more").onclick = () => {
         const a = r.getElementById("body");
         a.hidden = !a.hidden, r.getElementById("more").textContent = a.hidden ? "\u8A73\u3057\u304F" : "\u305F\u305F\u3080";
-      }, r.getElementById("cp").onclick = () => recCopy(recCopyText(d, i, o, i && i.name), r.getElementById("cp")), r.getElementById("x").onclick = () => l.remove(), document.body.appendChild(l);
+      }, r.getElementById("cp").onclick = () => recCopy(recCopyText(d, i, o, i && i.name), r.getElementById("cp")), document.body.appendChild(l);
     }
     function jn(t) {
       let e = t;
