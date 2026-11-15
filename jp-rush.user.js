@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.349
+// @version      4.10.350
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.349",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.350",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -5154,7 +5154,7 @@
         // 4.10.294：鍵（トークン）など連携の設定は書き出さない
         if (typeof GM_listValues === "function") for (const k of GM_listValues()) { if (/^sync[A-Z]/.test(String(k).startsWith(Ct) ? String(k).slice(Ct.length) : String(k))) continue; try { gm[k] = GM_getValue(k, null); } catch (e) {} }
         for (const [k, v] of RECMEM) gm[k] === undefined && idb.every(([x]) => x !== k) && idb.push([k, v]);
-        return { fmt: HO_FMT, v: 1, ver: Jt, at: w(), gm, idb: idb.filter(([k]) => k !== HO_BAK && !k.startsWith("run.")) };
+        return { fmt: HO_FMT, v: 1, ver: Jt, at: w(), gm, idb: idb.filter(([k]) => k !== HO_BAK && !k.startsWith("run.") && !k.startsWith("sync.")) };
       });
     }
     function hoGzip(text) {
@@ -5240,7 +5240,7 @@
           try { GM_setValue(k, isRecKey(kk) ? zipRec(m) : m), EC.delete(k), ng++; } catch (e) {}
         }
         // 別の保存場所
-        const list = (o.idb || []).filter(([k]) => k !== HO_BAK && !String(k).startsWith("run."));
+        const list = (o.idb || []).filter(([k]) => k !== HO_BAK && !String(k).startsWith("run.") && !String(k).startsWith("sync."));
         return list.reduce((p, [k, v]) => p.then(() => idbGet(k).then((cur) => {
           const kk = strip(k), m = hoMergeKey(kk, cur, v);
           ni++;
@@ -5266,6 +5266,11 @@
     }
     // 4.10.294：自動連携（GitHub の非公開 Gist を間の保管場所にする）。鍵（トークン）は端末の中だけ。じゃんぱらへの通信は増やさない
     const SY_FILE = "jprush-sync.txt", SY_DESC = "JP RUSH sync (jprush-sync)", SY_GAP = 10 * 6e4;
+    // 4.10.350：差分の同期。いつもの Gist には「目印（meta）」と「前回の土台からの変更分（patch）」だけ。全部（土台）は別の Gist に置き、1日1回か変更分が大きくなった時だけ送り直す
+    const SY_META = "jprush-sync-meta.txt", SY_PATCH = "jprush-sync-patch.txt", SY_BASE = "jprush-sync-base.txt", SY_DESC_B = "JP RUSH sync base (jprush-sync-base)", SY_REBASE = 864e5, SY_PMAX = 15e5;
+    const syHash = (str) => { let h = 2166136261; for (let i = 0; i < str.length; i++) h = Math.imul(h ^ str.charCodeAt(i), 16777619); return (h >>> 0).toString(36) + ":" + str.length; };
+    const syHashes = (o) => { const h = {}; for (const [k, v] of Object.entries((o && o.gm) || {})) h["g:" + k] = syHash(JSON.stringify(v)); for (const [k, v] of (o && o.idb) || []) h["i:" + k] = syHash(JSON.stringify(v)); return h; };
+    const syFileText = (fl) => (!fl ? Promise.resolve(null) : fl.truncated && fl.raw_url ? syReq("GET", fl.raw_url, null, true) : Promise.resolve(fl.content));
     const syTok = () => E("syncTok", ""), syInfo = () => E("syncInfo", {}) || {};
     function syReq(method, url, body, raw) {
       return new Promise((res, rej) => {
@@ -5295,7 +5300,7 @@
       const id = E("syncGist", "");
       if (id) return Promise.resolve(id);
       return syReq("GET", "https://api.github.com/gists?per_page=100").then((list) => {
-        const g = (list || []).find((x) => x && x.description === SY_DESC && x.files && x.files[SY_FILE]);
+        const g = (list || []).find((x) => x && x.description === SY_DESC && x.files && (x.files[SY_FILE] || x.files[SY_META]));
         if (g) return $("syncGist", g.id), g.id;
         return syReq("POST", "https://api.github.com/gists", { description: SY_DESC, public: false, files: { [SY_FILE]: { content: "init" } } }).then((n) => ($("syncGist", n.id), n.id));
       });
@@ -5310,14 +5315,48 @@
       if (lk && w() - lk < 12e4) return Promise.resolve("別のタブで連携中です");
       syBusy = true, $("syncLock", w()), say("連携しています…");
       let gid = "";
-      return syFind().then((id) => (gid = id, syReq("GET", "https://api.github.com/gists/" + id))).then((g) => {
-        const fl = g && g.files && g.files[SY_FILE];
-        if (!fl) return null;
-        return (fl.truncated && fl.raw_url ? syReq("GET", fl.raw_url, null, true) : Promise.resolve(fl.content)).then(syDecode);
-      }).then((o) => (o && o.fmt === HO_FMT ? hoMerge(o, true) : 0)).then(() => hoDump()).then(syEncode).then((content) =>
-        syReq("PATCH", "https://api.github.com/gists/" + gid, { files: { [SY_FILE]: { content } } }).then(() => content.length)
+      const run = async () => {
+        gid = await syFind();
+        const g = await syReq("GET", "https://api.github.com/gists/" + gid), F = (g && g.files) || {};
+        let legacy = false;
+        // 前の版（全部を1つのファイルで送っていた）の分が残っていれば、まず合わせる
+        if (F[SY_FILE] && F[SY_FILE].content !== "init") { const o = await syFileText(F[SY_FILE]).then(syDecode).catch(() => null); o && o.fmt === HO_FMT && (await hoMerge(o, true)), legacy = true; }
+        let meta = null;
+        try { meta = F[SY_META] ? JSON.parse(await syFileText(F[SY_META])) : null; } catch (e) { meta = null; }
+        let local = (await idbGet("sync.base").catch(() => null)) || {};
+        // 土台が新しくなっていたら、土台を受け取って合わせる
+        if (meta && meta.bid && meta.baseGist && meta.bid !== local.bid) {
+          say("土台を受け取っています…");
+          const gb = await syReq("GET", "https://api.github.com/gists/" + meta.baseGist), base = await syFileText(gb && gb.files && gb.files[SY_BASE]).then(syDecode).catch(() => null);
+          if (base && base.fmt === HO_FMT) { await hoMerge(base, true); local = { bid: meta.bid, gidB: meta.baseGist, at: meta.at || w(), h: syHashes(base) }; await idbPut("sync.base", local); }
+        }
+        // 変更分（同じ土台のもの）を合わせる
+        if (F[SY_PATCH] && local.bid) { const p = await syFileText(F[SY_PATCH]).then(syDecode).catch(() => null); p && p.fmt === HO_FMT && p.bid === local.bid && (await hoMerge(p, true)); }
+        // 送る：土台から変わった所だけ
+        const D = await hoDump(), H = syHashes(D), lh = local.h || {};
+        const pg = {}, pi = [];
+        for (const [k, v] of Object.entries(D.gm || {})) H["g:" + k] !== lh["g:" + k] && (pg[k] = v);
+        for (const [k, v] of D.idb || []) H["i:" + k] !== lh["i:" + k] && pi.push([k, v]);
+        const encP = await syEncode({ fmt: HO_FMT, v: 1, ver: Jt, at: w(), bid: local.bid || "", gm: pg, idb: pi });
+        if (!local.bid || legacy || encP.length > SY_PMAX || w() - (local.at || 0) > SY_REBASE) {
+          say("土台を送り直しています…");
+          const encB = await syEncode(D);
+          let gidB = local.gidB || (meta && meta.baseGist) || "";
+          if (gidB) await syReq("PATCH", "https://api.github.com/gists/" + gidB, { files: { [SY_BASE]: { content: encB } } });
+          else gidB = (await syReq("POST", "https://api.github.com/gists", { description: SY_DESC_B, public: false, files: { [SY_BASE]: { content: encB } } })).id;
+          const bid = w().toString(36) + Math.random().toString(36).slice(2, 8), at = w();
+          const files = { [SY_META]: { content: JSON.stringify({ bid, baseGist: gidB, at }) }, [SY_PATCH]: { content: "empty" } };
+          legacy && (files[SY_FILE] = { content: "init" });
+          await syReq("PATCH", "https://api.github.com/gists/" + gid, { files });
+          await idbPut("sync.base", { bid, gidB, at, h: H });
+          return encB.length;
+        }
+        await syReq("PATCH", "https://api.github.com/gists/" + gid, { files: { [SY_PATCH]: { content: encP } } });
+        return encP.length;
+      };
+      return run(
       ).then((n) => {
-        const msg = `連携しました（${T(w())}・${(n / 1048576).toFixed(1)}MB）`;
+        const msg = `連携しました（${T(w())}・${n >= 1048576 ? (n / 1048576).toFixed(1) + "MB" : Math.max(1, Math.round(n / 1024)) + "KB"}）`;
         $("syncInfo", { at: w(), ok: true, why, msg });
         return msg;
       }).catch((e) => {
