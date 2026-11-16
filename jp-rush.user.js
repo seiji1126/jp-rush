@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.358
+// @version      4.10.359
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.358",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.359",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -59,6 +59,16 @@
     }
     // 4.10.88：保存内容の読み直しを減らす。読むだけの場面は1.5秒の間、前に読んだ内容を使う。書く場面は必ず保存から読み直し、書いた時点で覚えたものを捨てる
     const EC = new Map(), ECT = 1500;
+    // 4.10.359：重さの計測。JP RUSH の主な処理・保存の読み書きにかかった時間と、画面が止まった時間（0.05秒以上）を数える。［計測結果をコピー］で文字にする
+    const PERF = { t0: Date.now(), f: new Map(), lt: [], ltN: 0, ltMs: 0, ltMax: 0 };
+    const perfAdd = (k, ms) => { const e = PERF.f.get(k) || PERF.f.set(k, { n: 0, ms: 0, max: 0 }).get(k); e.n++, e.ms += ms, ms > e.max && (e.max = ms); };
+    const PW = (k, fn) => function (...a) { const t = performance.now(); try { return fn.apply(this, a); } finally { perfAdd(k, performance.now() - t); } };
+    try { new PerformanceObserver((l) => { for (const x of l.getEntries()) { PERF.ltN++, PERF.ltMs += x.duration, x.duration > PERF.ltMax && (PERF.ltMax = x.duration); PERF.lt.push([Math.round((Date.now() - PERF.t0) / 1e3), Math.round(x.duration)]), PERF.lt.length > 30 && PERF.lt.shift(); } }).observe({ entryTypes: ["longtask"] }); } catch (e) {}
+    function perfReport() {
+      const sec = Math.round((Date.now() - PERF.t0) / 1e3), rows = [...PERF.f.entries()].sort((a, b) => b[1].ms - a[1].ms).slice(0, 30).map(([k, e]) => `  ${k}：${e.n}回・合計${Math.round(e.ms)}ms・最大${Math.round(e.max)}ms`);
+      let dom = 0, ifr = 0; try { dom = document.getElementsByTagName("*").length, ifr = document.querySelectorAll("iframe").length; } catch (e) {}
+      return [`JP RUSH 重さの計測 v${typeof Jt !== "undefined" ? Jt : ""}（${location.pathname}・開いてから${sec}秒・${innerWidth}×${innerHeight}）`, `画面が止まった回数（0.05秒以上）：${PERF.ltN}回・合計${Math.round(PERF.ltMs)}ms・最長${Math.round(PERF.ltMax)}ms`, `最近の止まり（何秒目・長さms）：${PERF.lt.map((x) => x.join("s:")).join(" ")}`, `ページの部品の数：${dom}・見えない枠：${ifr}`, "JP RUSH の処理（時間の多い順）：", ...rows].join("\n");
+    }
     // 4.10.89：読んだ写しは1.5秒たったら捨てる（ページを開いている間ずっと持ち続けてメモリを増やさない）
     const ecPut = (k, v) => { const now = Date.now(); EC.set(k, { at: now, v }); setTimeout(() => { const x = EC.get(k); x && x.at === now && EC.delete(k); }, ECT); };
     // 4.10.128：写しを使う保存（検索の記録 s.〜・既読 seen・最後に在庫があった時の価格 lastlive）は、書いた中身をそのまま写しにする（書いた直後の読み直しを省く。中身は保存したものと同じ。1.5秒で捨てるのも同じ）
@@ -172,14 +182,15 @@
         tx.onerror = tx.onabort = () => { db.close(), back(); };
       }).catch(back);
     }
-    const GMget = (k, e) => {
+    const GMget = (k, e) => { const t0 = performance.now(); try { return GMget0(k, e); } finally { perfAdd("読む " + String(k).replace(Ct, ""), performance.now() - t0); } };
+    const GMget0 = (k, e) => {
       if (!isMemKey(String(k).slice(Ct.length))) return GM_getValue(k, e);
       if (RECMEM.has(k)) return RECMEM.get(k);
       if (!isRecKey(String(k).slice(Ct.length))) return GM_getValue(k, e);
       const t0 = performance.now(), v = unzipRec(GM_getValue(k, e));
       return PIO.read += performance.now() - t0, v;
     };
-    const E = (t, e) => isSoldKey(t) ? Es(t, e) : GMget(Ct + t, e), $ = (t, e) => { EC.delete(Ct + t); if (isMemKey(t) && window.indexedDB && (isRecKey(t) || RECMEM.has(Ct + t) || isSoldMonth(t) && SOLDREADY)) { RECMEM.set(Ct + t, e), RECDIRTY.set(Ct + t, e), recTimer || (recTimer = setTimeout(recFlush, 400)), ecKey(t) && ecPut(Ct + t, e); return; } const t0 = performance.now(), r = GM_setValue(Ct + t, isRecKey(t) ? zipRec(e) : e); isRecKey(t) && (PIO.write += performance.now() - t0); isSoldKey(t) ? ecPut(Ct + t, e && typeof e === "object" ? structuredClone(e) : e) : ecKey(t) && ecPut(Ct + t, e); return r; };
+    const E = (t, e) => isSoldKey(t) ? Es(t, e) : GMget(Ct + t, e), $ = (t, e) => { EC.delete(Ct + t); if (isMemKey(t) && window.indexedDB && (isRecKey(t) || RECMEM.has(Ct + t) || isSoldMonth(t) && SOLDREADY)) { RECMEM.set(Ct + t, e), RECDIRTY.set(Ct + t, e), recTimer || (recTimer = setTimeout(recFlush, 400)), ecKey(t) && ecPut(Ct + t, e); return; } const t0 = performance.now(), r = GM_setValue(Ct + t, isRecKey(t) ? zipRec(e) : e); isRecKey(t) && (PIO.write += performance.now() - t0); perfAdd("書く " + t, performance.now() - t0); isSoldKey(t) ? ecPut(Ct + t, e && typeof e === "object" ? structuredClone(e) : e) : ecKey(t) && ecPut(Ct + t, e); return r; };
     // 4.10.176：検索画面では完売記録の全件を読まない（売切れ履歴・売切れ回数・完売記録の件数は、完売記録の画面で見る）
     const ST_EMPTY = { sum: {}, tent: {}, old: {}, byName: {}, recentCount: 0, tentCount: 0 };
     // 4.10.182：印の履歴を残す日数（以前は30日）。古い分は evq（待ち行列）→ 別の保存場所の ev.〜 へ
@@ -2542,7 +2553,7 @@
     // 4.10.357：1秒ごとの更新（時計・消えるまで・表の残り時間など）は1つのタイマーでまとめて回す
     const SEC1 = new Set();
     let sec1T = 0;
-    function every1s(fn) { SEC1.add(fn); sec1T || (sec1T = setInterval(() => { for (const g of SEC1) { try { g(); } catch (e) {} } }, 1000)); }
+    function every1s(fn) { SEC1.add(fn); sec1T || (sec1T = setInterval(() => { const t = performance.now(); for (const g of SEC1) { try { g(); } catch (e) {} } perfAdd("1秒ごとの更新", performance.now() - t); }, 1000)); }
     function popupOpen() {
       const vw = window.innerWidth, vh = window.innerHeight, hit = (el) => {
         if (!el || el.id === "jp3-host") return false;
@@ -4813,6 +4824,8 @@
         }
       }, 1500);
     }
+    // 4.10.359：計測のために主な処理を包む（動きは同じ）
+    try { readCart = PW("readCart", readCart), cartTools = PW("cartTools", cartTools), histBody = PW("カート履歴を作る", histBody), cartReaddBtns = PW("再カートのボタン", cartReaddBtns), centerTimers = PW("表の残り時間", centerTimers), showCartNote = PW("showCartNote", showCartNote), watchTick = PW("見張り", watchTick), cartPoll = PW("カートの見張り", cartPoll), cartParse = PW("カートを読む", cartParse), cartHead = PW("見出しを探す", cartHead), cartOrderBar = PW("帯を探す", cartOrderBar), stickBottom = PW("上の帯", stickBottom), popupOpen = PW("窓の確認", popupOpen), Sn = PW("ページの文字を読む", Sn), lgFlush = PW("台帳を書く", lgFlush), syncMaybe = PW("同期", syncMaybe), expiredOverlay = PW("期限切れの表示", expiredOverlay), cartExpiredLinks = PW("期限切れを探す", cartExpiredLinks); } catch (e) { console.warn("[JP RUSH] 計測の準備に失敗", e); }
     function cartReaddBtns(cr) {
       if (!cr || !cr.ok || document.querySelector(".jprush-readd")) return;
       const P = cartParse(), byCode = new Map(P.items.map((it) => [it.code, it]));
@@ -5592,7 +5605,9 @@
       const setF = () => { body.style.display = open ? "flex" : "none"; fold.textContent = (open ? "▾ " : "▸ ") + "データ管理"; };
       fold.onclick = (ev) => { ev.preventDefault(), open = !open, $("hoOpen", open), setF(); };
       syGo.textContent = "はじめる", syOff.textContent = "やめる", syNow.textContent = "今すぐ同期";
-      body.append(sub("自動同期"), sy, sub("バックアップ"), ex, im, rs, note, sub("分析用データ"), csvAnchor);
+      const pf = mk("計測結果をコピー");
+      pf.onclick = (ev) => { ev.preventDefault(); const tx = perfReport(); writeClip(tx, () => { pf.textContent = "コピーしました ✓", setTimeout(() => { pf.textContent = "計測結果をコピー"; }, 2e3); }, () => { pf.textContent = "コピーできません"; }); };
+      body.append(sub("自動同期"), sy, sub("バックアップ"), ex, im, rs, note, sub("分析用データ"), csvAnchor, sub("重さの計測"), pf);
       sy.style.borderTop = "0", sy.style.paddingTop = "0", sy.style.marginTop = "0";
       box.append(ar, fold, body, file), setF();
       // 4.10.309：［カート履歴］（真ん中に一覧を開く）。自動再カートの上
