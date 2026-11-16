@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.361
+// @version      4.10.362
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.361",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.362",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -649,12 +649,13 @@
       // 4.10.335：完売の台と「削除」マークの台は、いちばん下の「完売・削除済み」にまとめてグレーにする（履歴としては残す）
       // 4.10.344：やることが多い順に5つのまとまり（戻せる商品→見張り中→もう1台のカート→カート内→完売・削除済み）。日付の見出しはやめ、時刻は各行に
       const Wt = E("cartWatch", {}) || {}, Dt = E("cartWatchDone", {}) || {}, dv = devId();
-      const grp = ([c, v]) => (v.sold || v.mark ? 5 : !v.goneAt && !(v.dev && v.dev !== dv) ? 4 : !v.goneAt ? 3 : Wt[c] ? 2 : 1);
-      const gkey = ([c, v], g) => (g === 1 ? v.goneAt || 0 : g === 2 ? (Wt[c] || {}).since || 0 : g === 5 ? Math.max(v.sold || 0, v.markAt || 0, v.goneAt || 0) : v.addAt || 0);
-      const GN = ["", "戻せる商品", "見張り中", "もう1台のカート", "カート内", "完売・削除済み"], GS = [[], [], [], [], [], []];
+      // 4.10.362：「完売」と「削除済み」を分ける（完売で削除済みのものは完売へ）
+      const grp = ([c, v]) => (v.sold ? 5 : v.mark ? 6 : !v.goneAt && !(v.dev && v.dev !== dv) ? 4 : !v.goneAt ? 3 : Wt[c] ? 2 : 1);
+      const gkey = ([c, v], g) => (g === 1 ? v.goneAt || 0 : g === 2 ? (Wt[c] || {}).since || 0 : g >= 5 ? Math.max(v.sold || 0, v.markAt || 0, v.goneAt || 0) : v.addAt || 0);
+      const GN = ["", "戻せる商品", "見張り中", "もう1台のカート", "カート内", "完売", "削除済み"], GS = [[], [], [], [], [], [], []];
       for (const e of list) GS[grp(e)].push(e);
-      for (let g = 1; g <= 5; g++) GS[g].sort((a, b) => gkey(b, g) - gkey(a, g));
-      const rows = GS.flat(), cartRows = [], copyAll = [], copyG = [[], [], [], [], [], []];
+      for (let g = 1; g <= 6; g++) GS[g].sort((a, b) => gkey(b, g) - gkey(a, g));
+      const rows = GS.flat(), cartRows = [], copyAll = [], copyG = [[], [], [], [], [], [], []];
       // 4.10.346：コピーに台帳の情報も入れる（表示した時に台帳をまとめて1回で読んでおく）
       let LGM = new Map();
       lgMany(rows.map(([c]) => c)).then((m) => { LGM = m; });
@@ -678,7 +679,7 @@
         return out.join("\n");
       };
       // 4.10.357：「カート内」と「完売・削除済み」は最初たたんでおく（見出しを押すと開く）
-      const FK = { 4: "histFoldCart", 5: "histFoldDone" }, fold = { 4: E("histFoldCart", true) !== false, 5: E("histFoldDone", true) !== false }, foldRows = { 4: [], 5: [] };
+      const FK = { 4: "histFoldCart", 5: "histFoldDone", 6: "histFoldDel" }, fold = { 4: E("histFoldCart", true) !== false, 5: E("histFoldDone", true) !== false, 6: E("histFoldDel", true) !== false }, foldRows = { 4: [], 5: [], 6: [] };
       let curG = 0;
       for (const [code, v] of rows) {
         const g = grp([code, v]);
@@ -687,7 +688,7 @@
           const gh = document.createElement("div"), ght = document.createElement("span"), gg = g;
           ght.textContent = (FK[g] ? (fold[g] ? "▸ " : "▾ ") : "") + `${GN[g]}（${GS[g].length}件）`, ght.style.flex = "1";
           gh.append(ght, copyIcon(() => `JP RUSH カート履歴：${GN[gg]}（${T(w())}）\n` + flat(copyG[gg]), `${GN[g]}をまとめてコピー`, "currentColor"));
-          gh.style.cssText = "display:flex;align-items:center;gap:6px;padding:4px 6px 4px 12px;font-size:12px;font-weight:800;border-bottom:1px solid #dfe4ea;" + (g === 1 ? "background:#fdecef;color:#c8102e;" : g === 2 ? "background:#fff7d6;color:#7a5600;" : g === 5 ? "background:#e9ecf0;color:#6b7280;border-top:2px solid #cfd5dd;" : "background:#f3f6fa;color:#4a5a6e;") + (g === 4 ? "cursor:pointer;" : "");
+          gh.style.cssText = "display:flex;align-items:center;gap:6px;padding:4px 6px 4px 12px;font-size:12px;font-weight:800;border-bottom:1px solid #dfe4ea;" + (g === 1 ? "background:#fdecef;color:#c8102e;" : g === 2 ? "background:#fff7d6;color:#7a5600;" : g >= 5 ? "background:#e9ecf0;color:#6b7280;border-top:2px solid #cfd5dd;" : "background:#f3f6fa;color:#4a5a6e;") + (g === 4 ? "cursor:pointer;" : "");
           if (FK[g]) { gh.style.cursor = "pointer", gh.onclick = (ev) => { if (ev.target.closest("button")) return; fold[gg] = !fold[gg], $(FK[gg], fold[gg]), ght.textContent = (fold[gg] ? "▸ " : "▾ ") + `${GN[gg]}（${GS[gg].length}件）`; for (const r of foldRows[gg]) r.style.display = fold[gg] ? "none" : "flex"; }; }
           box.append(gh), copyAll.push("", `■ ${GN[g]}（${GS[g].length}件）`);
         }
@@ -5295,7 +5296,7 @@
     // 書き出し＝この端末の記録すべて（Tampermonkey の保存＋別の保存場所）を1つのファイルに。読み込み＝もう1台のファイルを今の記録に合わせる（上書きしない）。
     // 読み込む前の記録は別の保存場所に1つだけ取っておき、［元に戻す］で戻せる。設定（自動ON・表示の切り替え・欄の大きさ）とカートは端末ごとのまま
     const HO_FMT = "jprush-handoff", HO_BAK = "handoff.backup";
-    const HO_SKIP = (k) => /^(hourly\.|test\.|cart$|cartReadd$|devId$|upd$|cartWatch$|cartWatchDone$|cartUrls$|lgPruneAt$|cartDelAllAt$|histCartFold$|histFoldCart$|histFoldDone$|lgBackfillV$|extView$|hoHide$|hoOpen$|autoRecart$|autoRecartLog$|autoRecartHist$|sync[A-Z][a-zA-Z]*$|R$|L$|lb$|lh$|rb$)/.test(k);
+    const HO_SKIP = (k) => /^(hourly\.|test\.|cart$|cartReadd$|devId$|upd$|cartWatch$|cartWatchDone$|cartUrls$|lgPruneAt$|cartDelAllAt$|histCartFold$|histFoldCart$|histFoldDone$|histFoldDel$|lgBackfillV$|extView$|hoHide$|hoOpen$|autoRecart$|autoRecartLog$|autoRecartHist$|sync[A-Z][a-zA-Z]*$|R$|L$|lb$|lh$|rb$)/.test(k);
     // 4.10.361：決まった記録だけ読む（同期の「変わった分だけ」用）。読み方は hoDump と同じ
     async function syDumpKeys(marks) {
       const gm = {}, idb = [], strip = (k) => (String(k).startsWith(Ct) ? String(k).slice(Ct.length) : String(k));
