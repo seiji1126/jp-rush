@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.362
+// @version      4.10.363
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.362",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.363",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -591,7 +591,7 @@
       nt.style.cssText = "padding:8px 12px;font-size:12px;color:#5f6b7a;";
       list.length || box.append(Object.assign(document.createElement("div"), { textContent: "まだ記録がありません（カートの画面を開くと記録が始まります）", style: "padding:24px 12px;color:#4a5a6e;" }));
       const picks = [], ctl = document.createElement("div"), goB = document.createElement("button");
-      const bst = "padding:6px 12px;min-height:34px;border:1px solid #cdd6e4;border-radius:0;background:#eef2f8;color:#003792;font:700 13px/1.5 system-ui,sans-serif;cursor:pointer;";
+      const bst = "padding:6px 12px;min-height:34px;border:1px solid #cacaca;border-radius:0;background:#eef2f8;color:#003792;font:700 13px/1.5 system-ui,sans-serif;cursor:pointer;";
       ctl.style.cssText = "display:flex;gap:8px;align-items:center;margin-top:8px;";
       goB.type = "button", goB.style.cssText = bst;
       const live = () => picks.filter((p) => !p.marked() && !p.done() && !p.sold());
@@ -688,7 +688,7 @@
           const gh = document.createElement("div"), ght = document.createElement("span"), gg = g;
           ght.textContent = (FK[g] ? (fold[g] ? "▸ " : "▾ ") : "") + `${GN[g]}（${GS[g].length}件）`, ght.style.flex = "1";
           gh.append(ght, copyIcon(() => `JP RUSH カート履歴：${GN[gg]}（${T(w())}）\n` + flat(copyG[gg]), `${GN[g]}をまとめてコピー`, "currentColor"));
-          gh.style.cssText = "display:flex;align-items:center;gap:6px;padding:4px 6px 4px 12px;font-size:12px;font-weight:800;border-bottom:1px solid #dfe4ea;" + (g === 1 ? "background:#fdecef;color:#c8102e;" : g === 2 ? "background:#fff7d6;color:#7a5600;" : g >= 5 ? "background:#e9ecf0;color:#6b7280;border-top:2px solid #cfd5dd;" : "background:#f3f6fa;color:#4a5a6e;") + (g === 4 ? "cursor:pointer;" : "");
+          gh.style.cssText = "display:flex;align-items:center;gap:6px;padding:8px 6px 8px 10px;font-size:13px;font-weight:700;background:#e9eef5;border-top:1px solid #c5ced8;border-left:4px solid;" + (g === 1 ? "color:#c8102e;border-left-color:#c8102e;" : g === 2 ? "color:#7a5600;border-left-color:#d4a017;" : g === 3 ? "color:#5b4aa8;border-left-color:#5b4aa8;" : g === 4 ? "color:#003792;border-left-color:#003792;" : "color:#6b7280;border-left-color:#9aa3ae;") + (g === 4 ? "cursor:pointer;" : "");
           if (FK[g]) { gh.style.cursor = "pointer", gh.onclick = (ev) => { if (ev.target.closest("button")) return; fold[gg] = !fold[gg], $(FK[gg], fold[gg]), ght.textContent = (fold[gg] ? "▸ " : "▾ ") + `${GN[gg]}（${GS[gg].length}件）`; for (const r of foldRows[gg]) r.style.display = fold[gg] ? "none" : "flex"; }; }
           box.append(gh), copyAll.push("", `■ ${GN[g]}（${GS[g].length}件）`);
         }
@@ -697,15 +697,15 @@
         row.style.cssText = "display:flex;gap:10px;align-items:center;padding:10px 12px;border-bottom:1px solid #dfe4ea;background:#fff;";
         info.style.cssText = "flex:1;min-width:0;";
         nm.textContent = v.name || "商品番号 " + code, nm.href = v.url || "https://www.janpara.co.jp/sale/search/detail/?SRCODE=" + code;
-        nm.style.cssText = "display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;font-weight:700;line-height:1.4;color:#1f2d3d;text-decoration:none;";
+        nm.style.cssText = "display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:15px;font-weight:700;line-height:1.4;color:#333333;text-decoration:none;";
         nm.addEventListener("pointerdown", () => histSaveScroll(nm)), nm.addEventListener("click", () => histSaveScroll(nm));
         const soldTag = v.sold ? Object.assign(document.createElement("span"), { textContent: "完売" }) : null;
-        soldTag && (soldTag.style.cssText = "display:inline-block;margin-right:6px;padding:0 6px;font-size:11px;font-weight:700;border:1px solid #6b7280;background:#6b7280;color:#fff;");
-        tag.textContent = st, tag.style.cssText = "display:inline-block;margin-right:6px;padding:0 6px;font-size:11px;font-weight:700;border:1px solid;" + (other && !v.goneAt ? "color:#5b4aa8;border-color:#c9c1ea;" : inCart ? "color:#003792;border-color:#9fb3d9;" : exp ? "color:#6b7280;border-color:#cfd5dd;" : "color:#c8102e;border-color:#f0b4bd;");
+        soldTag && (soldTag.style.cssText = "display:inline-block;margin:0 4px 2px 0;padding:0 7px;border-radius:5px;font-size:12px;font-weight:700;background:#6b7280;color:#fff;");
+        tag.textContent = st, tag.style.cssText = "display:inline-block;margin:0 4px 2px 0;padding:0 7px;border-radius:5px;font-size:12px;font-weight:700;color:#fff;" + (other && !v.goneAt ? "background:#5b4aa8;" : inCart ? "background:#003792;" : exp ? "background:#6b7280;" : "background:#c8102e;");   // 4.10.363：検索画面の札と同じ形
         soldTag && sub.append(soldTag);
         const chkNote = (x) => x ? `確認：${x.st === "sold" ? "完売" : x.st === "nego" ? "商談中" : x.st === "stock" ? "在庫あり" : "読めず"} ${T(x.at)}` : "";
         sub.append(tag, [v.price ? A(v.price) : "", v.store || "", T(v.addAt) + " に入れた" + (v.goneAt ? `・${T(v.goneAt)} までに消えた・${T((v.addAt || 0) + CART_HOLD)} に復活` : "")].filter(Boolean).concat(histWatchNote(code, Wt, Dt), chkNote(v.chk) || []).join("・"));
-        sub.style.cssText = "font-size:12px;color:#4a5a6e;margin-top:3px;";
+        sub.style.cssText = "font-size:13px;line-height:1.5;color:#4a5a6e;margin-top:3px;";
         // 4.10.344：コピー用の1行（商品名／価格／店舗／状態／URL）と、行ごとの［コピー］
         const line = [v.name || "商品番号 " + code, v.price ? A(v.price) : "", v.store || "", [v.sold ? "完売" : "", v.mark ? "削除済" : "", st, v.goneAt ? T(v.goneAt) + "までに消えた" : T(v.addAt) + "に入れた"].concat(histWatchNote(code, Wt, Dt), chkNote(v.chk) || []).filter(Boolean).join(" "), nm.href].filter(Boolean).join("／");
         const base = [v.sold ? "完売" : "", v.mark ? "削除済" : "", st, T(v.addAt) + "に入れた", v.goneAt ? T(v.goneAt) + "までに消えた" : ""].concat(histWatchNote(code, Wt, Dt), chkNote(v.chk) || []).filter(Boolean).join("・");
@@ -733,7 +733,7 @@
             const b = document.createElement("button");
             let done = false;
             b.type = "button", b.textContent = "再カート";
-            b.style.cssText = "flex:none;padding:6px 14px;min-height:34px;border:1px solid #cdd6e4;border-radius:0;background:#eef2f8;color:#003792;font:700 13px/1.5 system-ui,sans-serif;cursor:pointer;";
+            b.style.cssText = "flex:none;padding:0 14px;min-height:40px;border:0;border-radius:0;background:#003792;color:#fff;font:700 14px/1.5 system-ui,sans-serif;cursor:pointer;";   // 4.10.363：検索画面のボタンと同じ
             // 1件を送る（成功で true）。1件の［再カート］も、まとめての時も同じ
             const run = () => {
               if (b.disabled) return Promise.resolve(false);
