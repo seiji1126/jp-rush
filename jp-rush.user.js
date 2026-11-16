@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.356
+// @version      4.10.357
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.356",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.357",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -566,9 +566,11 @@
         chkRun = true, chkStop = false;
         let i = 0;
         const next = () => {
-          if (chkStop || i >= tg.length) { chkRun = false, chkB.textContent = chkStop ? `止めました（${i}/${tg.length}件）` : `確認しました（${tg.length}件）`, setTimeout(chkLabel, 4000); return; }
+          if (chkStop || i >= tg.length) { chkRun = false, chkBusyG = false, chkB.textContent = chkStop ? `止めました（${i}/${tg.length}件）` : `確認しました（${tg.length}件）`, setTimeout(chkLabel, 4000); return; }
           // 4.10.355：再カートを送っている間は待つ（同時に動かさない）
-          if (readdPend || cartSending) { chkB.textContent = `待機中 ${i}/${tg.length}（再カート中）`; return setTimeout(next, 2e3); }
+          if (readdPend || cartSending) { chkBusyG = false, chkB.textContent = `待機中 ${i}/${tg.length}（再カート中）`; return setTimeout(next, 2e3); }
+          if (watchBusy) { chkBusyG = false; return setTimeout(next, 1e3); }
+          chkBusyG = true;
           const [code, ref] = tg[i++], v0 = (E("cartHist", {}) || {})[code] || {};
           chkB.textContent = `確認中 ${i}/${tg.length}（押すと止める）`;
           framePageText(v0.url || srcodeHref(code)).then((g) => g && g.text ? judgeUnit(g.text, code) : { k: "?" }).catch(() => ({ k: "?" })).then((r) => {
@@ -620,16 +622,18 @@
         out.push("  " + (v.url || L.url || srcodeHref(code)));
         return out.join("\n");
       };
-      let curG = 0, cartFold = !!E("histCartFold", false), cartHd = null;
+      // 4.10.357：「カート内」と「完売・削除済み」は最初たたんでおく（見出しを押すと開く）
+      const FK = { 4: "histFoldCart", 5: "histFoldDone" }, fold = { 4: E("histFoldCart", true) !== false, 5: E("histFoldDone", true) !== false }, foldRows = { 4: [], 5: [] };
+      let curG = 0;
       for (const [code, v] of rows) {
         const g = grp([code, v]);
         if (g !== curG) {
           curG = g;
           const gh = document.createElement("div"), ght = document.createElement("span"), gg = g;
-          ght.textContent = (g === 4 ? (cartFold ? "▸ " : "▾ ") : "") + `${GN[g]}（${GS[g].length}件）`, ght.style.flex = "1";
+          ght.textContent = (FK[g] ? (fold[g] ? "▸ " : "▾ ") : "") + `${GN[g]}（${GS[g].length}件）`, ght.style.flex = "1";
           gh.append(ght, copyIcon(() => `JP RUSH カート履歴：${GN[gg]}（${T(w())}）\n` + flat(copyG[gg]), `${GN[g]}をまとめてコピー`, "currentColor"));
           gh.style.cssText = "display:flex;align-items:center;gap:6px;padding:4px 6px 4px 12px;font-size:12px;font-weight:800;border-bottom:1px solid #dfe4ea;" + (g === 1 ? "background:#fdecef;color:#c8102e;" : g === 2 ? "background:#fff7d6;color:#7a5600;" : g === 5 ? "background:#e9ecf0;color:#6b7280;border-top:2px solid #cfd5dd;" : "background:#f3f6fa;color:#4a5a6e;") + (g === 4 ? "cursor:pointer;" : "");
-          if (g === 4) { cartHd = gh; gh.onclick = () => { cartFold = !cartFold, $("histCartFold", cartFold), ght.textContent = (cartFold ? "▸ " : "▾ ") + `${GN[4]}（${GS[4].length}件）`; for (const r of cartRows) r.style.display = cartFold ? "none" : "flex"; }; }
+          if (FK[g]) { gh.style.cursor = "pointer", gh.onclick = (ev) => { if (ev.target.closest("button")) return; fold[gg] = !fold[gg], $(FK[gg], fold[gg]), ght.textContent = (fold[gg] ? "▸ " : "▾ ") + `${GN[gg]}（${GS[gg].length}件）`; for (const r of foldRows[gg]) r.style.display = fold[gg] ? "none" : "flex"; }; }
           box.append(gh), copyAll.push("", `■ ${GN[g]}（${GS[g].length}件）`);
         }
         const other = !!v.dev && v.dev !== devId(), inCart = !v.goneAt && !other, exp = !!v.goneAt && v.goneAt - (v.addAt || 0) >= CART_HOLD, st = other && !v.goneAt ? "もう1台のカート" : inCart ? "カート内" : exp ? "期限切れ" : "期限前に消えた";
@@ -693,7 +697,7 @@
             row.append(b);
           }
         }
-        if (g === 4) { cartRows.push(row); cartFold && (row.style.display = "none"); }
+        if (FK[g]) { foldRows[g].push(row); fold[g] && (row.style.display = "none"); }
         box.append(row);
       }
       list.length && (nt.append(ctl), syncCtl(), chkLabel());
@@ -779,9 +783,9 @@
       }).catch(() => {});
     }
     try { const W = E("cartWatch", {}) || {}, H = E("cartHist", {}) || {}; let ch = false; for (const [c, v] of Object.entries(W)) if (v.why === "期限切れ" && !H[c]) delete W[c], ch = true; ch && $("cartWatch", W); } catch (e) {}   // 4.10.341：前の版で拾ったおすすめ商品を見張りから外す
-    let watchBusy = false;
+    let watchBusy = false, chkBusyG = false;   // 4.10.357：見張りと完売チェックは同時に商品ページを読まない
     function watchTick() {
-      if (watchBusy || !E("autoRecart", false) || !cartPage()) return;
+      if (watchBusy || chkBusyG || !E("autoRecart", false) || !cartPage()) return;
       const W = E("cartWatch", {}) || {}, t = w(), list = Object.entries(W).sort((a, b) => a[1].next - b[1].next);
       const hit = list.find(([, v]) => v.next <= t);
       if (!hit) return;
@@ -931,7 +935,7 @@
         new MutationObserver(sayObs).observe(sayEl, { childList: true, characterData: true, subtree: true }), sayObs();
         rb.append(cbt, sayEl), document.body.appendChild(rb), right0.dataset.moved = "1";
         ph.style.display = warn0 && !warn0.hidden ? "" : "none";
-        setInterval(() => { rb.style.visibility = popupOpen() ? "hidden" : ""; }, 500);
+        // 4.10.357：じゃんぱらの窓が開いている間に隠す見張りは外した（働いていなかった・重いだけ）
         return;
       }
       const ob = r.ok && right0 ? (ob0 && obr.width && (!hr0 || obr.bottom <= hr0.top + 2 && hr0.top - obr.bottom < 150) ? ob0 : h) : null;
@@ -948,7 +952,7 @@
         let rq = 0;
         const flo = () => {
           rq = 0;
-          const b = ob.getBoundingClientRect(), st = stickBottom(), out = b.top < st + 8 && !popupOpen();   // じゃんぱらの全体を覆う画面の間は出さない
+          const b = ob.getBoundingClientRect(), st = stickBottom(), out = b.top < st + 8;   // じゃんぱらの全体を覆う画面の間は出さない
           if (out) {
             // 4.10.206：箱の中では普通の並びに戻す（帯の中の右寄せ・上下中央の指定を外す）
             if (right0.parentNode !== fl) Object.assign(right0.style, { position: "static", right: "auto", top: "auto", transform: "none" }), fl.appendChild(right0);
@@ -957,7 +961,7 @@
           } else if (right0.parentNode === fl) right0.style.cssText = inBar, ob.appendChild(right0), fl.style.display = "none";
         };
         const fla = () => { rq || (rq = requestAnimationFrame(flo)); };
-        window.addEventListener("scroll", fla, { passive: true }), window.addEventListener("resize", fla), setInterval(fla, 1000), flo();
+        window.addEventListener("scroll", fla, { passive: true }), window.addEventListener("resize", fla), every1s(fla), flo();
       }
     }
     // 4.10.204：上に貼り付いているじゃんぱらの帯（検索の帯など）の下端（無ければ 0）
@@ -2516,6 +2520,10 @@
       }
       f.clock && (f.clock.textContent = new Date(w()).toLocaleTimeString("ja-JP", { hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit" }));
     }
+    // 4.10.357：1秒ごとの更新（時計・消えるまで・表の残り時間など）は1つのタイマーでまとめて回す
+    const SEC1 = new Set();
+    let sec1T = 0;
+    function every1s(fn) { SEC1.add(fn); sec1T || (sec1T = setInterval(() => { for (const g of SEC1) { try { g(); } catch (e) {} } }, 1000)); }
     function popupOpen() {
       const vw = window.innerWidth, vh = window.innerHeight, hit = (el) => {
         if (!el || el.id === "jp3-host") return false;
@@ -2916,7 +2924,7 @@
       f.topq && f.topq.querySelectorAll("button").forEach((b) => { b.onclick = (ev) => { ev.stopPropagation(); const s = f[b.dataset.t]; s && !s.disabled && s.click(); }; });
       f.watchl && (f.watchl.onclick = () => ve("watch", watchPanel));
       f.xcp && (f.xcp.onclick = (ev) => { ev.stopPropagation(), copyAllSearches(f.xcp); });
-      f.rail = e.getElementById("rail"), f.btns = e.querySelector(".btns"), ckTick(), setInterval(ckTick, 1000), document.addEventListener("click", () => setTimeout(ckTick, 120), true), f.jump.onclick = to, window.addEventListener("scroll", Vt, { passive: true }), window.addEventListener("scroll", Et, { passive: true }), window.addEventListener("resize", Et, { passive: true }), Le(), window.ResizeObserver && new ResizeObserver(Et).observe(f.bar), Vt(), f.sold.onclick = () => ve("sold", () => Ie("")), f.list.onclick = () => { listFull = true; vt(); }, f.spec.onclick = () => { f.specbox.hidden = false; }, f.specclose.onclick = () => { f.specbox.hidden = true; }, f.pclose.onclick = () => {
+      f.rail = e.getElementById("rail"), f.btns = e.querySelector(".btns"), ckTick(), every1s(ckTick), document.addEventListener("click", () => setTimeout(ckTick, 120), true), f.jump.onclick = to, window.addEventListener("scroll", Vt, { passive: true }), window.addEventListener("scroll", Et, { passive: true }), window.addEventListener("resize", Et, { passive: true }), Le(), window.ResizeObserver && new ResizeObserver(Et).observe(f.bar), Vt(), f.sold.onclick = () => ve("sold", () => Ie("")), f.list.onclick = () => { listFull = true; vt(); }, f.spec.onclick = () => { f.specbox.hidden = false; }, f.specclose.onclick = () => { f.specbox.hidden = true; }, f.pclose.onclick = () => {
         listFull = false;
         if (_) {
           vt();
@@ -4689,8 +4697,7 @@
         Object.assign($$("R").style, { right: G + "px", width: rw + "px", top: top + "px", bottom: "8px", display: rw >= 92 ? "flex" : "none" });
       };
       // 4.10.204：じゃんぱらの画面（クーポンなど全体を覆うもの）が開いている間は、左右の欄を隠す
-      const popChk = () => { const po = popupOpen(); $$("L").classList.toggle("off", po), $$("R").classList.toggle("off", po); };
-      tick(), place(), setInterval(() => { tick(), popChk(); }, 1000), document.addEventListener("click", () => setTimeout(popChk, 150), true);
+      tick(), place(), every1s(tick);   // 4.10.357：窓が開いている間に左右の欄を隠す見張りは外した
       window.addEventListener("scroll", () => requestAnimationFrame(place), { passive: true }), window.addEventListener("resize", place);
       return true;
     }
@@ -4916,7 +4923,7 @@
           x.fill.style.background = COL[st], x.fill.style.width = Math.max(0, Math.min(100, left / CART_HOLD * 100)) + "%";
         }
       };
-      tick(), setInterval(tick, 1000);
+      tick(), every1s(tick);
     }
     // 4.10.240：じゃんぱらの期限切れの一覧に重ねる表示（タブレット・スマホ共通）
     function expiredOverlay() {
@@ -5036,16 +5043,9 @@
         }
         place();
       };
-      tick(), setInterval(tick, 1000), window.addEventListener("resize", place), setTimeout(place, 600);
+      tick(), every1s(tick), window.addEventListener("resize", place), setTimeout(place, 600);
       // 4.10.238：じゃんぱらのポップアップ（オプション・クーポンの一覧など）が開いている間は、板と上の青いバーを隠す（×が押せるように）
-      let po0 = null;
-      setInterval(() => {
-        const po = popupOpen();
-        if (po === po0) return;
-        po0 = po;
-        for (const x of list) x.bx.style.visibility = po ? "hidden" : "";
-        for (const b of document.querySelectorAll(".jprush-cartbar,.jprush-cartfloat")) b.style.visibility = po ? "hidden" : "";
-      }, 500);
+      // 4.10.357：↑の見張りは外した（働いていなかった・重いだけ）
       return true;
     }
     // 4.10.177：カート画面の左の空き部分に「完売記録を表示」。押した時だけ完売記録を読んで、完売記録の画面を開く（検索ツール・新着候補は出さない）
@@ -5211,7 +5211,7 @@
     // 書き出し＝この端末の記録すべて（Tampermonkey の保存＋別の保存場所）を1つのファイルに。読み込み＝もう1台のファイルを今の記録に合わせる（上書きしない）。
     // 読み込む前の記録は別の保存場所に1つだけ取っておき、［元に戻す］で戻せる。設定（自動ON・表示の切り替え・欄の大きさ）とカートは端末ごとのまま
     const HO_FMT = "jprush-handoff", HO_BAK = "handoff.backup";
-    const HO_SKIP = (k) => /^(hourly\.|test\.|cart$|cartReadd$|devId$|upd$|cartWatch$|cartWatchDone$|cartUrls$|lgPruneAt$|cartDelAllAt$|histCartFold$|lgBackfillV$|extView$|hoHide$|hoOpen$|autoRecart$|autoRecartLog$|sync[A-Z][a-zA-Z]*$|R$|L$|lb$|lh$|rb$)/.test(k);
+    const HO_SKIP = (k) => /^(hourly\.|test\.|cart$|cartReadd$|devId$|upd$|cartWatch$|cartWatchDone$|cartUrls$|lgPruneAt$|cartDelAllAt$|histCartFold$|histFoldCart$|histFoldDone$|lgBackfillV$|extView$|hoHide$|hoOpen$|autoRecart$|autoRecartLog$|sync[A-Z][a-zA-Z]*$|R$|L$|lb$|lh$|rb$)/.test(k);
     function hoDump() {
       return (window.indexedDB ? idbAllEntries() : Promise.resolve([])).catch(() => []).then((idb) => {
         const gm = {};
@@ -5453,7 +5453,7 @@
           const busy = [...document.querySelectorAll(".jprush-readd [data-jprush-busy]")].length || readdPend;
           busy ? (stuckAt || (stuckAt = w())) : (stuckAt = 0);
           if (stuckAt && w() - stuckAt > 6e4) { console.warn("[JP RUSH] 送信中のまま固まったので開き直します"), $("autoRecartLog", `${T(w())} 送信中のまま固まったので開き直した`), location.reload(); return; }
-          if (cartPage() && w() - pageAt > 6e5 && !busy && !watchBusy && w() - lastInput > 12e4) { $("autoRecartLog", `${T(w())} 10分たったので開き直した`), location.reload(); return; }
+          if (cartPage() && w() - pageAt > 6e5 && !busy && !watchBusy && !chkBusyG && w() - lastInput > 12e4) { $("autoRecartLog", `${T(w())} 10分たったので開き直した`), location.reload(); return; }
         } catch (e) {}
         const codes = (E("cart", { codes: {} }) || {}).codes || {}, t = w(), rd = E("cartReadd", {}) || {};
         for (const wr of document.querySelectorAll(".jprush-readd[data-code]")) {
