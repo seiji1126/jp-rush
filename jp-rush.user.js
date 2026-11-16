@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.355
+// @version      4.10.356
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.355",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.356",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -4744,6 +4744,49 @@
       say("削除中…"), $("cartDelAllAt", w());   // 4.10.343：全削除の直後に消えた商品は見張らない
       round(document, 0).catch((e) => console.warn("[JP RUSH] カート全削除", e)).finally(() => { say("削除しました"), setTimeout(() => location.reload(), 300); });
     }
+    // 4.10.356：カート画面でスクロールが止まったままになる時がある（削除の後など。開き直すと直る）。
+    // 見える窓が開いていないのに「スクロール止め」や「見えない幕」が残っていたら外し、原因を下に数秒出す
+    function scrollGuard() {
+      if (window.__jprSG) return;
+      window.__jprSG = 1;
+      const said = new Set(), note = (why) => {
+        console.info("[JP RUSH] スクロールの止まりを外しました：", why);
+        if (said.has(why)) return;
+        said.add(why);
+        const d = document.createElement("div");
+        d.textContent = "JP RUSH：スクロールの止まりを外しました（" + why + "）";
+        d.style.cssText = "position:fixed;left:8px;bottom:8px;z-index:2147483646;max-width:calc(100vw - 16px);padding:6px 10px;background:#1f2d3d;color:#fff;font:600 12px/1.5 system-ui,sans-serif;pointer-events:none;";
+        document.body.appendChild(d), setTimeout(() => d.remove(), 6e3);
+      };
+      const ours = (el) => !!(el && el.closest && el.closest(".jprush-hist,#jp3-host,#jp3-cart,[class^='jprush'],[id^='jp3']"));
+      // 見える窓（じゃんぱらの窓・JP RUSH の窓）が開いている間は触らない
+      const seen = (el) => { if (ours(el)) return false; const c = getComputedStyle(el); if ((c.position !== "fixed" && c.position !== "absolute") || c.display === "none" || c.visibility === "hidden" || Number(c.opacity) < 0.05) return false; const r = el.getBoundingClientRect(); return r.width >= innerWidth * 0.5 && r.height >= innerHeight * 0.5 && r.bottom > 0 && r.top < innerHeight; };
+      const busy = () => { try { if (document.querySelector(".jprush-hist,.remodal-is-opened")) return true; for (const el of document.body.children) if (seen(el) || [...el.children].some(seen)) return true; return false; } catch (e) { return true; } };
+      const desc = (el) => el.tagName.toLowerCase() + (el.id ? "#" + el.id : "") + (typeof el.className === "string" && el.className.trim() ? "." + el.className.trim().split(/\s+/).slice(0, 2).join(".") : "");
+      setInterval(() => {
+        if (document.hidden || busy()) return;
+        const se = document.scrollingElement || document.documentElement;
+        if (se.scrollHeight <= innerHeight + 40) return;
+        for (const el of [document.documentElement, document.body]) {
+          const c = getComputedStyle(el);
+          if (/hidden|clip/.test(c.overflowY)) { el.style.setProperty("overflow-y", "auto", "important"), note(desc(el) + " のスクロール止め"); }
+          if (c.position === "fixed" && el === document.body) { el.style.setProperty("position", "static", "important"), note("body の位置固定"); }
+          if (c.touchAction === "none") { el.style.setProperty("touch-action", "auto", "important"), note(desc(el) + " のタッチ止め"); }
+        }
+        // 画面の真ん中を覆っている、じゃんぱら側の見えない幕（ほぼ全面・透明）
+        let el = document.elementFromPoint(innerWidth / 2, innerHeight / 2);
+        for (; el && el !== document.body && el !== document.documentElement; el = el.parentElement) {
+          if (ours(el)) break;
+          const c = getComputedStyle(el);
+          if (c.position !== "fixed" && c.position !== "absolute") continue;
+          const r = el.getBoundingClientRect();
+          if (r.width < innerWidth * 0.9 || r.height < innerHeight * 0.9) continue;
+          const clear = Number(c.opacity) < 0.05 || ((c.backgroundColor === "rgba(0, 0, 0, 0)" || c.backgroundColor === "transparent") && !N(el.innerText || ""));
+          if (clear) { el.style.setProperty("pointer-events", "none", "important"), note(desc(el) + " の見えない幕"); }
+          break;
+        }
+      }, 1500);
+    }
     function cartReaddBtns(cr) {
       if (!cr || !cr.ok || document.querySelector(".jprush-readd")) return;
       const P = cartParse(), byCode = new Map(P.items.map((it) => [it.code, it]));
@@ -5613,6 +5656,7 @@
         let ok = false;
         try { ok = cartTools(cr); } catch (e) { console.warn("[JP RUSH] カートツールの表示に失敗", e); }
         try { cartReaddBtns(cr); } catch (e) { console.warn("[JP RUSH] カートの「カートへ」を出せませんでした", e); }
+        try { scrollGuard(); } catch (e) {}
         ok && (() => { try { centerTimers(cr); } catch (e) { console.warn("[JP RUSH] 表の残り時間を出せませんでした", e); } })();
         ok || (() => { try { expiredOverlay(); } catch (e) { console.warn("[JP RUSH] 期限切れの表示に失敗", e); } })();
         ok || (() => { try { phoneTimers(cr); } catch (e) { console.warn("[JP RUSH] スマホの残り時間を出せませんでした", e); } })();
