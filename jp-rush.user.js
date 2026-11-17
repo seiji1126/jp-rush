@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.385
+// @version      4.10.386
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.385",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.386",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -844,7 +844,10 @@
           if (!m) continue;
           after ? notRecommend(n) && expired.push({ sr: m[1], name: N(n.textContent), url: new URL(n.getAttribute("href"), location.href).href }) : inCart.add(m[1]);
         }
-        const lost = shown.filter((c) => !inCart.has(c));
+        // 4.10.386：読んでいる間に働き手が入れ直しを始めていたら、何もしない（入れ直しの途中を「消えた」と見て開き直し、働き手を止めていた）
+        if (rcwBusy()) return;
+        const RD = E("cartReadd", {}) || {};
+        const lost = shown.filter((c) => !inCart.has(c) && !(RD[c] && w() - RD[c] < 18e4));
         if (!lost.length) return;
         // 4.10.377：一度にたくさん（5点以上かつ3割以上）消えたように見える時は、読んだページが途中までだった可能性が高いので開き直さない
         if (lost.length >= 5 && lost.length >= shown.length * 0.3) { arLog(`${T(w())} カートの見張り：${lost.length}点が見当たらないが、読み取りが不完全とみて開き直さなかった`); return; }
@@ -4060,24 +4063,28 @@
           const h0 = await cartHtml(), t0 = trust(h0);
           for (const i of due) { const row = t0 ? rowOf(h0, i.code) : ""; i.mode = !t0 ? "blind" : row ? "re" : "back"; i.delNow = row ? delOf(row) : null; }
           postMessage({ type: "start", codes: due.map((i) => i.code), back: due.filter((i) => i.mode === "back").map((i) => i.code), blind: !t0, at: Date.now() });
-          await pool(due, 5, async (i) => {
-            {
-              // 4.10.385：削除は必ず送る（カートに無ければ何も起きないだけ。読み違いで「入れるだけ」になると時間が延びずに消えていた）
-              // 送り先：今読んだ行から取れればそれ、無ければ覚えている物
-              const d = i.delNow || i.del || null;
-              if (d) { try { const r = await send(d); i.dOk = r.type === "opaqueredirect" || (r.status >= 300 && r.status < 400) || r.ok; } catch (e) {} }
-              else i.noDel = true;
-            }
-            await add(i.add);
-          });
+          // 4.10.385：削除は必ず送る（カートに無ければ何も起きないだけ。読み違いで「入れるだけ」になると時間が延びずに消えていた）
+          // 4.10.386：削除が本当に効いたかをカートを読んで確かめてから入れる。効いていない物はもう一度削除。
+          //          （削除が効かないまま入れても時間は延びず、「成功」と出たのに元の時刻で消えていた）
+          const sendDel = async (i, d) => { if (!d) return (i.noDel = true); try { const r = await send(d); i.dOk = r.type === "opaqueredirect" || (r.status >= 300 && r.status < 400) || r.ok; } catch (e) { i.dOk = false; } };
+          await pool(due, 5, (i) => sendDel(i, i.delNow || i.del || null));
+          let hm = await cartHtml(), tm = !!hm && (empty(hm) || /総合計/.test(hm));
+          let still = tm ? due.filter((i) => !i.noDel && has(hm, i.code)) : [];
+          if (still.length) {
+            await pool(still, 5, (i) => sendDel(i, delOf(rowOf(hm, i.code)) || i.del));
+            hm = await cartHtml(), tm = !!hm && (empty(hm) || /総合計/.test(hm));
+            still = tm ? still.filter((i) => has(hm, i.code)) : [];
+            for (const i of still) i.delFail = true;
+          }
+          await pool(due, 5, (i) => add(i.add));
           let h1 = await cartHtml(), t1 = trust(h1);
           const again = due.filter((i) => !has(h1, i.code));
           if (again.length) { await sleep(1500); await pool(again, 5, (i) => add(i.add)); h1 = await cartHtml(); t1 = trust(h1); }
           const t = Date.now();
           for (const i of due) {
-            const ok = has(h1, i.code);
+            const ok = has(h1, i.code) && !i.delFail;
             if (ok) lastRe[i.code] = t, i.exp = t + P.hold;
-            postMessage({ type: "done", code: i.code, ok, sure: t1, snip: ok ? "" : snipOf(h1, i.code), mode: i.mode, retried: again.includes(i), delOk: i.mode === "back" || !!i.dOk, noDel: !!i.noDel, at: t, why: ok ? "" : t1 ? "入れてもカートに無い（売れた可能性）" : "カートを読めなかった" });
+            postMessage({ type: "done", code: i.code, ok, sure: t1 && !i.delFail, snip: ok ? "" : snipOf(h1, i.code), mode: i.mode, retried: again.includes(i), delOk: i.mode === "back" || !!i.dOk, noDel: !!i.noDel, at: t, why: ok ? "" : i.delFail ? "削除が効かず時間を延ばせない" : t1 ? "入れてもカートに無い（売れた可能性）" : "カートを読めなかった" });
           }
         } catch (e) { postMessage({ type: "log", msg: "働き手のエラー：" + String(e && e.message || e).slice(0, 60) }); }
         finally { busy = false; }
@@ -4102,6 +4109,8 @@
         const v = C[code];
         let exp = b.exp || 0;
         if (v && v.firstSeen) { exp = v.unsure ? now : v.firstSeen + CART_HOLD; if (!v.unsure && b.exp !== exp) b.exp = exp, ch = true; }
+        // 4.10.386：期限前なのにカートから消えている（途中で止まった等）商品は、待たずにすぐ戻す
+        else if (exp > now && !(b.okAt && now - b.okAt < 18e4) && cartPage()) exp = now;
         if (!exp || now - exp > 36e5 || !b.add) { delete B[code], ch = true; continue; }
         items.push({ code, exp, del: b.del || null, add: b.add, recipeAt: b.at || 0, okAt: b.okAt || 0, name: b.name || (v && v.name) || "" });
       }
@@ -4139,6 +4148,7 @@
             // 読み取りが確かな時だけ失敗と数える。3回続けて入らなければ、売れたとみて予定から外す
             let gave = false;
             // 画面ではカートにある（ボタンがある）のに入らないと言う時は、働き手の読み違い。数えずに30分は画面のボタンで動かす
+            try { const rd = E("cartReadd", {}) || {}; if (rd[m.code]) delete rd[m.code], $("cartReadd", rd); } catch (e) {}   // 4.10.386：入れ直せなかった物は「入れ直した」扱いにしない（残り時間を延ばしたことにしない）
             try { if (m.snip) { const D = (E("rcDiag", []) || []).slice(-4); D.push({ at: m.at, code: m.code, why: m.why, html: m.snip, del: ((E("rcBook", {}) || {})[m.code] || {}).del || null }); $("rcDiag", D); } } catch (e) {}
             if (m.sure && document.querySelector(`.jprush-readd[data-code="${m.code}"]`)) { RCW.distrustUntil = Date.now() + 18e5; arLog(`${T(m.at)} 働き手の読み違い（${m.code} は画面ではカートにある）→ 30分は画面のボタンで再カート`); return; }
             if (m.sure) try { const B = E("rcBook", {}) || {}; if (B[m.code]) { B[m.code].fails = (B[m.code].fails || 0) + 1; gave = B[m.code].fails >= 3; gave && delete B[m.code]; $("rcBook", B); } } catch (e) {}
