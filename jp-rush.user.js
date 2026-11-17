@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.383
+// @version      4.10.384
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.383",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.384",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -824,7 +824,7 @@
     // じゃんぱら側で消えた商品があれば、期限切れの欄に出た商品を見張りに入れてから、ページを開き直して表をそろえる
     let cartPollAt = 0;
     function cartPoll() {
-      if (!E("autoRecart", false) || !cartPage() || readdPend || watchBusy) return;
+      if (!E("autoRecart", false) || !cartPage() || readdPend || watchBusy || rcwBusy()) return;
       const t = w();
       if (t - cartPollAt < 6e4) return;
       cartPollAt = t;
@@ -3992,58 +3992,106 @@
     // ・削除の送り先が古い恐れがある時（画面が固まっていて、働き手が前に入れ直した後に読み直せていない）は、削除の後に本当に消えたかを確かめてから入れ直す
     // ・結果は画面に知らせ、画面が生きていれば記録・表示・開き直しをする。働き手の応答が45秒途絶えたら、今まで通り画面のボタンで動く
     const RCW = { recipes: {}, w: null, hb: 0, ok: false, startAt: 0 };
-    const RCW_SRC = `
+    // ===== 4.10.384：再発防止の作り直し =====
+    // ① 時間で必ず動く：残り12分になった商品は、カートの読み取り結果に関係なく必ず入れ直す（「見当たらない」で見送らない）
+    //    カートに無ければ「入れるだけ」（期限切れで消えた物も1時間以内なら自動で戻す）。有れば「削除→入れる」
+    // ② 削除の送り先は、その時読んだカートのページの行から毎回取り直す（画面のボタンに頼らない）
+    // ③ 予定は画面ではなく覚え書き（rcBook）から作る。画面を開き直しても、カートから消えても、予定は消えない
+    // ④ 読み取りがおかしい時（商品の半分以上が見えない等）は「信用しない」：失敗と数えず、削除→入れ直しをそのまま送る
+    // ⑤ 番人：働き手が間に合っていない商品（残り4分以下）は、画面側がまとめて入れ直す（働き手が生きていても）
+    function rcwMain() {
       let P = { active: false, items: [] }, busy = false; const tried = {}, lastRe = {};
       onmessage = (e) => { if (e.data && e.data.type === "plan") { P = e.data; for (const i of P.items) if (lastRe[i.code] && lastRe[i.code] > i.exp - P.hold) i.exp = lastRe[i.code] + P.hold; } };
       const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
       const tf = (u, o) => { const ac = new AbortController(); const t = setTimeout(() => ac.abort(), 45000); return fetch(u, { ...o, signal: ac.signal, credentials: "include" }).finally(() => clearTimeout(t)); };
-      // 4.10.383：カートの中かどうかは「その商品の行に［削除］がある」で見る（ページのどこかにある「期限切れのため」の文字で切ると、全部を見失っていた）
-      const cartHtml = async () => { const r = await tf(P.origin + "/sale/cart/", { cache: "no-store" }); let h = await r.text(); h = h.replace(/<script[\\s\\S]*?<\\/script>/gi, "").replace(/<style[\\s\\S]*?<\\/style>/gi, "").replace(/<!--[\\s\\S]*?-->/g, ""); const b = h.search(/<body/i); return b >= 0 ? h.slice(b) : h; };
-      const has = (h, c) => { if (!h) return false; const re = new RegExp("[?&]SRCODE=" + c + "(?![0-9])", "g"); let m; while ((m = re.exec(h))) { const rest = h.slice(m.index, m.index + 6000), end = rest.search(/<\\/tr>/i), row = end > 0 ? rest.slice(0, end) : rest.slice(0, 3000); if (/削除/.test(row)) return true; } return false; };
+      const cartHtml = async () => { try { const r = await tf(P.origin + "/sale/cart/", { cache: "no-store" }); let h = await r.text(); h = h.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<style[\s\S]*?<\/style>/gi, "").replace(/<!--[\s\S]*?-->/g, ""); const b = h.search(/<body/i); return b >= 0 ? h.slice(b) : h; } catch (e) { return ""; } };
+      // その商品の行（SRCODE のリンクがあり、［削除］がある行）
+      const rowOf = (h, c) => { if (!h) return ""; const re = new RegExp("[?&]SRCODE=" + c + "(?![0-9])", "g"); let m; while ((m = re.exec(h))) { const st = h.lastIndexOf("<tr", m.index), s0 = st >= 0 && m.index - st < 8000 ? st : m.index, rest = h.slice(m.index, m.index + 8000), end = rest.search(/<\/tr>/i), row = h.slice(s0, m.index + (end > 0 ? end : 3000)); if (/削除/.test(row)) return row; } return ""; };
+      const has = (h, c) => !!rowOf(h, c);
+      const empty = (h) => /カートに商品は入っておりません|商品が入っていません/.test(h);
+      // 読み取りを信用してよいか：総合計がある（または空のカート）、かつ、まだ期限内のはずの商品の半分以上が見えている
+      const trust = (h) => { if (!h) return false; if (empty(h)) return true; if (!/総合計/.test(h)) return false; const live = P.items.filter((i) => i.exp > Date.now() + 60000); if (live.length < 4) return true; return live.filter((i) => has(h, i.code)).length >= live.length * 0.5; };
+      const attr = (tag, n) => { const x = new RegExp("\\b" + n + "\\s*=\\s*([\"'])([^\"']*)\\1", "i").exec(tag) || new RegExp("\\b" + n + "\\s*=\\s*([^\\s>]+)", "i").exec(tag); return x ? (x[2] != null ? x[2] : x[1]).replace(/&amp;/g, "&") : ""; };
+      // 行の中の［削除］の送り先と中身を、読んだページから取り出す
+      const delOf = (row) => {
+        try {
+          const fr = /<form\b[^>]*>[\s\S]*?<\/form>/gi; let m;
+          while ((m = fr.exec(row))) {
+            const fm = m[0]; if (!/削除/.test(fm)) continue;
+            const tag = /<form\b[^>]*>/i.exec(fm)[0], q = new URLSearchParams();
+            const ir = /<(input|button)\b[^>]*>/gi; let x;
+            while ((x = ir.exec(fm))) { const t = x[0], ty = (attr(t, "type") || (x[1].toLowerCase() === "button" ? "submit" : "text")).toLowerCase(), n = attr(t, "name"); if (!n) continue; if (ty === "hidden" || ty === "text") q.append(n, attr(t, "value")); else if (/削除/.test(t)) ty === "image" ? (q.append(n + ".x", "1"), q.append(n + ".y", "1")) : q.append(n, attr(t, "value")); }
+            return { url: new URL(attr(tag, "action") || "/sale/cart/", P.origin + "/sale/cart/").href, method: (attr(tag, "method") || "post").toUpperCase(), body: q.toString() };
+          }
+          const ar = /<a\b[^>]*href\s*=\s*["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
+          while ((m = ar.exec(row))) if (/削除/.test(m[2]) && !/^javascript:/i.test(m[1])) return { url: new URL(m[1].replace(/&amp;/g, "&"), P.origin + "/sale/cart/").href, method: "GET", body: "" };
+        } catch (e) {}
+        return null;
+      };
       const send = (d) => d.method === "GET" ? tf(d.url, { redirect: "manual", cache: "no-store" }) : tf(d.url, { method: d.method, body: new URLSearchParams(d.body), redirect: "manual" });
-      const add = (b) => tf(P.origin + "/sale/cart/add/", { method: "POST", body: new URLSearchParams(b), redirect: "manual" });
+      const add = (b) => tf(P.origin + "/sale/cart/add/", { method: "POST", body: new URLSearchParams(b), redirect: "manual" }).catch(() => {});
       const pool = async (arr, n, fn) => { let i = 0; await Promise.all(Array.from({ length: Math.min(n, arr.length) }, async () => { while (i < arr.length) { const x = arr[i++]; try { await fn(x); } catch (e) {} } })); };
       async function loop() {
         postMessage({ type: "hb", at: Date.now() });
         if (!P.active || busy) return;
-        const now = Date.now(), due = P.items.filter((i) => i.del && i.exp - now <= P.left && i.exp - now > -60000 && !(tried[i.code] && now - tried[i.code] < 180000));
+        const now = Date.now(), due = P.items.filter((i) => i.add && i.exp - now <= P.left && i.exp - now > -3600000 && !(tried[i.code] && now - tried[i.code] < 180000));
         if (!due.length) return;
         busy = true;
         try {
           for (const i of due) tried[i.code] = now;
-          const h0 = await cartHtml(), work = [];
-          for (const i of due) has(h0, i.code) ? work.push(i) : postMessage({ type: "missing", code: i.code });
-          if (!work.length) return;
-          postMessage({ type: "start", codes: work.map((i) => i.code), at: Date.now() });
-          const stale = work.filter((i) => lastRe[i.code] && lastRe[i.code] > (i.recipeAt || 0));
-          await pool(work, 5, async (i) => {
-            let dOk = false;
-            try { const r = await send(i.del); dOk = r.type === "opaqueredirect" || (r.status >= 300 && r.status < 400) || r.ok; } catch (e) {}
-            if (stale.includes(i)) { await sleep(300); const h = await cartHtml().catch(() => ""); if (h && has(h, i.code)) { i.delStuck = true; return; } }
-            i.dOk = dOk; await add(i.add).catch(() => {});
+          const h0 = await cartHtml(), t0 = trust(h0);
+          for (const i of due) { const row = t0 ? rowOf(h0, i.code) : ""; i.mode = !t0 ? "blind" : row ? "re" : "back"; i.delNow = row ? delOf(row) : null; }
+          postMessage({ type: "start", codes: due.map((i) => i.code), back: due.filter((i) => i.mode === "back").map((i) => i.code), blind: !t0, at: Date.now() });
+          await pool(due, 5, async (i) => {
+            if (i.mode !== "back") {
+              // 削除の送り先：今読んだ行から取れればそれ。取れなければ覚えている物（入れ直した後の古い物は使わない）
+              const d = i.delNow || (i.del && !(i.okAt > i.recipeAt) && !(lastRe[i.code] > i.recipeAt) ? i.del : null);
+              if (d) { try { const r = await send(d); i.dOk = r.type === "opaqueredirect" || (r.status >= 300 && r.status < 400) || r.ok; } catch (e) {} }
+              else i.noDel = true;
+            }
+            await add(i.add);
           });
-          let h1 = await cartHtml().catch(() => "");
-          const again = work.filter((i) => !i.delStuck && !(h1 && has(h1, i.code)));
-          if (again.length) { await pool(again, 5, (i) => add(i.add).catch(() => {})); h1 = await cartHtml().catch(() => h1); }
+          let h1 = await cartHtml(), t1 = trust(h1);
+          const again = due.filter((i) => !has(h1, i.code));
+          if (again.length) { await sleep(1500); await pool(again, 5, (i) => add(i.add)); h1 = await cartHtml(); t1 = trust(h1); }
           const t = Date.now();
-          for (const i of work) {
-            if (i.delStuck) { postMessage({ type: "done", code: i.code, ok: false, why: "削除が通らない（送り先が古い）", at: t }); continue; }
-            const ok = !!h1 && has(h1, i.code);
+          for (const i of due) {
+            const ok = has(h1, i.code);
             if (ok) lastRe[i.code] = t, i.exp = t + P.hold;
-            postMessage({ type: "done", code: i.code, ok, retried: again.includes(i), delOk: !!i.dOk, at: t, why: ok ? "" : (h1 ? "入れ直してもカートに無い" : "カートを読めなかった") });
+            postMessage({ type: "done", code: i.code, ok, sure: t1, mode: i.mode, retried: again.includes(i), delOk: i.mode === "back" || !!i.dOk, noDel: !!i.noDel, at: t, why: ok ? "" : t1 ? "入れてもカートに無い（売れた可能性）" : "カートを読めなかった" });
           }
         } catch (e) { postMessage({ type: "log", msg: "働き手のエラー：" + String(e && e.message || e).slice(0, 60) }); }
         finally { busy = false; }
       }
       setInterval(loop, 10000); setTimeout(loop, 800);
-    `;
+    }
+    const RCW_SRC = "(" + rcwMain.toString() + ")();";
+    // 覚え書き（rcBook）：商品ごとの「入れる中身・削除の中身・消える時刻・最後に入れ直せた時刻・失敗回数」。この端末だけ（同期しない）
+    function rcBookDrop(code) {
+      try { const B = E("rcBook", {}) || {}; if (B[code]) delete B[code], $("rcBook", B); } catch (e) {}
+      try { const c = E("cart", { codes: {} }) || { codes: {} }; if (c.codes && c.codes[code]) delete c.codes[code], $("cart", c); } catch (e) {}   // 自分で消した商品を、カートの記録から作り直さない
+    }
+    function rcBookOk(code, at) { try { const B = E("rcBook", {}) || {}; B[code] = { ...(B[code] || {}), exp: at + CART_HOLD, okAt: at, fails: 0 }; $("rcBook", B); } catch (e) {} }
+    function rcItems() {
+      const C = (E("cart", { codes: {} }) || {}).codes || {}, B = E("rcBook", {}) || {}, now = Date.now(), items = [];
+      let ch = false;
+      for (const [code, r] of Object.entries(RCW.recipes)) { const b = B[code]; if (!b || b.at !== r.at) B[code] = { ...(b || {}), del: r.del, add: r.add, name: r.name, at: r.at }, ch = true; }
+      // 画面のボタンがまだ無い商品も、カートの記録から「入れる中身」を作って予定に入れる
+      const H = E("cartHist", {}) || {};
+      for (const [code, v] of Object.entries(C)) if (v && v.firstSeen && !B[code] && v.price && !(H[code] && H[code].mark)) { B[code] = { add: new URLSearchParams([["SRCODE", code], ["SHPCODE", shpOf(code)], ["PRICE", String(It ? It(v.price) || v.price : v.price).replace(/[^0-9]/g, "")], ["REDIRECT", ""], ["QTY", "1"]]).toString(), name: String(v.name || "").slice(0, 40), at: 0 }, ch = true; }
+      for (const [code, b] of Object.entries(B)) {
+        const v = C[code];
+        let exp = b.exp || 0;
+        if (v && v.firstSeen) { exp = v.unsure ? now : v.firstSeen + CART_HOLD; if (!v.unsure && b.exp !== exp) b.exp = exp, ch = true; }
+        if (!exp || now - exp > 36e5 || !b.add) { delete B[code], ch = true; continue; }
+        items.push({ code, exp, del: b.del || null, add: b.add, recipeAt: b.at || 0, okAt: b.okAt || 0, name: b.name || (v && v.name) || "" });
+      }
+      ch && $("rcBook", B);
+      return items;
+    }
     function rcwPlan(active) {
       if (!RCW.w) return;
-      try {
-        const C = (E("cart", { codes: {} }) || {}).codes || {}, items = [];
-        for (const [code, v] of Object.entries(C)) { const r = RCW.recipes[code]; if (!r || !v || !v.firstSeen) continue; items.push({ code, exp: v.unsure ? Date.now() : v.firstSeen + CART_HOLD, del: r.del, add: r.add, recipeAt: r.at }); }
-        RCW.w.postMessage({ type: "plan", active: !!active, origin: location.origin, hold: CART_HOLD, left: RECART_LEFT, items });
-      } catch (e) {}
+      try { RCW.w.postMessage({ type: "plan", active: !!active, origin: location.origin, hold: CART_HOLD, left: RECART_LEFT, items: rcItems() }); } catch (e) {}
     }
     function rcwStart() {
       if (RCW.w || !window.Worker) return;
@@ -4053,23 +4101,34 @@
         const m = e.data || {};
         if (m.type === "hb") { RCW.hb = m.at; return; }
         if (m.type === "log") { arLog(`${T(w())} ${m.msg}`); return; }
-        if (m.type === "start") { try { const rd = E("cartReadd", {}) || {}; for (const c of m.codes) rd[c] = m.at; $("cartReadd", rd); } catch (e) {} arLog(`${T(m.at)} 働き手が再カート：${m.codes.length}点（${m.codes.slice(0, 3).join("・")}）`); return; }
+        if (m.type === "start") { RCW.busy = Date.now(); try { const rd = E("cartReadd", {}) || {}; for (const c of m.codes) rd[c] = m.at; $("cartReadd", rd); } catch (e) {} arLog(`${T(m.at)} 働き手が再カート：${m.codes.length}点（${m.codes.slice(0, 3).join("・")}）${m.back && m.back.length ? `・うち${m.back.length}点はカートに無いので入れ直して戻す` : ""}${m.blind ? "・カートの読み取りが怪しいので確かめずに送った" : ""}`); return; }
         if (m.type === "missing") {
           // 4.10.383：画面にはボタンがあるのに働き手が「無い」と言う時は、働き手の読み違い。30分は働き手を信用せず、画面のボタンで再カートする
           if (document.querySelector(`.jprush-readd[data-code="${m.code}"]`)) { RCW.distrustUntil = Date.now() + 18e5; arLog(`${T(w())} 働き手の読み違い（${m.code} は画面ではカートにある）→ 30分は画面のボタンで再カート`); return; }
           arLog(`${T(w())} 働き手：${m.code} がカートに見当たらない（消えた可能性）`); return;
         }
         if (m.type === "done") {
-          const nm = String((RCW.recipes[m.code] || {}).name || m.code).slice(0, 20);
+          RCW.busy = 0;
+          const nm = String((RCW.recipes[m.code] || {}).name || ((E("rcBook", {}) || {})[m.code] || {}).name || ((E("cart", { codes: {} }).codes || {})[m.code] || {}).name || m.code).slice(0, 20);
           if (m.ok) {
             try { const c = E("cart", { codes: {} }) || { codes: {} }; c.codes = c.codes || {}; const o = { ...(c.codes[m.code] || {}) }; delete o.unsure; c.codes[m.code] = { ...o, firstSeen: m.at }; $("cart", c); } catch (e) {}
-            arLog(`${T(m.at)} 入れ直し成功 ${nm}（${m.code}）${m.retried ? "・2回目で入った" : ""}${m.delOk ? "" : "・削除の返事がおかしかった"}`);
+            rcBookOk(m.code, m.at);
+            arLog(`${T(m.at)} ${m.mode === "back" ? "カートに戻した" : "入れ直し成功"} ${nm}（${m.code}）${m.retried ? "・2回目で入った" : ""}${m.delOk ? "" : "・削除の返事がおかしかった"}${m.noDel ? "・削除の送り先が分からず入れるだけ" : ""}`);
             try { const o = JSON.parse(sessionStorage.getItem("jprRdqCheck") || "null"), it = o && Date.now() - o.at < 3e5 ? o.items : {}; it[m.code] = (RCW.recipes[m.code] || {}).add || ""; sessionStorage.setItem("jprRdqCheck", JSON.stringify({ at: Date.now(), items: it })); } catch (e) {}
-            clearTimeout(relT), relT = setTimeout(() => { readdPend || location.reload(); }, 3e3);
-          } else arLog(`${T(m.at)} 入れ直し失敗 ${m.code}（${m.why}）`);
+            clearTimeout(relT), relT = setTimeout(() => { readdPend || rcwBusy() || location.reload(); }, 3e3);
+          } else {
+            // 読み取りが確かな時だけ失敗と数える。3回続けて入らなければ、売れたとみて予定から外す
+            let gave = false;
+            // 画面ではカートにある（ボタンがある）のに入らないと言う時は、働き手の読み違い。数えずに30分は画面のボタンで動かす
+            if (m.sure && document.querySelector(`.jprush-readd[data-code="${m.code}"]`) && w() - pageAt < 6e5) { RCW.distrustUntil = Date.now() + 18e5; arLog(`${T(m.at)} 働き手の読み違い（${m.code} は画面ではカートにある）→ 30分は画面のボタンで再カート`); return; }
+            if (m.sure) try { const B = E("rcBook", {}) || {}; if (B[m.code]) { B[m.code].fails = (B[m.code].fails || 0) + 1; gave = B[m.code].fails >= 3; gave && delete B[m.code]; $("rcBook", B); } } catch (e) {}
+            arLog(`${T(m.at)} 入れ直し失敗 ${nm}（${m.code}・${m.why}）${gave ? "→ 3回入らないので売れたとみて外した" : m.sure ? "→ 3分後にもう一度" : "→ 失敗とは数えずにもう一度"}`);
+          }
         }
       };
     }
+    // 4.10.384：働き手が送っている途中は、画面を開き直さない（途中で開き直すと働き手ごと止まり、削除だけ通って消えていた）
+    const rcwBusy = () => !!(RCW.busy && Date.now() - RCW.busy < 18e4);
     const rcwAlive = () => !!RCW.w && !(RCW.distrustUntil > Date.now()) && (Date.now() - RCW.hb < 45e3 || Date.now() - RCW.startAt < 15e3);
     function rdqPump() {
       while (RDQ.active < 5 && RDQ.jobs.length) {   // 4.10.369：同時に5件まで
@@ -4953,6 +5012,7 @@
     function bulkReadd(tg) { tg.forEach((b) => b.click()); }
     // 4.10.325：カート全削除は1件ずつ。毎回カートを読み直して、いちばん上の商品の「削除」を送る（同時に送ると取りこぼしが出た）
     function cartDelAll(say) {
+      try { $("rcBook", {}); } catch (e) {}   // 4.10.384：全部消す時は、自動で戻す予定も空にする
       // 真ん中の表の［再カート］と同じ探し方：文字が「削除」の部品のうち、いちばん内側のもの → その中（または外側）のボタン
       const findDel = (doc) => {
         const cands = [...doc.querySelectorAll("input,button,a,span,div")].filter((e) => !e.closest(".jprush-readd") && /^削除$/.test(N(e.value || e.alt || e.textContent)) && e.closest("tr") && e.closest("tr").querySelector("a[href*='SRCODE=']"));
@@ -5070,7 +5130,7 @@
         Object.assign(b.style, { boxSizing: "border-box", width: br0.width + "px", height: br0.height + "px", paddingLeft: "0", paddingRight: "0", whiteSpace: "nowrap", overflow: "hidden" });
         const wrap = document.createElement("div");
         wrap.className = "jprush-readd", wrap.style.cssText = "margin-top:6px;", wrap.dataset.code = code, btn.dataset.jprushDel = code;
-        btn.addEventListener("click", () => histMark(code, true), true);   // 4.10.335：自分で［削除］を押したら履歴に「削除」マーク
+        btn.addEventListener("click", () => { histMark(code, true), rcBookDrop(code); }, true);   // 4.10.335：自分で［削除］を押したら履歴に「削除」マーク
         // 4.10.298：カート画面の「カート」（入れ直し）も、ページを移らずに裏で送る。続けて押せる（ほぼ同時に送る）。
         // 全部の返事が来たら、1回だけ開き直して残り時間などを新しくする（入れ直した商品は押した時刻から数える）
         const lbl = (t) => { if (b.tagName === "INPUT") b.value = t; else { const tw = document.createTreeWalker(b, NodeFilter.SHOW_TEXT); const n = tw.nextNode(); n && (n.nodeValue = t); } };
@@ -5473,7 +5533,7 @@
     // 書き出し＝この端末の記録すべて（Tampermonkey の保存＋別の保存場所）を1つのファイルに。読み込み＝もう1台のファイルを今の記録に合わせる（上書きしない）。
     // 読み込む前の記録は別の保存場所に1つだけ取っておき、［元に戻す］で戻せる。設定（自動ON・表示の切り替え・欄の大きさ）とカートは端末ごとのまま
     const HO_FMT = "jprush-handoff", HO_BAK = "handoff.backup";
-    const HO_SKIP = (k) => /^(hourly\.|test\.|cart$|cartReadd$|devId$|upd$|cartWatch$|cartWatchDone$|cartUrls$|lgPruneAt$|cartDelAllAt$|histCartFold$|histFoldCart$|histFoldDone$|histFoldDel$|aiAt$|aiAddr$|aiLast$|aiGist$|aiFiles$|cartLeader$|lgBackfillV$|extView$|hoHide$|hoOpen$|autoRecart$|autoRecartLog$|autoRecartHist$|sync[A-Z][a-zA-Z]*$|R$|L$|lb$|lh$|rb$)/.test(k);
+    const HO_SKIP = (k) => /^(hourly\.|test\.|cart$|cartReadd$|devId$|upd$|cartWatch$|cartWatchDone$|cartUrls$|lgPruneAt$|cartDelAllAt$|histCartFold$|histFoldCart$|histFoldDone$|histFoldDel$|aiAt$|aiAddr$|aiLast$|aiGist$|aiFiles$|cartLeader$|rcBook$|lgBackfillV$|extView$|hoHide$|hoOpen$|autoRecart$|autoRecartLog$|autoRecartHist$|sync[A-Z][a-zA-Z]*$|R$|L$|lb$|lh$|rb$)/.test(k);
     // 4.10.361：決まった記録だけ読む（同期の「変わった分だけ」用）。読み方は hoDump と同じ
     async function syDumpKeys(marks) {
       const gm = {}, idb = [], strip = (k) => (String(k).startsWith(Ct) ? String(k).slice(Ct.length) : String(k));
@@ -5900,6 +5960,28 @@
     }
     // 4.10.377：再カートを始める残り時間（5分 → 12分）。入れた時刻の見積もりが数分ずれても間に合うように
     const RECART_LEFT = 12 * 6e4;
+    // 4.10.384：番人。残り4分を切っても入れ直せていない商品は、働き手が生きていても画面側がまとめて入れ直す（2分に1回まで）
+    function rcGuard() {
+      const now = w(); if (now - (rcGuard.at || 0) < 12e4) return;
+      const rd = E("cartReadd", {}) || {}, q = new Set([...RDQ.jobs, ...RDQ.sent].map((j) => j.code));
+      const late = rcItems().filter((i) => i.exp - now < 4 * 6e4 && i.exp - now > -36e5 && !(rd[i.code] && now - rd[i.code] < 15e4) && !q.has(i.code));
+      if (!late.length) return;
+      rcGuard.at = now;
+      arLog(`${T(now)} 番人：間に合っていない${late.length}点をまとめて入れ直す（${late.slice(0, 3).map((i) => i.code).join("・")}）`);
+      try { const m = E("cartReadd", {}) || {}; for (const i of late) m[i.code] = now; $("cartReadd", m); } catch (e) {}
+      let left = late.length;
+      const fin = () => { --left || setTimeout(() => { readdPend || rcwBusy() || location.reload(); }, 1500); };
+      for (const i of late) {
+        const d = i.del && !(i.okAt > i.recipeAt) ? i.del : null;
+        RDQ.jobs.push({
+          code: i.code, body: i.add,
+          delReq: () => d ? cfetch(d.url, d.method === "GET" ? { credentials: "include", redirect: "manual", keepalive: true } : { method: d.method, body: new URLSearchParams(d.body), credentials: "include", redirect: "manual", keepalive: true }) : Promise.resolve(null),
+          ok: () => { const t = w(); try { const c = E("cart", { codes: {} }) || { codes: {} }; c.codes = c.codes || {}; const o = { ...(c.codes[i.code] || {}) }; delete o.unsure; c.codes[i.code] = { ...o, firstSeen: t }; $("cart", c); } catch (e) {} rcBookOk(i.code, t), arLog(`${T(t)} 番人：入れ直し成功 ${String(i.name || i.code).slice(0, 20)}（${i.code}）`), fin(); },
+          fail: (msg) => { arLog(`${T(w())} 番人：入れ直し失敗 ${i.code}（${String(msg).slice(0, 30)}）`), fin(); },
+        });
+      }
+      rdqPump();
+    }
     function autoRecartLoop() {
       // 4.10.381：押した商品は3分たてばもう一度押せる（前は開き直すまで二度と押さなかったので、失敗するとそのまま放置されていた）
       const done = new Map();
@@ -5924,11 +6006,12 @@
         try {
           const busy = [...document.querySelectorAll(".jprush-readd [data-jprush-busy]")].length || readdPend;
           busy ? (stuckAt || (stuckAt = w())) : (stuckAt = 0);
-          if (stuckAt && w() - stuckAt > 12e4) { console.warn("[JP RUSH] 送信中のまま固まったので開き直します"), arLog(`${T(w())} 送信中のまま固まったので開き直した`), location.reload(); return; }
-          if (cartPage() && w() - pageAt > 6e5 && !busy && !watchBusy && !chkBusyG && w() - lastInput > 12e4) { arLog(`${T(w())} 10分たったので開き直した`), location.reload(); return; }
+          if (stuckAt && w() - stuckAt > 12e4 && !rcwBusy()) { console.warn("[JP RUSH] 送信中のまま固まったので開き直します"), arLog(`${T(w())} 送信中のまま固まったので開き直した`), location.reload(); return; }
+          if (cartPage() && w() - pageAt > 6e5 && !busy && !rcwBusy() && !watchBusy && !chkBusyG && w() - lastInput > 12e4) { arLog(`${T(w())} 10分たったので開き直した`), location.reload(); return; }
         } catch (e) {}
         // 4.10.382：働き手に予定を渡す（当番の時だけ動かす）。働き手が生きていれば、画面のボタンは押さない
         try { rcwStart(), rcwPlan(lead && !(RCW.distrustUntil > Date.now())); } catch (e) {}
+        try { lead && rcGuard(); } catch (e) {}
         if (!lead) return;   // 4.10.376：当番でない画面は、ここから先（自動再カート）をしない
         if (rcwAlive()) return;
         const codes = (E("cart", { codes: {} }) || {}).codes || {}, t = w(), rd = E("cartReadd", {}) || {};
