@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.380
+// @version      4.10.381
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.380",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.381",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -100,7 +100,7 @@
       try { if (typeof GM_listValues === "function") big = GM_listValues().map((k) => { let n = 0; try { n = JSON.stringify(GM_getValue(k, null) || "").length; } catch (e) {} return [String(k).replace(Ct, ""), n]; }).sort((a, b) => b[1] - a[1]); } catch (e) {}
       const kb = (n) => n >= 1048576 ? (n / 1048576).toFixed(1) + "MB" : Math.round(n / 1024) + "KB", tot = big.reduce((a, x) => a + x[1], 0);
       const ar = (E("autoRecartHist", []) || []).slice(-30);
-      return [`JP RUSH 重さの計測 v${typeof Jt !== "undefined" ? Jt : ""}（${location.pathname}・開いてから${sec}秒・${innerWidth}×${innerHeight}）`, `画面が止まった回数（0.05秒以上）：${PERF.ltN}回・合計${Math.round(PERF.ltMs)}ms・最長${Math.round(PERF.ltMax)}ms`, `最近の止まり（何秒目・長さms）：${PERF.lt.map((x) => x.join("s:")).join(" ")}`, `ページの部品の数：${dom}・見えない枠：${ifr}`, "JP RUSH の処理（時間の多い順）：", ...rows, `自動再カート：${E("autoRecart", false) ? "ON" : "OFF"}・見回り${TICKS.n}回・あいた最長${TICKS.max}秒・1分以上あいた${TICKS.over60}回`, `見回りの間隔（秒・新しい順）：${TICKS.gaps.slice().reverse().join(" ")}`, "自動再カートの記録（新しい順）：", ...ar.slice().reverse().map((x) => "  " + x), `保存（Tampermonkey 側）：合計${kb(tot)}・大きい順：${big.slice(0, 12).map(([k, n]) => k + " " + kb(n)).join("・")}`].join("\n");
+      return [`JP RUSH 重さの計測 v${typeof Jt !== "undefined" ? Jt : ""}（${location.pathname}・開いてから${sec}秒・${innerWidth}×${innerHeight}）`, `画面が止まった回数（0.05秒以上）：${PERF.ltN}回・合計${Math.round(PERF.ltMs)}ms・最長${Math.round(PERF.ltMax)}ms`, `最近の止まり（何秒目・長さms）：${PERF.lt.map((x) => x.join("s:")).join(" ")}`, `ページの部品の数：${dom}・見えない枠：${ifr}`, (() => { try { if (!cartPage()) return ""; const C = (E("cart", { codes: {} }) || {}).codes || {}, B = new Set([...document.querySelectorAll(".jprush-readd[data-code]")].map((x) => x.dataset.code)), miss = Object.keys(C).filter((c) => !B.has(c)); return `カートの商品 ${Object.keys(C).length}点・再カートのボタン ${B.size}個${miss.length ? "・ボタンが無い商品：" + miss.slice(0, 8).join("・") : ""}`; } catch (e) { return ""; } })(), "JP RUSH の処理（時間の多い順）：", ...rows, `自動再カート：${E("autoRecart", false) ? "ON" : "OFF"}・見回り${TICKS.n}回・あいた最長${TICKS.max}秒・1分以上あいた${TICKS.over60}回`, `見回りの間隔（秒・新しい順）：${TICKS.gaps.slice().reverse().join(" ")}`, "自動再カートの記録（新しい順）：", ...ar.slice().reverse().map((x) => "  " + x), `保存（Tampermonkey 側）：合計${kb(tot)}・大きい順：${big.slice(0, 12).map(([k, n]) => k + " " + kb(n)).join("・")}`].join("\n");
     }
     // 4.10.89：読んだ写しは1.5秒たったら捨てる（ページを開いている間ずっと持ち続けてメモリを増やさない）
     const ecPut = (k, v) => { const now = Date.now(); EC.set(k, { at: now, v }); setTimeout(() => { const x = EC.get(k); x && x.at === now && EC.delete(k); }, ECT); };
@@ -5810,7 +5810,8 @@
     // 4.10.377：再カートを始める残り時間（5分 → 12分）。入れた時刻の見積もりが数分ずれても間に合うように
     const RECART_LEFT = 12 * 6e4;
     function autoRecartLoop() {
-      const done = new Set();
+      // 4.10.381：押した商品は3分たてばもう一度押せる（前は開き直すまで二度と押さなかったので、失敗するとそのまま放置されていた）
+      const done = new Map();
       const tick = () => {
         // 4.10.327：画面が見えていなくても動く（PC は画面が消えても動いている）。二重に押さないよう、どこかのタブが2分以内に入れ直した商品は飛ばす
         if (!E("autoRecart", false)) return;
@@ -5823,7 +5824,8 @@
           if (late.length && t0 - (window.__jprLateAt || 0) > 3e5) {
             window.__jprLateAt = t0;
             const L = (() => { try { return GM_getValue(Ct + "cartLeader", null); } catch (e) { return null; } })();
-            arLog(`${T(t0)} 自動再カートが遅れている：${late.length}点（${late.slice(0, 3).map(([c]) => c).join("・")}）／当番：${lead ? "この画面" : "別の画面（" + (L ? Math.round((t0 - L.at) / 1e3) + "秒前に応答・" + (L.vis ? "見えている" : "裏") : "不明") + "）"}／この画面：${document.visibilityState}／ボタン${document.querySelectorAll(".jprush-readd[data-code]").length}個／送信中${readdPend}`);
+            const btns = new Set([...document.querySelectorAll(".jprush-readd[data-code]")].map((x) => x.dataset.code)), noBtn = late.filter(([c]) => !btns.has(c)).map(([c]) => c), inDone = late.filter(([c]) => done.has(c)).map(([c]) => c);
+            arLog(`${T(t0)} 自動再カートが遅れている：${late.length}点（${late.slice(0, 3).map(([c]) => c).join("・")}）／ボタンが無い${noBtn.length}点${noBtn.length ? "（" + noBtn.slice(0, 3).join("・") + "）" : ""}／押した後${inDone.length}点／当番：${lead ? "この画面" : "別の画面（" + (L ? Math.round((t0 - L.at) / 1e3) + "秒前に応答・" + (L.vis ? "見えている" : "裏") : "不明") + "）"}／この画面：${document.visibilityState}／ボタン${document.querySelectorAll(".jprush-readd[data-code]").length}個／送信中${readdPend}`);
           }
         } catch (e) {}
         lead && (() => { try { watchTick(); } catch (e) {} try { cartPoll(); } catch (e) {} })();
@@ -5838,12 +5840,12 @@
         const codes = (E("cart", { codes: {} }) || {}).codes || {}, t = w(), rd = E("cartReadd", {}) || {};
         for (const wr of document.querySelectorAll(".jprush-readd[data-code]")) {
           const code = wr.dataset.code, fs = codes[code] && codes[code].firstSeen, b = wr.firstElementChild;
-          if (!fs || !b || done.has(code) || b.dataset.jprushBusy || (rd[code] && t - rd[code] < 12e4)) continue;
+          if (!fs || !b || (done.has(code) && t - done.get(code) < 18e4) || b.dataset.jprushBusy || (rd[code] && t - rd[code] < 12e4)) continue;
           const left = fs + CART_HOLD - t;
           // 4.10.377：入れた時刻が分からない商品（JP RUSH 以外で入れた・初めて見た）は、すぐ再カートして時刻を確かにする
           const unsure = codes[code].unsure;
           if (!unsure && (left > RECART_LEFT || left < -6e4)) continue;
-          done.add(code), b.click();
+          done.set(code, t), b.click();
           const nm = (codes[code].name || code).slice(0, 24);
           arLog(`${T(t)} ${nm}（${code}）を再カート（${unsure ? "入れた時刻が分からないので" : "残り" + Math.max(0, Math.round(left / 6e4)) + "分"}）`);
           console.info("[JP RUSH] 自動再カート", code, nm);
