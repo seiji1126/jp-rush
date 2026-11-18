@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.401
+// @version      4.10.402
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.401",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.402",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -581,6 +581,23 @@
       return W ? [`見張り中：${W.st || ""}`] : D ? [D.st] : [];
     }
     // 4.10.335：自分で［削除］を押した商品に「削除」マーク（各行の左のボタンで付け外し。記録に残る）。まとめての再カートは「マーク以外」
+    // 4.10.402：［削除］を押した印は、ページ側の保存（localStorage・すぐ書ける）にも残す。押してすぐページが移ると、
+    //          スマホ・タブレットでは Tampermonkey 側の保存が間に合わず印が消え、消した商品を「消えた」とみて戻していた
+    const lsMarks = (k) => { try { const o = JSON.parse(localStorage.getItem(k) || "{}") || {}, t = Date.now(); for (const c of Object.keys(o)) t - o[c] > 864e5 && delete o[c]; return o; } catch (e) { return {}; } };
+    const lsMarkPut = (k, codes) => { try { const o = lsMarks(k), t = Date.now(); for (const c of codes) o[c] = t; localStorage.setItem(k, JSON.stringify(o)); } catch (e) {} };
+    const lsMarkDel = (c) => { for (const k of ["jprDelMarks", "jprDelAll"]) try { const o = lsMarks(k); if (o[c]) delete o[c], localStorage.setItem(k, JSON.stringify(o)); } catch (e) {} };
+    const delMarkPut = (code) => lsMarkPut("jprDelMarks", [code]);
+    // 自分で消した印（［削除］＝履歴にも印、［カート全削除］＝印は付けず、戻さないだけ）
+    const delMarks = () => ({ ...lsMarks("jprDelAll"), ...lsMarks("jprDelMarks") });
+    // 開いた時に、ページ側に残っている印を履歴に写す
+    function delMarksApply() {
+      try {
+        const o = lsMarks("jprDelMarks"), ks = Object.keys(o); if (!ks.length) return;
+        const h = E("cartHist", {}) || {}, B = E("rcBook", {}) || {}; let ch = false, cb = false;
+        for (const c of ks) { if (h[c] && !(h[c].markAt >= o[c])) h[c].mark = true, h[c].markAt = o[c], ch = true; if (B[c]) delete B[c], cb = true; }
+        ch && $("cartHist", h), cb && $("rcBook", B);
+      } catch (e) {}
+    }
     function histMark(code, on) {
       try { const h = E("cartHist", {}) || {}; if (!h[code]) { if (!on) return; const v = ((E("cart", { codes: {} }) || {}).codes || {})[code] || {}; h[code] = { name: v.name || "", price: v.price, store: v.store, url: v.url, addAt: v.firstSeen || w(), seen: w(), dev: devId() }; } h[code].mark = !!on, h[code].markAt = w(), $("cartHist", h); } catch (e) {}   // 4.10.401：履歴に無くても印を付ける
     }
@@ -816,7 +833,7 @@
         for (const [c, v] of Object.entries(prev)) {
           if (codes[c]) continue;
           if (readd[c] && now - readd[c] >= 0 && now - readd[c] < 18e4) watchAdd(c, v || {}, "入れ直しで消えた", now);
-          else if (!delAll && !(H[c] && H[c].mark)) watchAdd(c, { ...(H[c] || {}), ...(v || {}) }, "消えた", now);
+          else if (!delAll && !(H[c] && H[c].mark) && !delMarks()[c]) watchAdd(c, { ...(H[c] || {}), ...(v || {}) }, "消えた", now);
         }
       } catch (e) {}
     }
@@ -862,7 +879,8 @@
         if (fresh.length && !readdPend && !watchBusy) {
           try { const o = JSON.parse(sessionStorage.getItem("jprPollNew") || "null"), k = fresh.slice().sort().join(","); if (!(o && o.k === k && w() - o.at < 3e5)) { sessionStorage.setItem("jprPollNew", JSON.stringify({ k, at: w() })); arLog(`${T(w())} カートに新しい商品${fresh.length}点（${fresh.slice(0, 3).join("・")}）→ 開き直して記録する`); setTimeout(() => { rcwBusy() || location.reload(); }, 500); return; } } catch (e) {}
         }
-        const lost = shown.filter((c) => !IN2.has(c) && !inCart.has(c) && !(RD[c] && w() - RD[c] < 18e4) && !(rcTouched(c) && w() - rcTouched(c) < 18e4));
+        const DM2 = delMarks();
+        const lost = shown.filter((c) => !DM2[c] && !IN2.has(c) && !inCart.has(c) && !(RD[c] && w() - RD[c] < 18e4) && !(rcTouched(c) && w() - rcTouched(c) < 18e4));
         if (!lost.length) return;
         // 4.10.377：一度にたくさん（5点以上かつ3割以上）消えたように見える時は、読んだページが途中までだった可能性が高いので開き直さない
         if (lost.length >= 5 && lost.length >= shown.length * 0.3) { arLog(`${T(w())} カートの見張り：${lost.length}点が見当たらないが、読み取りが不完全とみて開き直さなかった`); return; }
@@ -909,6 +927,7 @@
       }).catch(() => { watchSet(code, { st: "送れず " + T(w()), next: w() + 6e4 }), fin(); });
     }
     function readCart() {
+      try { delMarksApply(); } catch (e) {}
       const body = document.body, txt = body ? body.textContent : "", now = w();
       // 4.10.177：空のカートは読み取り失敗にしない（お知らせを出さない。記録は変えない）
       if (/カートに商品は入っておりません|商品が入っていません/.test(txt)) { watchLost(E("cart", { codes: {} }).codes || {}, {}, E("cartReadd", {}) || {}, now), histUpdate({}, now); return { ok: false, empty: true, at: now }; }
@@ -4146,7 +4165,7 @@
     }
     function rcBookOk(code, at) { try { const B = E("rcBook", {}) || {}; B[code] = { ...(B[code] || {}), exp: at + CART_HOLD, okAt: at, fails: 0 }; $("rcBook", B); } catch (e) {} }
     function rcItems() {
-      const C = (E("cart", { codes: {} }) || {}).codes || {}, B = E("rcBook", {}) || {}, now = Date.now(), items = [];
+      const C = (E("cart", { codes: {} }) || {}).codes || {}, B = E("rcBook", {}) || {}, now = Date.now(), items = [], DM = delMarks();
       let ch = false;
       for (const [code, r] of Object.entries(RCW.recipes)) { const b = B[code]; if (!b || b.at !== r.at) B[code] = { ...(b || {}), del: r.del, add: r.add, name: r.name, at: r.at }, ch = true; }
       // 画面のボタンがまだ無い商品も、カートの記録から「入れる中身」を作って予定に入れる
@@ -4159,6 +4178,8 @@
         const hv = H[code];
         if (!v && hv && hv.dev && hv.dev !== me && !hv.goneAt) { delete B[code], ch = true; continue; }
         if (!v && hv && hv.mark) { delete B[code], ch = true; continue; }
+        if (!v && DM[code]) { delete B[code], ch = true; continue; }
+        if (v && DM[code] && (v.firstSeen || 0) > DM[code]) lsMarkDel(code);
         // 4.10.400：この端末のカートで実際に見た商品だけを扱う（見た印 mine）。2時間この端末のカートで見ていない物は予定から外す
         //          （端末の保存を写した時に、もう1台の商品が予定に混ざり、相手が入れ直す一瞬にこちらへ取り込んでいた）
         if (v) { if (!b.mine || now - b.mine > 6e5) b.mine = now, ch = true; }
@@ -5121,12 +5142,15 @@
     // 4.10.325：カート全削除は1件ずつ。毎回カートを読み直して、いちばん上の商品の「削除」を送る（同時に送ると取りこぼしが出た）
     function cartDelAll(say) {
       try { $("rcBook", {}); } catch (e) {}   // 4.10.384：全部消す時は、自動で戻す予定も空にする
-      // 4.10.401：全部消した商品にも「削除済」を付ける（付いていないと、取りこぼしの回収が「消えた」とみて入れ直そうとしていた）
+      // 4.10.401→402：全部消した商品は、取りこぼしの回収・自動で戻す対象から外す（「削除済」の印は付けない）
       try {
         const C = (E("cart", { codes: {} }) || {}).codes || {}, H = E("cartHist", {}) || {}, t = w(), me = devId(), codes = new Set(Object.keys(C));
         for (const a of document.querySelectorAll('a[href*="SRCODE="]')) { const m = /[?&]SRCODE=(\d+)/.exec(a.href); m && a.closest("tr") && codes.add(m[1]); }
-        for (const c of codes) H[c] = { ...(H[c] || { name: (C[c] || {}).name || "", price: (C[c] || {}).price, store: (C[c] || {}).store, addAt: (C[c] || {}).firstSeen || t, seen: t, dev: me }), mark: true, markAt: t };
-        $("cartHist", H);
+        // 4.10.402：全削除では「削除済」は付けない（言われた通り）。代わりに回収・自動で戻す対象から外すだけ
+        void H, void me;
+        lsMarkPut("jprDelAll", [...codes]);
+        for (const c of codes) delete RCW.recipes[c];
+        try { const c0 = E("cart", { codes: {} }) || { codes: {} }; c0.codes = {}; $("cart", c0); } catch (e) {}
         const R = E("rcRecov", {}) || {}; for (const c of codes) R[c] = { n: 3, at: t }; $("rcRecov", R);
       } catch (e) {}
       // 真ん中の表の［再カート］と同じ探し方：文字が「削除」の部品のうち、いちばん内側のもの → その中（または外側）のボタン
@@ -5219,6 +5243,8 @@
     }
     // 4.10.359：計測のために主な処理を包む（動きは同じ）
     try { readCart = PW("readCart", readCart), cartTools = PW("cartTools", cartTools), histBody = PW("カート履歴を作る", histBody), cartReaddBtns = PW("再カートのボタン", cartReaddBtns), centerTimers = PW("表の残り時間", centerTimers), showCartNote = PW("showCartNote", showCartNote), watchTick = PW("見張り", watchTick), cartPoll = PW("カートの見張り", cartPoll), cartParse = PW("カートを読む", cartParse), cartHead = PW("見出しを探す", cartHead), cartOrderBar = PW("帯を探す", cartOrderBar), stickBottom = PW("上の帯", stickBottom), popupOpen = PW("窓の確認", popupOpen), Sn = PW("ページの文字を読む", Sn), lgFlush = PW("台帳を書く", lgFlush), syncMaybe = PW("同期", syncMaybe), expiredOverlay = PW("期限切れの表示", expiredOverlay), cartExpiredLinks = PW("期限切れを探す", cartExpiredLinks); } catch (e) { console.warn("[JP RUSH] 計測の準備に失敗", e); }
+    // 4.10.402：画面のどこで［削除］を押しても印を付ける（ボタンの探し方から漏れた［削除］の分）
+    if (!window.__jprDelCap) { window.__jprDelCap = 1; document.addEventListener("click", (ev) => { try { const t = ev.target && ev.target.closest && ev.target.closest("input,button,a,img"); if (!t || t.closest(".jprush-readd,#jp3-cart,#jp3-host,.jprush-ptm,.jprush-hist")) return; if (!/削除/.test((t.value || "") + (t.alt || "") + (t.textContent || "") + (t.title || ""))) return; const tr = t.closest("tr"), a = tr && tr.querySelector("a[href*='SRCODE=']"), m = a && /[?&]SRCODE=(\d+)/.exec(a.getAttribute("href") || ""); if (m) delMarkPut(m[1]), histMark(m[1], true), rcBookDrop(m[1]); } catch (e) {} }, true); }
     function cartReaddBtns(cr) {
       if (!cr || !cr.ok || document.querySelector(".jprush-readd")) return;
       const P = cartParse(), byCode = new Map(P.items.map((it) => [it.code, it]));
@@ -5246,7 +5272,7 @@
         Object.assign(b.style, { boxSizing: "border-box", width: br0.width + "px", height: br0.height + "px", paddingLeft: "0", paddingRight: "0", whiteSpace: "nowrap", overflow: "hidden" });
         const wrap = document.createElement("div");
         wrap.className = "jprush-readd", wrap.style.cssText = "margin-top:6px;", wrap.dataset.code = code, btn.dataset.jprushDel = code;
-        btn.addEventListener("click", () => { histMark(code, true), rcBookDrop(code); }, true);   // 4.10.335：自分で［削除］を押したら履歴に「削除」マーク
+        btn.addEventListener("click", () => { delMarkPut(code), histMark(code, true), rcBookDrop(code); }, true);   // 4.10.335：自分で［削除］を押したら履歴に「削除」マーク
         // 4.10.298：カート画面の「カート」（入れ直し）も、ページを移らずに裏で送る。続けて押せる（ほぼ同時に送る）。
         // 全部の返事が来たら、1回だけ開き直して残り時間などを新しくする（入れ直した商品は押した時刻から数える）
         const lbl = (t) => { if (b.tagName === "INPUT") b.value = t; else { const tw = document.createTreeWalker(b, NodeFilter.SHOW_TEXT); const n = tw.nextNode(); n && (n.nodeValue = t); } };
@@ -6111,7 +6137,8 @@
       const now = w(); if (now - (E("recovAt", 0) || 0) < 6e4) return;   // 4.10.389：5分 → 1分ごと
       const H = E("cartHist", {}) || {}, C = (E("cart", { codes: {} }) || {}).codes || {}, R = E("rcRecov", {}) || {}, dv = devId(), RD = E("cartReadd", {}) || {};
       const other = new Set(Object.entries(H).filter(([, v]) => v && v.dev && v.dev !== dv && !v.goneAt).map(([c]) => c));
-      const cand = Object.entries(H).filter(([c, v]) => !other.has(c) && v && v.goneAt && now - v.goneAt < 216e5 && !v.sold && !v.mark && v.price && !C[c] && !(v.dev && v.dev !== dv) && !((R[c] || {}).n >= 3) && !(RD[c] && now - RD[c] < 9e4) && !(rcTouched(c) && now - rcTouched(c) < 9e4) && !RDQ.jobs.concat(RDQ.sent).some((j) => j.code === c)).sort((a, b) => b[1].goneAt - a[1].goneAt).slice(0, 40);
+      const DM = delMarks();
+      const cand = Object.entries(H).filter(([c, v]) => !other.has(c) && !DM[c] && v && v.goneAt && now - v.goneAt < 216e5 && !v.sold && !v.mark && v.price && !C[c] && !(v.dev && v.dev !== dv) && !((R[c] || {}).n >= 3) && !(RD[c] && now - RD[c] < 9e4) && !(rcTouched(c) && now - rcTouched(c) < 9e4) && !RDQ.jobs.concat(RDQ.sent).some((j) => j.code === c)).sort((a, b) => b[1].goneAt - a[1].goneAt).slice(0, 40);
       $("recovAt", now);
       if (!cand.length) return;
       recovBusy = true;
