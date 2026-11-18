@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.390
+// @version      4.10.391
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.390",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.391",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -4050,6 +4050,26 @@
         } catch (e) {}
         return null;
       };
+      // 商品のページの「カートに入れる」フォームの中身。無ければ在庫の状態（商談中・完売など）
+      const detailAdd = async (i) => {
+        try {
+          const q = new URLSearchParams(i.add || ""), shp = q.get("SHPCODE");
+          const r = await tf(P.origin + "/sale/search/detail/?SRCODE=" + i.code + (shp ? "&SHPCODE=" + shp : ""), { cache: "no-store" }), h = await r.text();
+          const fr = /<form\b[^>]*action\s*=\s*["'][^"']*cart\/add[^"']*["'][^>]*>[\s\S]*?<\/form>/gi; let m;
+          while ((m = fr.exec(h))) {
+            const b = new URLSearchParams(), ir = /<input\b[^>]*>/gi; let x;
+            while ((x = ir.exec(m[0]))) { const t = x[0], n = attr(t, "name"), ty = (attr(t, "type") || "text").toLowerCase(); if (n && (ty === "hidden" || ty === "text" || ty === "number")) b.set(n, attr(t, "value")); }
+            if (b.get("SRCODE") && b.get("SRCODE") !== i.code) continue;
+            if (!b.get("SRCODE")) b.set("SRCODE", i.code);
+            if (!b.get("QTY")) b.set("QTY", "1");
+            if (!b.has("REDIRECT")) b.set("REDIRECT", "");
+            if (!b.get("SHPCODE") && shp) b.set("SHPCODE", shp);
+            if (!b.get("PRICE") && q.get("PRICE")) b.set("PRICE", q.get("PRICE"));
+            return { body: b.toString() };
+          }
+          return { st: /商談中/.test(h) ? "商談中" : /完売|SOLD\s*OUT|売り?切れ|品切れ/i.test(h) ? "完売" : "カートに入れるボタンが無い" };
+        } catch (e) { return null; }
+      };
       const send = (d) => d.method === "GET" ? tf(d.url, { redirect: "manual", cache: "no-store" }) : tf(d.url, { method: d.method, body: new URLSearchParams(d.body), redirect: "manual" });
       const add = (b) => tf(P.origin + "/sale/cart/add/", { method: "POST", body: new URLSearchParams(b), redirect: "manual" }).catch(() => {});
       const pool = async (arr, n, fn) => { let i = 0; await Promise.all(Array.from({ length: Math.min(n, arr.length) }, async () => { while (i < arr.length) { const x = arr[i++]; try { await fn(x); } catch (e) {} } })); };
@@ -4080,12 +4100,14 @@
           await pool(due, 5, (i) => add(i.add));
           let h1 = await cartHtml(), t1 = trust(h1);
           const again = due.filter((i) => !has(h1, i.code));
-          if (again.length) { await sleep(1500); await pool(again, 5, (i) => add(i.add)); h1 = await cartHtml(); t1 = trust(h1); }
+          // 4.10.391：入らなかった物は、商品のページを読んで「今のカートに入れる中身」（値段が変わっていれば新しい値段）で入れ直す
+          //          （値下げ等で値段が変わると、覚えていた値段では入らず、削除だけ通って消えていた）
+          if (again.length) { await sleep(1500); await pool(again, 5, async (i) => { const f = await detailAdd(i); if (f && f.body) { if (f.body !== i.add) i.newAdd = f.body, i.add = f.body; await add(f.body); } else { if (f && f.st) i.st = f.st; await add(i.add); } }); h1 = await cartHtml(); t1 = trust(h1); }
           const t = Date.now();
           for (const i of due) {
             const ok = has(h1, i.code) && !i.delFail;
             if (ok) lastRe[i.code] = t, i.exp = t + P.hold;
-            postMessage({ type: "done", code: i.code, ok, sure: t1 && !i.delFail, snip: ok ? "" : snipOf(h1, i.code), mode: i.mode, retried: again.includes(i), delOk: i.mode === "back" || !!i.dOk, noDel: !!i.noDel, at: t, why: ok ? "" : i.delFail ? "削除が効かず時間を延ばせない" : t1 ? "入れてもカートに無い（売れた可能性）" : "カートを読めなかった" });
+            postMessage({ type: "done", code: i.code, ok, sure: t1 && !i.delFail, newAdd: i.newAdd || "", st: i.st || "", snip: ok ? "" : snipOf(h1, i.code), mode: i.mode, retried: again.includes(i), delOk: i.mode === "back" || !!i.dOk, noDel: !!i.noDel, at: t, why: ok ? "" : i.delFail ? "削除が効かず時間を延ばせない" : i.st ? "入らない・商品ページ：" + i.st : t1 ? "入れてもカートに無い（売れた可能性）" : "カートを読めなかった" });
           }
         } catch (e) { postMessage({ type: "log", msg: "働き手のエラー：" + String(e && e.message || e).slice(0, 60) }); }
         finally { busy = false; }
@@ -4142,6 +4164,7 @@
           if (m.ok) {
             try { const c = E("cart", { codes: {} }) || { codes: {} }; c.codes = c.codes || {}; const o = { ...(c.codes[m.code] || {}) }; delete o.unsure; c.codes[m.code] = { ...o, firstSeen: m.at }; $("cart", c); } catch (e) {}
             rcBookOk(m.code, m.at);
+            if (m.newAdd) try { const B = E("rcBook", {}) || {}; B[m.code] = { ...(B[m.code] || {}), add: m.newAdd }; $("rcBook", B); const np = Number(new URLSearchParams(m.newAdd).get("PRICE") || 0); if (np) { const c = E("cart", { codes: {} }) || { codes: {} }; c.codes && c.codes[m.code] && (c.codes[m.code].price = np, $("cart", c)); arLog(`${T(m.at)} 値段が変わっていたので新しい値段（${np.toLocaleString()}円）で入れ直した（${m.code}）`); } } catch (e) {}
             arLog(`${T(m.at)} ${m.mode === "back" ? "カートに戻した" : "入れ直し成功"} ${nm}（${m.code}）${m.retried ? "・2回目で入った" : ""}${m.delOk ? "" : "・削除の返事がおかしかった"}${m.noDel ? "・削除の送り先が分からず入れるだけ" : ""}`);
             try { const o = JSON.parse(sessionStorage.getItem("jprRdqCheck") || "null"), it = o && Date.now() - o.at < 3e5 ? o.items : {}; it[m.code] = (RCW.recipes[m.code] || {}).add || ""; sessionStorage.setItem("jprRdqCheck", JSON.stringify({ at: Date.now(), items: it })); } catch (e) {}
             clearTimeout(relT), relT = setTimeout(() => { readdPend || rcwBusy() || location.reload(); }, 3e3);
@@ -6038,13 +6061,21 @@
       arLog(`${T(now)} 取りこぼしの回収：消えた${cand.length}点をまとめてカートに入れる（${cand.slice(0, 3).map(([c]) => c).join("・")}）`);
       try { for (const [c] of cand) RD[c] = now; $("cartReadd", RD); } catch (e) {}
       let i = 0;
-      const one = async () => { while (i < cand.length) { const [c, v] = cand[i++]; const shp = (/[?&]SHPCODE=(\d+)/.exec(v.url || "") || [])[1] || shpOf(c); try { await cfetch("https://www.janpara.co.jp/sale/cart/add/", { method: "POST", body: new URLSearchParams([["SRCODE", c], ["SHPCODE", shp], ["PRICE", String(v.price)], ["REDIRECT", ""], ["QTY", "1"]]), credentials: "include", redirect: "manual", keepalive: true, timeout: 45e3 }); } catch (e) {} } };
+      // 4.10.391：商品のページを読んで、今の値段・カートに入れる中身で入れる（値段が変わっていても入る。カートボタンが無ければ在庫の状態を記録）
+      const st = {};
+      const one = async () => { while (i < cand.length) { const [c, v] = cand[i++]; const shp = (/[?&]SHPCODE=(\d+)/.exec(v.url || "") || [])[1] || shpOf(c); let body = new URLSearchParams([["SRCODE", c], ["SHPCODE", shp], ["PRICE", String(v.price)], ["REDIRECT", ""], ["QTY", "1"]]);
+        try { const r = await cfetch("https://www.janpara.co.jp/sale/search/detail/?SRCODE=" + c + "&SHPCODE=" + shp, { credentials: "include", cache: "no-store", timeout: 3e4 }), h = await r.text(), d = new DOMParser().parseFromString(h, "text/html"), fm = [...d.querySelectorAll('form[action*="cart/add"]')].find((f) => { const x = f.querySelector('[name="SRCODE"]'); return !x || String(x.value || x.getAttribute("value") || "").replace(/\D/g, "") === c; });
+          if (fm) { const b = new URLSearchParams(); for (const x of fm.querySelectorAll("input[name]")) /^(hidden|text|number)$/i.test(x.type || "text") && b.set(x.name, x.getAttribute("value") || x.value || ""); b.get("SRCODE") || b.set("SRCODE", c); b.get("QTY") || b.set("QTY", "1"); b.has("REDIRECT") || b.set("REDIRECT", ""); b.get("SHPCODE") || b.set("SHPCODE", shp); b.get("PRICE") || b.set("PRICE", String(v.price)); body = b; }
+          else { const tx = d.body ? d.body.textContent : ""; st[c] = /商談中/.test(tx) ? "商談中" : /完売|SOLD\s*OUT|売り?切れ|品切れ/i.test(tx) ? "完売" : "カートボタン無し"; continue; }
+        } catch (e) {}
+        try { await cfetch("https://www.janpara.co.jp/sale/cart/add/", { method: "POST", body, credentials: "include", redirect: "manual", keepalive: true, timeout: 45e3 }); } catch (e) {} } };
       Promise.all(Array.from({ length: Math.min(5, cand.length) }, one)).then(() => cfetch("/sale/cart/", { credentials: "include", cache: "no-store", timeout: 45e3 })).then((r) => r.text()).then((html) => {
         if (!/総合計/.test(html)) { arLog(`${T(w())} 取りこぼしの回収：カートを読めなかったので次の回で確かめる`); return; }
         const t = w(), IN = cartCodesIn(html), ok = cand.filter(([c]) => IN.has(c)), ng = cand.filter(([c]) => !IN.has(c));
         try { const c0 = E("cart", { codes: {} }) || { codes: {} }; c0.codes = c0.codes || {}; for (const [c, v] of ok) c0.codes[c] = { ...(c0.codes[c] || {}), name: v.name, price: v.price, store: v.store, url: v.url, firstSeen: t }; $("cart", c0); } catch (e) {}
         try { const R2 = E("rcRecov", {}) || {}; for (const [c] of ok) delete R2[c]; for (const [c] of ng) R2[c] = { n: ((R2[c] || {}).n || 0) + 1, at: t }; for (const c of Object.keys(R2)) t - R2[c].at > 864e5 && delete R2[c]; $("rcRecov", R2); } catch (e) {}
-        arLog(`${T(t)} 取りこぼしの回収：${ok.length}点戻した` + (ng.length ? `・${ng.length}点は入らず（売れた可能性・3回で諦める）` : ""));
+        const sts = ng.filter(([c]) => st[c]).map(([c]) => `${c}：${st[c]}`);
+        arLog(`${T(t)} 取りこぼしの回収：${ok.length}点戻した` + (ng.length ? `・${ng.length}点は入らず（${sts.length ? sts.slice(0, 3).join("・") + "・" : ""}3回で諦める）` : ""));
         ok.length && setTimeout(() => { readdPend || rcwBusy() || location.reload(); }, 1500);
       }).catch(() => {}).finally(() => { recovBusy = false; });
     }
