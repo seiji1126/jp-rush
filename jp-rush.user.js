@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.422
+// @version      4.10.423
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.422",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.423",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -109,41 +109,6 @@
         }
         if (ch) { const ks = Object.keys(M); if (ks.length > 1500) { ks.sort((a, b) => (M[a].at || 0) - (M[b].at || 0)); for (const k of ks.slice(0, ks.length - 1500)) delete M[k]; } $("addMeta", M); }
       } catch (e) {}
-    }
-    // 4.10.420：検索結果に価格が無い（売り切れ・商談中・自分のカートにある等）時、同じ商品番号（同じ個体）がカートかカート履歴にあれば、その価格を使う
-    //          型番（ITMCODE）単位の記録は別の個体のことがあるので使わない。商品番号が一致する時だけ
-    let cpmC = null, cpmAt = 0;
-    function cartPriceMap() {
-      if (cpmC && Date.now() - cpmAt < 3e3) return cpmC;
-      const m = {};
-      try {
-        const H = E("cartHist", {}) || {}, C = (E("cart", { codes: {} }) || {}).codes || {};
-        for (const [c, v] of Object.entries(H)) if (v && Number(v.price) > 0) m[c] = { price: Number(v.price), at: v.seen || v.addAt || 0, from: "カート履歴" };
-        for (const [c, v] of Object.entries(C)) if (v && Number(v.price) > 0) m[c] = { price: Number(v.price), at: v.firstSeen || w(), from: "カート" };
-      } catch (e) {}
-      return cpmC = m, cpmAt = Date.now(), m;
-    }
-    // 4.10.421：それでも価格が無い行は、商品台帳（商品番号ごとの最後の価格）から裏で埋める。型番の行は、その型番ページで最後に見た商品番号の台帳から（別の個体のことがあるので印を付ける）
-    let lgFillT = 0;
-    function lgFillSoon() { clearTimeout(lgFillT), lgFillT = setTimeout(lgFill, 300); }
-    async function lgFill() {
-      const t0 = performance.now();
-      try {
-        const els = [...document.querySelectorAll("[data-jpr-lgu]")].filter((e) => !e.dataset.jprLgDone).slice(0, 200);
-        for (const el of els) {
-          el.dataset.jprLgDone = "1";
-          let sr = el.dataset.jprLgs || "", same = !!sr;
-          if (!sr) { const x = await lgFindUrl(el.dataset.jprLgu).catch(() => null); sr = x && x.sr ? String(x.sr) : ""; }
-          if (!sr) continue;
-          const L = await lgGetItem(sr).catch(() => null), pr = L && Number(L.price), at = L && L.prices && L.prices.length ? L.prices[L.prices.length - 1][0] : (L && L.lastAt) || 0;
-          if (!(pr > 0)) continue;
-          el.textContent = A(pr);
-          const c = document.createElement("small"); c.className = el.classList.contains("xpc") ? "" : "pc";
-          c.textContent = ` 台帳${same ? "" : "（" + sr + "）"}${at ? " " + T(at) : ""}`, c.style.opacity = ".75", el.appendChild(c);
-          el.title = same ? "同じ商品番号の台帳の価格" : `この型番ページで最後に見た商品番号 ${sr} の台帳の価格（別の個体のことがあります）`;
-        }
-      } catch (e) {}
-      try { perfAdd("台帳から価格", performance.now() - t0); } catch (e) {}
     }
     function withMeta(code, body) {
       try {
@@ -3525,7 +3490,7 @@
       // 4.10.247：価格は商品名のすぐ下（右の欄には在庫と★だけ）。状態は色の札（中古＝灰、未使用＝青、新品＝緑）
       const pv = document.createElement("div");
       pv.className = "xpr c" + Math.min(3, Math.max(1, prs.length));   // 4.10.253：状態の数で等分の列（2つなら半分ずつ）
-      if (!prs.length) { const c = document.createElement("span"); c.className = "xpc none", c.textContent = "価格なし", pv.appendChild(c); c.dataset.jprLgu = r.url || "", c.dataset.jprLgs = srOf(r.url) || r.usr || "", lgFillSoon(); }   // 4.10.421：台帳から埋める
+      if (!prs.length) { const c = document.createElement("span"); c.className = "xpc none", c.textContent = "価格なし", pv.appendChild(c); }
       for (const [g, p] of prs) {
         const cell = document.createElement("span"), c = document.createElement("span"), v = document.createElement("span");
         cell.dataset.c = g, cell.dataset.p = p, cell.className = "xpc", c.className = "xcd" + (/^中古/.test(g) ? " c-used" : /^未使用/.test(g) ? " c-unused" : /^新品/.test(g) ? " c-new" : ""), c.textContent = g, v.textContent = A(p) + "〜";
@@ -4660,7 +4625,6 @@
         }
       }
       pd.textContent = e0 ? A(e0[1]) + "〜" : "価格なし";
-      if (!e0) pd.dataset.jprLgu = r.rec.url || "", pd.dataset.jprLgs = srOf(r.rec.url) || r.rec.usr || "", lgFillSoon();   // 4.10.421：台帳から埋める
       if (e0) {
         const c = document.createElement("small");
         c.className = "pc";
@@ -6161,7 +6125,6 @@
 ## 読み方の注意（大事）
 - 値が無い項目は省いてある（false・空も省く）。ledger が "未取得" の商品は状態を推測で埋めないこと
 - items[].sr は個体番号（SRCODE）。型番（ITMCODE）の一覧で在庫が複数の時は sr が null で、units に分かっている個体が入る
-- items[].priceFromLedger＝一覧に価格が無い時の、商品台帳の最後の価格 { price, sr, at, sameUnit }。sameUnit:true は同じ商品番号（同じ個体）。false は型番の行で、その型番ページで最後に見た商品番号の価格（別の個体のことがある）
 - items[].soldOut＝true は「一覧で SOLD OUT 表示」というだけ。じゃんぱらの一覧は「商談中（誰かのカートの中）」と「完売」を区別しない。売れたとは限らない
 - 商談中か完売かが確定しているのは ledger.st（stock＝在庫あり／nego＝商談中／sold＝完売）が入っている時だけ。ledger.stAt がその確認時刻
 - events の種類：NEW＝新着、REST＝復活（売切れ表示から戻った）、BACK＝戻り、PRICE＝値下げ、STOCK＝在庫増。at は検出時刻（毎時の検索で見つけた時刻なので、実際の出品時刻より遅れることがある）
@@ -6201,8 +6164,7 @@
         for (const [id, it] of Object.entries(v.items)) {
           if (!it) continue;
           const sr = String(srOf(it.url) || it.usr || "") || null, itm = itmOf(it.url) || null, evs = evBy[id] || [];
-          const cpx = null;   // 4.10.422：カート・カート履歴は読まない（重い）。台帳（priceFromLedger）で埋める
-          const row = aiClean({ id, sr, itm, name: it.name, url: aiUrl(sr, itm, it.url), prices: it.prices || null, priceFromCart: cpx ? { price: cpx.price, from: cpx.from, at: aiIso(cpx.at), sameUnit: true } : null, stock: it.stock ?? null, soldOut: !!it.soldOut, soldShownAt: aiIso(it.soldEvAt), rank: it.rank || null, page: it.rank && it.line ? Math.ceil(it.rank / it.line) : null, firstSeen: aiIso(it.firstSeen), lastSeen: aiIso(it.lastSeen), units: it.lo && Object.keys(it.lo).length ? it.lo : null, readByUser: !!seen[id] });
+          const row = aiClean({ id, sr, itm, name: it.name, url: aiUrl(sr, itm, it.url), prices: it.prices || null, stock: it.stock ?? null, soldOut: !!it.soldOut, soldShownAt: aiIso(it.soldEvAt), rank: it.rank || null, page: it.rank && it.line ? Math.ceil(it.rank / it.line) : null, firstSeen: aiIso(it.firstSeen), lastSeen: aiIso(it.lastSeen), units: it.lo && Object.keys(it.lo).length ? it.lo : null, readByUser: !!seen[id] });
           rows.push(row);
           const active = evs.length || (it.firstSeen || 0) >= from || (it.soldEvAt || 0) >= from;
           if (active) { sr && wantLg.add(sr); hot.push({ ...row, events: evs.map((e) => aiClean({ type: e.type, at: aiIso(e.at), from: e.from ?? null, to: e.to ?? null, why: e.why || null })) }); }
@@ -6210,15 +6172,7 @@
         catalog.push({ ...base, items: rows }), recent.push({ ...base, items: hot.sort((a, b) => (b.events.length ? Date.parse(b.events[b.events.length - 1].at) : 0) - (a.events.length ? Date.parse(a.events[a.events.length - 1].at) : 0)) });
       }
       // 台帳（状態・商談中か完売かの確認）は「動きのあった商品」にだけ付ける
-      // 4.10.421：価格の無い行も台帳を引く（商品番号の無い型番の行は、その型番ページで最後に見た商品番号で）
-      const noPr = []; for (const s0 of catalog) for (const r0 of s0.items || []) if (!(r0.prices && Object.keys(r0.prices).length) && !r0.priceFromCart) noPr.push(r0);
-      const viaUrl = new Map();
-      for (const r0 of noPr.slice(0, 600)) { if (r0.sr) { wantLg.add(String(r0.sr)); continue; } try { const x = await lgFindUrl(r0.url); x && x.sr && (viaUrl.set(r0, String(x.sr)), wantLg.add(String(x.sr))); } catch (e) {} }
       const lg = await lgMany([...wantLg]).catch(() => new Map());
-      for (const r0 of noPr.slice(0, 600)) {
-        const sr0 = r0.sr ? String(r0.sr) : viaUrl.get(r0), L0 = sr0 && lg.get(sr0);
-        if (L0 && Number(L0.price) > 0) r0.priceFromLedger = aiClean({ price: Number(L0.price), sr: sr0, at: aiIso(L0.prices && L0.prices.length ? L0.prices[L0.prices.length - 1][0] : L0.lastAt), sameUnit: !!r0.sr });
-      }
       for (const s of recent) for (const r of s.items) {
         const L = r.sr && lg.get(String(r.sr));
         r.ledger = L ? aiClean({ st: L.st || null, stAt: aiIso(L.stAt), shop: L.shop || null, price: L.price || null, priceHistory: (L.prices || []).map(([t, p]) => [aiIso(t), p]), cond: L.cond ? aiClean({ ...L.cond, at: aiIso(L.cond.at) }) : null, firstAt: aiIso(L.firstAt), lastAt: aiIso(L.lastAt) }) : "未取得";
