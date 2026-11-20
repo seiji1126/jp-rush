@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.413
+// @version      4.10.414
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.413",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.414",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -92,6 +92,34 @@
         const a = ents.map(([k, v]) => { let n = 0; try { n = JSON.stringify(v).length; } catch (e) {} return [String(k).replace(Ct, ""), n]; }).sort((x, y) => y[1] - x[1]), tot = a.reduce((x, y) => x + y[1], 0);
         return base + `\n保存（別の保存場所）：${a.length}件・合計${kb(tot)}・大きい順：${a.slice(0, 15).map(([k, n]) => k + " " + kb(n)).join("・")}`;
       }).catch(() => base);
+    }
+    // 4.10.414：じゃんぱらの「カートに入れる」は、2026-11-20 から ITMCODE・ITMNAME・MKRNAME・CLSNAME も送るようになった（JP RUSH は送っておらず、入らなくなった）
+    //          商品ページで見たフォームの中身を商品ごとに覚えておき、カートに入れる時は必ず足す
+    const ADD_META = ["ITMCODE", "ITMNAME", "MKRNAME", "CLSNAME"];
+    function addMetaHarvest(doc) {
+      try {
+        const forms = [...(doc || document).querySelectorAll('form[action*="cart/add"]')]; if (!forms.length) return;
+        const M = E("addMeta", {}) || {}; let ch = false;
+        for (const f of forms) {
+          const g = (n) => { const x = f.querySelector('[name="' + n + '"]'); return x ? String(x.getAttribute("value") || x.value || "") : ""; };
+          const c = g("SRCODE"); if (!/^\d{6,10}$/.test(c)) continue;
+          const o = {}; for (const k of ADD_META) { const v = g(k); v && (o[k] = v); }
+          if (!o.ITMCODE) continue;
+          o.at = w(), M[c] = o, ch = true;
+        }
+        if (ch) { const ks = Object.keys(M); if (ks.length > 1500) { ks.sort((a, b) => (M[a].at || 0) - (M[b].at || 0)); for (const k of ks.slice(0, ks.length - 1500)) delete M[k]; } $("addMeta", M); }
+      } catch (e) {}
+    }
+    function withMeta(code, body) {
+      try {
+        const b = body instanceof URLSearchParams ? body : new URLSearchParams(String(body || "")), o = (E("addMeta", {}) || {})[String(code)];
+        if (o) for (const k of ADD_META) o[k] && !b.get(k) && b.set(k, o[k]);
+        // じゃんぱらと同じ並び（SRCODE, SHPCODE, PRICE, REDIRECT, ITMCODE, ITMNAME, MKRNAME, CLSNAME, QTY）
+        const ord = ["SRCODE", "SHPCODE", "PRICE", "REDIRECT", ...ADD_META, "QTY"], out = new URLSearchParams();
+        for (const k of ord) b.has(k) && out.set(k, b.get(k));
+        for (const [k, v] of b) out.has(k) || out.append(k, v);
+        return out;
+      } catch (e) { return body instanceof URLSearchParams ? body : new URLSearchParams(String(body || "")); }
     }
     // 4.10.412：商品ページの診断。「カートに入れる」があるのに JP RUSH が見つけられない原因を調べるため、ボタンのまわりの作りを記録して計測に載せる
     function detailDiagTake(doc, url) {
@@ -811,13 +839,13 @@
               b.disabled = true, b.textContent = "送信中…";
               const shp = (/[?&]SHPCODE=(\d+)/.exec(v.url || "") || [])[1] || shpOf(code), t0 = w();
               try { const m = E("cartReadd", {}) || {}; m[code] = t0, $("cartReadd", m); } catch (e) {}
-              const body = new URLSearchParams([["SRCODE", code], ["SHPCODE", shp], ["PRICE", String(v.price)], ["REDIRECT", ""], ["QTY", "1"]]);
+              const body = withMeta(code, new URLSearchParams([["SRCODE", code], ["SHPCODE", shp], ["PRICE", String(v.price)], ["REDIRECT", ""], ["QTY", "1"]]));
               const inC = (html) => new RegExp("[?&]SRCODE=" + code + "(?!\\d)").test(cartInPart(html));
               const post = (b2) => cfetch("https://www.janpara.co.jp/sale/cart/add/", { method: "POST", body: b2, credentials: "include", redirect: "follow" }).then((r) => r.text());
               // 4.10.411：入らなければ商品ページを読んで、今の値段・中身で入れ直す（値段が変わっていると覚えていた値段では入らない）
               const viaDetail = () => cfetch("https://www.janpara.co.jp/sale/search/detail/?SRCODE=" + code + "&SHPCODE=" + shp, { credentials: "include", cache: "no-store" }).then((r) => r.text()).then((h) => {
                 condFromHtml(h, code);
-                const d = new DOMParser().parseFromString(h, "text/html"), fm = [...d.querySelectorAll('form[action*="cart/add"]')].find((f) => { const x = f.querySelector('[name="SRCODE"]'); return !x || String(x.value || x.getAttribute("value")) === code; });
+                const d = new DOMParser().parseFromString(h, "text/html"); addMetaHarvest(d); const fm = [...d.querySelectorAll('form[action*="cart/add"]')].find((f) => { const x = f.querySelector('[name="SRCODE"]'); return !x || String(x.value || x.getAttribute("value")) === code; });
                 if (!fm) { detailDiagTake(d, "https://www.janpara.co.jp/sale/search/detail/?SRCODE=" + code); throw new Error(/商談中/.test(h) ? "商談中" : /完売|SOLD\s*OUT|売り?切れ|品切れ/i.test(h) ? "完売" : "カートボタン無し"); }
                 const b2 = new URLSearchParams(); for (const x of fm.querySelectorAll("input[name]")) /^(hidden|text|number)$/i.test(x.type || "text") && b2.set(x.name, x.getAttribute("value") || x.value || "");
                 b2.get("SRCODE") || b2.set("SRCODE", code); b2.get("QTY") || b2.set("QTY", "1"); b2.has("REDIRECT") || b2.set("REDIRECT", ""); b2.get("SHPCODE") || b2.set("SHPCODE", shp);
@@ -980,7 +1008,7 @@
       if (!price) { watchDone(code, "値段が分からないので見張りをやめた"); return; }
       watchBusy = true;
       const fin = () => { watchBusy = false; }, shp = (/[?&]SHPCODE=(\d+)/.exec(v.url || "") || [])[1] || shpOf(code);
-      cfetch("https://www.janpara.co.jp/sale/cart/add/", { method: "POST", body: new URLSearchParams([["SRCODE", code], ["SHPCODE", shp], ["PRICE", String(price)], ["REDIRECT", ""], ["QTY", "1"]]), credentials: "include", redirect: "follow" }).then((x) => x.text()).then((html) => {
+      cfetch("https://www.janpara.co.jp/sale/cart/add/", { method: "POST", body: withMeta(code, new URLSearchParams([["SRCODE", code], ["SHPCODE", shp], ["PRICE", String(price)], ["REDIRECT", ""], ["QTY", "1"]])), credentials: "include", redirect: "follow" }).then((x) => x.text()).then((html) => {
         const d = new DOMParser().parseFromString(html, "text/html");
         if (!d.querySelector(`tr a[href*="SRCODE=${code}"]`)) { const nx = watchNext(v.since, w()); watchSet(code, { st: `まだ入らず（${T(w())}）・次 ${T(nx)}`, next: nx }), fin(); return; }
         const c = E("cart", { codes: {} }) || { codes: {} }; c.codes = c.codes || {}; c.codes[code] = { name: v.name, price, url: v.url, firstSeen: w() }; $("cart", c);
@@ -2105,6 +2133,7 @@
       if (!t.length) return null;
       /\/sale\/search\/detail\//.test(location.pathname) && setTimeout(() => detailDiagTake(document), 1500);
       cartClickDiagInit();
+      addMetaHarvest(document);   // 4.10.414
       const e = document.querySelector("main, #main, .main, #contents, .contents, #content, .content") || document.body, n = kn(Sn(document.body)), DS = dload(), s = t.map((l) => dget(DS, l)).find(Boolean) || n.units.map((l) => dget(DS, "S" + l.code)).find(Boolean);
       let i;
       if (n.units.length) {
@@ -4193,6 +4222,10 @@
           if (!t0 && Date.now() - lastBlind < 300000) { nextAt = Date.now() + 30000; return; }
           !t0 && (lastBlind = Date.now());
           for (const i of due) tried[i.code] = now;
+          // 4.10.414：入れる中身に ITMCODE が無い物は、削除する前に商品ページを読んで今の中身を取る。取れなければ削除しない（入らないまま消えていた）
+          { const need = due.filter((i) => !/(^|&)ITMCODE=/.test(i.add || "")); for (const i of due) i.skip = ""; if (need.length) { await pool(need, 2, async (i) => { const f = await detailAdd(i); if (f && f.body && /(^|&)ITMCODE=/.test(f.body)) i.newAdd = f.body, i.add = f.body; else i.skip = f && f.st ? f.st : "読めなかった"; }); }
+            const sk = due.filter((i) => i.skip); if (sk.length) { postMessage({ type: "log", msg: `入れる中身が足りない${sk.length}点は削除せずに残した（${sk.slice(0, 3).map((i) => i.code + "：" + i.skip).join("・")}）` }); for (const i of sk) { tried[i.code] = now; const nd = i.newAdd || ""; postMessage({ type: "skip", code: i.code, newAdd: nd }); } due = due.filter((i) => !i.skip); }
+            if (!due.length) return; }
           for (const i of due) { const row = t0 ? rowOf(h0, i.code) : ""; i.mode = !t0 ? "blind" : row ? "re" : "back"; i.delNow = row ? delOf(row) : null; }
           postMessage({ type: "start", codes: due.map((i) => i.code), back: due.filter((i) => i.mode === "back").map((i) => i.code), blind: !t0, at: Date.now() });
           // 4.10.385：削除は必ず送る（カートに無ければ何も起きないだけ。読み違いで「入れるだけ」になると時間が延びずに消えていた）
@@ -4264,7 +4297,7 @@
         // 4.10.386：期限前なのにカートから消えている（途中で止まった等）商品は、待たずにすぐ戻す
         else if (exp > now && !(b.okAt && now - b.okAt < 18e4) && cartPage()) exp = now;
         if (!exp || now - exp > 36e5 || !b.add) { delete B[code], ch = true; continue; }
-        items.push({ code, exp, del: b.del || null, add: b.add, recipeAt: b.at || 0, okAt: b.okAt || 0, name: b.name || (v && v.name) || "" });
+        items.push({ code, exp, del: b.del || null, add: withMeta(code, b.add).toString(), recipeAt: b.at || 0, okAt: b.okAt || 0, name: b.name || (v && v.name) || "" });
       }
       ch && $("rcBook", B);
       return items;
@@ -4281,6 +4314,7 @@
         const m = e.data || {};
         if (m.type === "hb") { RCW.hb = m.at; return; }
         if (m.type === "log") { arLog(`${T(w())} ${m.msg}`); return; }
+        if (m.type === "skip") return;
         if (m.type === "start") { RCW.busy = Date.now(), RCW.lastStart = Date.now(); rcTouch(m.codes); try { const rd = E("cartReadd", {}) || {}; for (const c of m.codes) rd[c] = m.at; $("cartReadd", rd); } catch (e) {} arLog(`${T(m.at)} 働き手が再カート：${m.codes.length}点（${m.codes.slice(0, 3).join("・")}）${m.back && m.back.length ? `・うち${m.back.length}点はカートに無いので入れ直して戻す` : ""}${m.blind ? "・カートの読み取りが怪しいので確かめずに送った" : ""}`); return; }
         if (m.type === "missing") {
           // 4.10.383：画面にはボタンがあるのに働き手が「無い」と言う時は、働き手の読み違い。30分は働き手を信用せず、画面のボタンで再カートする
@@ -4509,7 +4543,7 @@
         const fail0 = fail, fail1 = (why) => (onFail ? onFail(why) : fail0(why));
         b.textContent = "送信中…", paint("wait");
         console.info("[JP RUSH] カートへ：商品番号", s, "店舗番号", shp, "価格", pr);
-        const body = new URLSearchParams([["SRCODE", s], ["SHPCODE", shp], ["PRICE", String(pr)], ["REDIRECT", ""], ["QTY", "1"]]);
+        const body = withMeta(s, new URLSearchParams([["SRCODE", s], ["SHPCODE", shp], ["PRICE", String(pr)], ["REDIRECT", ""], ["QTY", "1"]]));
         // 4.10.296：順番待ちをやめて、押したらすぐ送る（ほぼ同時に並べて送る。失敗したらその行だけ「入れられません」）
         (() => cfetch("https://www.janpara.co.jp/sale/cart/add/", { method: "POST", body, credentials: "include", redirect: "follow" }).then((res) => res.text()).then((html) => {
           if (!new RegExp("[?&]SRCODE=" + s + "(?!\\d)").test(html)) return fail1("カートに見当たりません");
@@ -5361,7 +5395,7 @@
         // 4.10.382：送る中身を覚えておく（自動再カートの働き手が、画面を使わずにこれで送る）
         try {
           const dr = (() => { if (btn.tagName === "A" && btn.href) return { url: btn.href, method: "GET", body: "" }; const fm = btn.form || btn.closest("form"); if (!fm) return null; let fd; try { fd = new FormData(fm, btn); } catch (e) { fd = new FormData(fm); btn.name && fd.append(btn.name, btn.value || ""); } return { url: new URL(fm.getAttribute("action") || location.href, location.href).href, method: (fm.method || "post").toUpperCase(), body: new URLSearchParams(fd).toString() }; })();
-          dr && (RCW.recipes[code] = { del: dr, add: new URLSearchParams([["SRCODE", code], ["SHPCODE", shp], ["PRICE", String(price)], ["REDIRECT", ""], ["QTY", "1"]]).toString(), name: String(it.name || "").slice(0, 40), at: w() });
+          dr && (RCW.recipes[code] = { del: dr, add: withMeta(code, new URLSearchParams([["SRCODE", code], ["SHPCODE", shp], ["PRICE", String(price)], ["REDIRECT", ""], ["QTY", "1"]])).toString(), name: String(it.name || "").slice(0, 40), at: w() });
         } catch (e) {}
         b.addEventListener("click", (ev) => {
           ev.preventDefault(), ev.stopPropagation();
@@ -5370,7 +5404,15 @@
           console.info("[JP RUSH] カートへ（カート画面）：商品番号", code, "店舗番号", shp, "価格", price);
           const t0 = w();
           try { const m = E("cartReadd", {}) || {}; m[code] = t0, $("cartReadd", m); } catch (e) {}
-          const body = new URLSearchParams([["SRCODE", code], ["SHPCODE", shp], ["PRICE", String(price)], ["REDIRECT", ""], ["QTY", "1"]]);
+          const body = withMeta(code, new URLSearchParams([["SRCODE", code], ["SHPCODE", shp], ["PRICE", String(price)], ["REDIRECT", ""], ["QTY", "1"]]));
+          // 4.10.414：入れる中身（ITMCODE など）が分からない時は、削除する前に商品ページを読んで取る。取れなければ削除しない
+          if (!body.get("ITMCODE")) {
+            readdPend--;
+            if (b.dataset.jprMeta) { delete b.dataset.jprMeta; delete b.dataset.jprushBusy; lbl("中身が取れないので消しません"); return; }
+            b.dataset.jprMeta = "1";
+            cfetch("https://www.janpara.co.jp/sale/search/detail/?SRCODE=" + code + "&SHPCODE=" + shp, { credentials: "include", cache: "no-store" }).then((r) => r.text()).then((h) => { addMetaHarvest(new DOMParser().parseFromString(h, "text/html")); }).catch(() => {}).finally(() => { delete b.dataset.jprushBusy; if ((E("addMeta", {}) || {})[code]) { delete b.dataset.jprMeta; b.click(); } else { delete b.dataset.jprMeta; lbl("中身が取れないので消しません（商品ページを確認）"); } });
+            return;
+          }
           // 4.10.299：「カート」1回で「削除→カートに入れる」を順番に行う（削除の返事を待ってから入れる。同時に送ると、後に届いた削除で入れた分まで消えることがあった）。
           // 先に自分で「削除」を押していても、削除は空振りになるだけ。ページが移っても送り切るよう keepalive
           const delReq = () => {
@@ -6242,6 +6284,7 @@
           if (rcwBusy()) { condHQ.unshift(x); setTimeout(() => idle(step, { timeout: 5e3 }), 3e3); return; }
           try {
             const d = new DOMParser().parseFromString(x[0], "text/html");
+            addMetaHarvest(d);   // 4.10.414
             let P = null; try { P = kn(Sn(d.body)); } catch (e) { P = null; }
             const codes = new Set(((P && P.units) || []).map((u) => String(u.code || "")).filter((c) => /^\d{8,9}$/.test(c)));
             /^\d{8,9}$/.test(x[1]) && codes.add(x[1]);
@@ -6401,7 +6444,7 @@
       let i = 0;
       // 4.10.391：商品のページを読んで、今の値段・カートに入れる中身で入れる（値段が変わっていても入る。カートボタンが無ければ在庫の状態を記録）
       const st = {};
-      const one = async () => { while (i < cand.length) { const [c, v] = cand[i++]; const shp = (/[?&]SHPCODE=(\d+)/.exec(v.url || "") || [])[1] || shpOf(c); let body = new URLSearchParams([["SRCODE", c], ["SHPCODE", shp], ["PRICE", String(v.price)], ["REDIRECT", ""], ["QTY", "1"]]);
+      const one = async () => { while (i < cand.length) { const [c, v] = cand[i++]; const shp = (/[?&]SHPCODE=(\d+)/.exec(v.url || "") || [])[1] || shpOf(c); let body = withMeta(c, new URLSearchParams([["SRCODE", c], ["SHPCODE", shp], ["PRICE", String(v.price)], ["REDIRECT", ""], ["QTY", "1"]]));
         try { const r = await cfetch("https://www.janpara.co.jp/sale/search/detail/?SRCODE=" + c + "&SHPCODE=" + shp, { credentials: "include", cache: "no-store", timeout: 3e4 }), h = await r.text(), d = new DOMParser().parseFromString(h, "text/html"), fm = [...d.querySelectorAll('form[action*="cart/add"]')].find((f) => { const x = f.querySelector('[name="SRCODE"]'); return !x || String(x.value || x.getAttribute("value") || "").replace(/\D/g, "") === c; });
           condFromHtml(h, c);   // 4.10.408
           if (fm) { const b = new URLSearchParams(); for (const x of fm.querySelectorAll("input[name]")) /^(hidden|text|number)$/i.test(x.type || "text") && b.set(x.name, x.getAttribute("value") || x.value || ""); b.get("SRCODE") || b.set("SRCODE", c); b.get("QTY") || b.set("QTY", "1"); b.has("REDIRECT") || b.set("REDIRECT", ""); b.get("SHPCODE") || b.set("SHPCODE", shp); b.get("PRICE") || b.set("PRICE", String(v.price)); body = b; }
