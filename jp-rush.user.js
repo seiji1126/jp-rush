@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.427
+// @version      4.10.428
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.427",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.428",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -355,7 +355,37 @@
     // 4.10.343：カートへの通信には20秒の時間切れ（PCのスリープなどで返事が来ないまま固まり、自動再カートや見張りが全部止まっていた）
     // 4.10.416：カートに入れる時は、じゃんぱらのボタンと同じく「商品ページから送った」形にする（参照元＝商品ページ）
     const addRef = (u, o) => { try { if (!/\/sale\/cart\/add\//.test(String(u)) || o.referrer) return o; const b = new URLSearchParams(String(o.body || "")), sr = b.get("SRCODE"), sh = b.get("SHPCODE"); return sr ? { ...o, referrer: "https://www.janpara.co.jp/sale/search/detail/?SRCODE=" + sr + (sh ? "&SHPCODE=" + sh : ""), referrerPolicy: "unsafe-url" } : o; } catch (e) { return o; } };
-    const cfetch = (u, o = {}) => { const ac = new AbortController(), { timeout, ...oo } = addRef(u, o); setTimeout(() => ac.abort(), timeout || 2e4); return fetch(u, { ...oo, signal: ac.signal }); };
+    // 4.10.428：じゃんぱらへの通信は全部この順番待ちを通す（同時に2つまで・0.3秒あける）。
+    //          「混雑」の画面（フォームが1つも無いページ）が返ってきたら、全部のタブ・働き手の通信を2分（続けば最大10分）止める。
+    //          一度にたくさん送って、じゃんぱらに混雑の画面を出されていた
+    const JPQ = { act: 0, q: [], last: 0, t: 0 };
+    const jpPauseUntil = () => { try { return +(localStorage.getItem("jprPause") || 0); } catch (e) { return 0; } };
+    function jpPause(why) {
+      try {
+        const now = Date.now(), lv = Math.min(5, (+(localStorage.getItem("jprPauseLv") || 0)) + (now - (+(localStorage.getItem("jprPauseAt") || 0)) < 9e5 ? 1 : 0)), ms = Math.min(6e5, 12e4 * Math.pow(2, lv));
+        if (now < jpPauseUntil()) return;
+        localStorage.setItem("jprPause", String(now + ms)), localStorage.setItem("jprPauseLv", String(lv)), localStorage.setItem("jprPauseAt", String(now));
+        try { arLog(`${T(w())} じゃんぱらが混雑の画面を返した（${why}）→ ${Math.round(ms / 6e4)}分 通信を止める`); } catch (e) {}
+        try { RCW.w && RCW.w.postMessage({ type: "pause", until: now + ms }); } catch (e) {}
+      } catch (e) {}
+    }
+    function jpPump() {
+      if (JPQ.act >= 2 || !JPQ.q.length) return;
+      const now = Date.now(), wait = Math.max(jpPauseUntil() - now, JPQ.last + 300 - now, 0);
+      if (wait > 0) { clearTimeout(JPQ.t), JPQ.t = setTimeout(jpPump, Math.min(wait, 3e4)); return; }
+      JPQ.act++, JPQ.last = now, JPQ.q.shift()();
+      setTimeout(jpPump, 310);
+    }
+    const jpGate = () => new Promise((res) => { JPQ.q.push(res), jpPump(); });
+    const jpDone = () => { JPQ.act = Math.max(0, JPQ.act - 1), jpPump(); };
+    const jpCheck = (u, r) => { try { if (!r || r.type === "opaqueredirect" || !/text\/html/i.test(r.headers.get("content-type") || "")) return; r.clone().text().then((h) => { if (h.length > 200 && !/<form/i.test(h)) jpPause(String(u).replace(/^https?:\/\/[^/]+/, "").slice(0, 40)); else { try { localStorage.setItem("jprPauseLv", "0"); } catch (e) {} } }).catch(() => {}); } catch (e) {} };
+    const cfetchRaw = (u, o = {}) => { const ac = new AbortController(), { timeout, ...oo } = addRef(u, o); setTimeout(() => ac.abort(), timeout || 2e4); return fetch(u, { ...oo, signal: ac.signal }); };
+    const cfetch = (u, o = {}) => {
+      const jp = /janpara\.co\.jp|^\//.test(String(u)) && !/members\.janpara/.test(String(u));
+      if (!jp) return cfetchRaw(u, o);
+      if ((o.method && o.method !== "GET") || /\/sale\/cart\/(delete|add)/.test(String(u))) return jpPauseUntil() > Date.now() ? Promise.reject(new Error("混雑で止めています")) : cfetchRaw(u, o);   // 削除・入れるは待たせない（止めている間は送らない）
+      return jpGate().then(() => cfetchRaw(u, o)).then((r) => (jpCheck(u, r), jpDone(), r), (e) => { jpDone(); throw e; });
+    };
     // ===== 4.10.334：商品台帳 =====
     // 見つけた商品の情報を、商品番号（SRCODE）ごとに1台ずつためる。検索記録とは別の保存場所（IndexedDB「jpRushLedger」）。
     // 書き込みはためておいて10秒おき・ページを離れる時にまとめて。同期・バックアップには入れない。90日見かけない台は1日1回少しずつ消す。
@@ -4156,9 +4186,15 @@
     function rcwMain() {
       let P = { active: false, items: [] }, busy = false; const tried = {}, lastRe = {};
       let lastBlind = 0, nextAt = 0, freshNg = 0;   // 4.10.410：送りすぎない（確かめずに送るのは5分に1回まで・1回20点まで・次の回まで20秒あける）
-      onmessage = (e) => { if (e.data && e.data.type === "plan") { P = e.data; for (const i of P.items) if (lastRe[i.code] && lastRe[i.code] > i.exp - P.hold) i.exp = lastRe[i.code] + P.hold; } };
+      onmessage = (e) => { if (e.data && e.data.type === "pause") { pauseUntil = Math.max(pauseUntil, +e.data.until || 0); return; } if (e.data && e.data.type === "plan") { P = e.data; pauseUntil = Math.max(pauseUntil, +P.pause || 0); for (const i of P.items) if (lastRe[i.code] && lastRe[i.code] > i.exp - P.hold) i.exp = lastRe[i.code] + P.hold; } };
       const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-      const tf = (u, o) => { const ac = new AbortController(); const t = setTimeout(() => ac.abort(), 45000);
+      // 4.10.428：働き手の通信も順番待ち（同時に2つまで・0.3秒あける）。混雑の画面が返ったら画面側に知らせて止まる
+      let pauseUntil = 0, wAct = 0, wLast = 0; const wQ = [];
+      const wPump = () => { if (wAct >= 2 || !wQ.length) return; const now = Date.now(), wait = Math.max(pauseUntil - now, wLast + 300 - now, 0); if (wait > 0) return void setTimeout(wPump, Math.min(wait, 3e4)); wAct++, wLast = now, wQ.shift()(); setTimeout(wPump, 310); };
+      const wGate = () => new Promise((res) => { wQ.push(res), wPump(); });
+      // 削除・カートに入れる（POST・削除のリンク）は隙を広げないよう順番待ちにしない。読むだけの通信（商品ページ・カート）だけ順番待ち
+      const tf = (u, o) => (o && o.method && o.method !== "GET") || /\/sale\/cart\/(delete|add)/.test(String(u)) ? tf0(u, o) : wGate().then(() => tf0(u, o)).then((r) => { wAct = Math.max(0, wAct - 1), wPump(); try { if (r && r.type !== "opaqueredirect" && /text\/html/i.test(r.headers.get("content-type") || "")) r.clone().text().then((h) => { h.length > 200 && !/<form/i.test(h) && postMessage({ type: "busy", u: String(u).slice(-40) }); }).catch(() => {}); } catch (e) {} return r; }, (e) => { wAct = Math.max(0, wAct - 1), wPump(); throw e; });
+      const tf0 = (u, o) => { const ac = new AbortController(); const t = setTimeout(() => ac.abort(), 45000);
         // 4.10.416：カートに入れる時は参照元を商品ページにする（じゃんぱらのボタンと同じ）
         try { if (/\/sale\/cart\/add\//.test(String(u)) && o && o.body) { const b = new URLSearchParams(String(o.body)), sr = b.get("SRCODE"), sh = b.get("SHPCODE"); sr && (o = { ...o, referrer: P.origin + "/sale/search/detail/?SRCODE=" + sr + (sh ? "&SHPCODE=" + sh : ""), referrerPolicy: "unsafe-url" }); } } catch (e) {}
         return fetch(u, { ...o, signal: ac.signal, credentials: "include" }).finally(() => clearTimeout(t)); };
@@ -4342,7 +4378,7 @@
     }
     function rcwPlan(active) {
       if (!RCW.w) return;
-      try { RCW.w.postMessage({ type: "plan", active: !!active, origin: location.origin, hold: CART_HOLD, left: RECART_LEFT, items: rcItems() }); } catch (e) {}
+      try { RCW.w.postMessage({ type: "plan", pause: jpPauseUntil(), active: !!active, origin: location.origin, hold: CART_HOLD, left: RECART_LEFT, items: rcItems() }); } catch (e) {}
     }
     function rcwStart() {
       if (RCW.w || !window.Worker) return;
@@ -4353,6 +4389,7 @@
         if (m.type === "hb") { RCW.hb = m.at; return; }
         if (m.type === "log") { arLog(`${T(w())} ${m.msg}`); return; }
         if (m.type === "skip") return;
+        if (m.type === "busy") { jpPause("働き手 " + (m.u || "")); return; }
         if (m.type === "start") { RCW.busy = Date.now(), RCW.lastStart = Date.now(); rcTouch(m.codes); try { const rd = E("cartReadd", {}) || {}; for (const c of m.codes) rd[c] = m.at; $("cartReadd", rd); } catch (e) {} arLog(`${T(m.at)} 働き手が再カート：${m.codes.length}点（${m.codes.slice(0, 3).join("・")}）${m.back && m.back.length ? `・うち${m.back.length}点はカートに無いので入れ直して戻す` : ""}${m.blind ? "・カートの読み取りが怪しいので確かめずに送った" : ""}`); return; }
         if (m.type === "missing") {
           // 4.10.383：画面にはボタンがあるのに働き手が「無い」と言う時は、働き手の読み違い。30分は働き手を信用せず、画面のボタンで再カートする
