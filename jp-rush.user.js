@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.425
+// @version      4.10.426
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.425",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.426",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -6051,11 +6051,11 @@
         // 4.10.360：土台（全部）の送り直しは、初めて・前の版から・画面を見ていない時・3分さわっていない時・自分で押した時だけ（見ている間に何十秒も止まっていた）
         let idle = false;
         try { idle = w() - Math.max(lastInput || 0, PERF.t0) > 18e4; } catch (e) {}   // 3分以上さわっていない
-        const hr = new Date().getHours(), night = hr >= 2 && hr < 5;
+        const night = syQuiet();   // 4.10.426：1時〜14時（触らない時間）
         const canRebase = !local.bid || legacy || why === "full" || (night && (document.hidden || idle));   // 4.10.425：土台の送り直しも夜中か「全部を合わせる」の時だけ
         // 4.10.409：「今すぐ同期」も変わった分だけ。全部を読んで比べるのは、初めて・前回の変更分が大きかった時・1時間に1回（画面を見ていない時か3分さわっていない時）だけ
-        // 4.10.425：全部を読んで比べる重い同期は、初めての時・「全部を合わせる」を押した時・夜中（2〜5時）に画面を見ていない時だけ（昼間に何十秒も止まっていた）
-        const dSnap = syDirtySnap(), full = !local.bid || !local.h || !Array.isArray(local.pk) || !local.fullAt || why === "full" || (why === "auto" && night && (document.hidden || idle) && w() - local.fullAt > 6 * 36e5);
+        // 4.10.425：全部を読んで比べる重い同期は、初めての時・「全部を合わせる」を押した時・触らない時間（1〜14時）に画面を見ていない時だけ（半日に1回）（昼間に何十秒も止まっていた）
+        const dSnap = syDirtySnap(), full = !local.bid || !local.h || !Array.isArray(local.pk) || !local.fullAt || why === "full" || (why === "auto" && night && (document.hidden || idle) && w() - local.fullAt > 12 * 36e5);
         const D = full ? await syPhase("全部を読む", () => hoDump()) : await syPhase("変わった分を読む", () => syDumpKeys(new Set([...dSnap, ...local.pk])));
         const pg = {}, pi = [];
         let H = null;
@@ -6393,10 +6393,17 @@
     }
     setTimeout(() => { judgePaint(); judgeFetch().then((ch) => ch && judgePaint()); setInterval(() => { judgeFetch().then((ch) => ch && judgePaint()); judgePaint(); }, 6e4); }, 4e3);
     try { window.jprushAi = { tick: (f) => aiTick(f !== false), readme: aiReadme, cartFile: () => aiCartFile(w()) }; } catch (e) {}
+    // 4.10.426：同期する時間を使い方に合わせる。毎時33分の更新で触るのは〜10分ごろまでなので、毎時10〜15分に1回。
+    //          1時〜14時はほとんど触らないので、その間は1時間に1回いつでも（重い全部確認もこの時間に）
+    const syQuiet = () => { const h = new Date().getHours(); return h >= 1 && h < 14; };
+    const syWindow = () => { const m = new Date().getMinutes(); return m >= 10 && m < 16; };
+    let syTick = 0;
     function syncMaybe() {
       if (!syTok()) return;
+      syTick || (syTick = setInterval(() => { try { syncMaybe(); } catch (e) {} }, 6e4));
       const i = syInfo();
-      if (i.at && w() - i.at < SY_GAP) return;
+      if (!(syWindow() || syQuiet())) return;
+      if (i.at && w() - i.at < (syQuiet() && !syWindow() ? 36e5 : 20 * 6e4)) return;
       setTimeout(() => { if (RECDIRTY.size) return setTimeout(syncMaybe, 3e3); syncNow("auto").catch(() => {}); }, 4e3);
     }
     // 4.10.302：自動再カート。20秒ごとに、残り5分を切った（まだ切れていない）商品の「再カート」を押す。1回のページ表示で1商品1回まで
