@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.445
+// @version      4.10.446
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.445",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.446",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -2554,7 +2554,7 @@
     function qt() {
       const t = f.panel, e = f.bar;
       if (!t || !e) return;
-      f.xcp && (f.xcp.style.display = f.panelKind === "new" ? "" : "none");   // 4.10.190：全検索のコピーは新着候補の時だけ
+      f.xcp && (f.xcp.style.display = f.panelKind === "new" ? "" : "none"), f.xcp2 && (f.xcp2.style.display = f.panelKind === "new" ? "" : "none");   // 4.10.190：全検索のコピーは新着候補の時だけ
       const n = f.panelKind === "sold" || f.panelKind === "detail" || (f.panelKind === "new" && listFull);
       if (_ && !n) {
         const s = e.classList.contains("rail") ? _.top : Math.round(e.getBoundingClientRect().bottom + 10);
@@ -3129,7 +3129,7 @@
     </div>
     <div class="rail" id="rail"></div>
     <div class="panel" id="panel" hidden>
-      <div class="phead"><span id="ptitle">\u65B0\u7740\u4E00\u89A7</span><button id="xcp" class="xcp" type="button" title="全検索の新着候補をAI用にコピー" aria-label="全検索の新着候補をコピー" style="display:none">${ICON_COPY}全検索</button><button id="pclose" class="sub" type="button">\u9589\u3058\u308B</button></div>
+      <div class="phead"><span id="ptitle">\u65B0\u7740\u4E00\u89A7</span><button id="xcp" class="xcp" type="button" title="全検索の新着候補をAI用にコピー" aria-label="全検索の新着候補をコピー" style="display:none">${ICON_COPY}全検索（今回）</button><button id="xcp2" class="xcp" type="button" title="全検索の新着候補（在庫半日・完売全て）をAI用にコピー" aria-label="全検索の新着候補（半日）をコピー" style="display:none">${ICON_COPY}全検索（半日）</button><button id="pclose" class="sub" type="button">\u9589\u3058\u308B</button></div>
       <div id="pbody"></div>
     </div>
     <div class="ov" id="ov" hidden>
@@ -3140,12 +3140,13 @@
         <div class="ovbody" id="ovbody"></div>
       </div>
     </div>`, document.body.appendChild(t), f.bar = e.getElementById("bar");
-      for (const o of ["sort", "clock", "ver", "banner", "nextbox", "counts", "reload", "list", "next", "first", "hourly", "status", "hist", "panel", "ptitle", "pclose", "pbody", "sold", "jump", "key", "spec", "specbox", "specclose", "toprow", "prev", "prevpage", "nextpage", "pgnum", "gotop", "gobottom", "markpos", "ov", "ovbg", "ovtitle", "ovclose", "ovtabs", "ovbody", "xcp", "watchl", "topq", "pnote", "pnotecp", "spclock", "spxcp"]) f[o] = e.getElementById(o);
+      for (const o of ["xcp2", "sort", "clock", "ver", "banner", "nextbox", "counts", "reload", "list", "next", "first", "hourly", "status", "hist", "panel", "ptitle", "pclose", "pbody", "sold", "jump", "key", "spec", "specbox", "specclose", "toprow", "prev", "prevpage", "nextpage", "pgnum", "gotop", "gobottom", "markpos", "ov", "ovbg", "ovtitle", "ovclose", "ovtabs", "ovbody", "xcp", "watchl", "topq", "pnote", "pnotecp", "spclock", "spxcp"]) f[o] = e.getElementById(o);
       f.spxcp && (f.spxcp.onclick = (ev) => { ev.stopPropagation(), copyAllSearches(f.spxcp); });
       f.pnotecp && (f.pnotecp.onclick = (ev) => { ev.stopPropagation(), copyPageShape(f.pnotecp); });
       f.topq && f.topq.querySelectorAll("button").forEach((b) => { b.onclick = (ev) => { ev.stopPropagation(); const s = f[b.dataset.t]; s && !s.disabled && s.click(); }; });
       f.watchl && (f.watchl.onclick = () => ve("watch", watchPanel));
-      f.xcp && (f.xcp.onclick = (ev) => { ev.stopPropagation(), copyAllSearches(f.xcp); });
+      f.xcp && (f.xcp.onclick = (ev) => { ev.stopPropagation(), copyAllSearches(f.xcp, "now"); });
+      f.xcp2 && (f.xcp2.onclick = (ev) => { ev.stopPropagation(), copyAllSearches(f.xcp2, "all"); });
       f.rail = e.getElementById("rail"), f.btns = e.querySelector(".btns"), ckTick(), every1s(ckTick), document.addEventListener("click", () => setTimeout(ckTick, 120), true), f.jump.onclick = to, window.addEventListener("scroll", Vt, { passive: true }), window.addEventListener("scroll", Et, { passive: true }), window.addEventListener("resize", Et, { passive: true }), Le(), window.ResizeObserver && new ResizeObserver(Et).observe(f.bar), Vt(), f.sold.onclick = () => ve("sold", () => Ie("")), f.list.onclick = () => { listFull = true; vt(); }, f.spec.onclick = () => { f.specbox.hidden = false; }, f.specclose.onclick = () => { f.specbox.hidden = true; }, f.pclose.onclick = () => {
         listFull = false;
         if (_) {
@@ -4713,17 +4714,18 @@
       })).catch(() => out);
     }
     let xcpReady = null;
-    function copyAllSearches(btn) {
+    function copyAllSearches(btn, scope = "now") {
+      const sc = { stock: scope, sold: scope === "now" ? "now" : "all" };   // 4.10.446：今回＝在庫今回・完売今回／半日＝在庫半日・完売全て
       const say = (s) => { btn.textContent = s; };
       const reset = () => setTimeout(() => { btn.innerHTML = ICON_COPY + "全検索"; }, 1500);
-      if (xcpReady) { const t = xcpReady; writeClip(t, () => { xcpReady = null, say("✓ コピー"), reset(); }, () => { say("✗ 失敗"), reset(); }); return; }
+      if (xcpReady && xcpReady.k === scope) { const t = xcpReady.t; writeClip(t, () => { xcpReady = null, say("✓ コピー"), reset(); }, () => { say("✗ 失敗"), reset(); }); return; }
       say("読込中…");
       const now = w();
       recsForCopy(now).then((recs) => {
         const seen = rtR(), ownSet = ownCartSet(now), best = { stock: new Map(), sold: new Map() };
         for (const n of recs.values()) {
           let c;
-          try { c = candOf(n, now, seen, ownSet); } catch (e) { continue; }
+          try { c = candOf(n, now, seen, ownSet, sc); } catch (e) { continue; }
           const q = qLabel(n.signature);
           for (const kind of ["stock", "sold"]) for (const r of c[kind]) { const was = best[kind].get(r.id); (!was || r.at > was.at) && best[kind].set(r.id, { ...r, q }); }
         }
@@ -4733,8 +4735,8 @@
         const item = (r, i) => cpItem(r, i).replace(/\n   ([^\n]*)$/, `\n   検索：${r.q}\n   $1`);
         const stock = order(best.stock), sold = order(best.sold);
         const sec = (title, list) => [`${title}　${list.length}件（${T(now)}時点）`, ...list.map(item)].join("\n\n");
-        const text = [`全検索の新着候補（${recs.size}検索：${[...recs.values()].map((n) => qLabel(n.signature)).join("｜")}）`, sec(`在庫（${candView.stock === "now" ? "今回" : "半日"}）`, stock), sec(`完売（${candView.sold === "now" ? "今回" : "3日"}）`, sold)].join("\n\n――――――――\n\n");
-        writeClip(text, () => { say("✓ コピー"), reset(); }, () => { xcpReady = text, say("もう一度押す"); });
+        const text = [`全検索の新着候補（${recs.size}検索：${[...recs.values()].map((n) => qLabel(n.signature)).join("｜")}）`, sec(`在庫（${sc.stock === "now" ? "今回" : "半日"}）`, stock), sec(`完売（${sc.sold === "now" ? "今回" : "全て"}）`, sold)].join("\n\n――――――――\n\n");
+        writeClip(text, () => { say("✓ コピー"), reset(); }, () => { xcpReady = { k: scope, t: text }, say("もう一度押す"); });
       }).catch(() => { say("✗ 失敗"), reset(); });
     }
     let candView = { stock: "now", sold: "now" };
@@ -4833,7 +4835,7 @@
       stock.length > VT_MAX && boxA.append(c(`上位${VT_MAX}件だけ表示（残り${stock.length - VT_MAX}件は「AI用にコピー」で全件）`));
       const boxB = document.createElement("div");
       boxB.className = "pbox b" + (candFold.sold ? " folded" : "");
-      boxB.append(hdr(`完売 ${sold.length}個`, "sold", [["now", "今回"], ["3d", "3日"]], `新着候補・完売（${candView.sold === "now" ? "今回" : "3日"}）`, sold));
+      boxB.append(hdr(`完売 ${sold.length}個`, "sold", [["now", "今回"], ["all", "全て"]], `新着候補・完売（${candView.sold === "now" ? "今回" : "3日"}）`, sold));
       sold.length || boxB.append(c("完売の候補はありません"));
       // 4.10.140：左の完売の行に、コピーと同じ番号（#N）を付ける（並びは vtCopy と同じ配列。上位の表示分だけ）
       sold.slice(0, VT_MAX).forEach((r, k) => boxB.append(d(r, k + 1)));
