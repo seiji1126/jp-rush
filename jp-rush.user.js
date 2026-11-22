@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         JP RUSH 3 新着チェック（試作）
 // @namespace    jp-rush-local
-// @version      4.10.458
+// @version      4.10.459
 // @updateURL    https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @downloadURL  https://raw.githubusercontent.com/seiji1126/jp-rush/main/jp-rush.user.js
 // @description  じゃんぱら検索結果（新着順）のどのページを開いても記録し、毎時の入れ替わりで新しく入った商品・上がってきた商品・在庫増・最安値↓に印を付けます。印は商品を開くまで消えません。通信は増やしません。保存はこの端末だけです。
@@ -24,7 +24,7 @@
     const PERF_T0 = performance.now();
     // 4.10.143：カートのコピーで商品ページを読むための見えない枠の中では動かない（記録や印を書かない）
     if (window.name === "jprush-fetch") return;
-    const Jt = "4.10.458",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
+    const Jt = "4.10.459",Ct ="jpRush.v4.", jt = [14, 15, 16, 17, 20, 21], Xt = [14, 20], Q = [14, 15, 16, 17, 20, 21, 22], Zt = 3e4, qe = 50 * 6e4, He = /^\/sale\/search\/result\/?$/, Qt = /^\/sale\/search\/detail\/?$/, te = /新着|入荷/, ee = /SOLD\s*OUT|完売|売り?切れ|在庫切れ/i, K = { NEW: "\u65B0\u7740", REST: "\u5FA9\u6D3B", BACK: "\u623B\u308A", PRICE: "\u5024\u4E0B\u3052", STOCK: "\u5728\u5EAB\u5897" }, Fe = { NEW: "\u307E\u3060\u4E00\u5EA6\u3082\u8A18\u9332\u3057\u3066\u3044\u306A\u3044\u5546\u54C1\u3067\u3059\uFF08\u958B\u3044\u305F\u3053\u3068\u306E\u306A\u3044\u30DA\u30FC\u30B8\u306E\u5546\u54C1\u3082\u542B\u307F\u307E\u3059\uFF09", REST: "\u58F2\u5207\u308C\uFF08SOLD OUT\uFF09\u304B\u3089\u5728\u5EAB\u3042\u308A\u306B\u623B\u3063\u305F\u5546\u54C1\u3067\u3059\uFF08\u30AB\u30FC\u30C8\u89E3\u9664\u30FB\u65B0\u3057\u3044\u5165\u8377\u306E\u3069\u3061\u3089\u3082\u542B\u307F\u307E\u3059\uFF09", PRICE: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u6700\u5B89\u5024\uFF08\u72B6\u614B\u3054\u3068\uFF09\u304C\u4E0B\u304C\u308A\u307E\u3057\u305F\u3002\u5728\u5EAB\u306E\u5897\u6E1B\u3084\u5B89\u3044\u500B\u4F53\u306E\u8FFD\u52A0\u3067\u3082\u8D77\u304D\u308B\u305F\u3081\u3001\u540C\u3058\u5546\u54C1\u306E\u5024\u4E0B\u3052\u3068\u306F\u9650\u308A\u307E\u305B\u3093", STOCK: "\u4E00\u89A7\u306B\u51FA\u3066\u3044\u308B\u5728\u5EAB\u6570\u304C\u524D\u56DE\u3088\u308A\u5897\u3048\u307E\u3057\u305F", BACK: "SOLD OUT\uFF08\u307E\u305F\u306F\u5728\u5EAB\u6E1B\uFF09\u306B\u306A\u3063\u3066\u3044\u305F\u5546\u54C1\u304C\u623B\u3063\u3066\u304D\u307E\u3057\u305F\u3002\u30AB\u30FC\u30C8\u306B\u5165\u308C\u3089\u308C\u3066\u623B\u3063\u305F\u30FB\u5728\u5EAB\u306E\u79FB\u52D5\u304B\u3089\u623B\u3063\u305F\u3068\u8003\u3048\u3089\u308C\u307E\u3059\uFF08\u65B0\u3057\u3044\u5165\u8377\u3067\u306F\u3042\u308A\u307E\u305B\u3093\uFF09" }, U = { NEW: "#F31515", REST: "#18794E", BACK: "#18794E", PRICE: "#F2D98A", STOCK: "#003792" }, ut = ["NEW", "REST", "BACK", "PRICE", "STOCK"], w = () => Date.now(), Tt = Math.round(w() - performance.now()), We = document.title, N = (t) => String(t || "").replace(/\s+/g, " ").trim(), A = (t) => "\xA5" + Number(t).toLocaleString("ja-JP"), Nt = () => He.test(location.pathname), ne = (t) => Math.floor((t - 201e4) / 36e5), oe = (t) => t * 36e5 + 201e4;
     function pt(t, e) {
       for (let n = 0; n < 3; n++) for (const o of e) {
         const s = new Date(t);
@@ -4172,7 +4172,11 @@
       const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
       // 4.10.452：働き手の通信も、混雑（503）以外のエラーは「⚠要報告」として記録に出す（同じ内容は30秒に1回まで）
       const repAt = {};
-      const tf = (u, o) => { const ac = new AbortController(); const t = setTimeout(() => ac.abort(), 45000); const pr = fetch(u, { ...o, signal: ac.signal, credentials: "include" }).finally(() => clearTimeout(t)); const rep = (k) => { const path = String(u).replace(/^https?:\/\/[^/]+/, "").split("&")[0].slice(0, 60), key = path + "|" + k; if (repAt[key] && Date.now() - repAt[key] < 3e4) return; repAt[key] = Date.now(); postMessage({ type: "log", msg: `⚠要報告：${path}（${k}）` }); }; pr.then((r) => { if (r.status >= 400 && r.status !== 503) rep(r.status); }, (e) => rep(e && e.name === "AbortError" ? "時間切れ" : "通信エラー")); return pr; };
+      // 4.10.459：働き手にもブレーキ。カートへの追加・削除・カートの読み取りが403・503で拒否されたら、10分は何も送らない
+      //          （働き手は画面のブレーキ（jprAddBrake）を見ておらず、拒否の最中も削除・読み取り・追加を送り続けていた）
+      let brakeUntil = 0;
+      const brakeHit = (u, st) => { if (!/\/sale\/cart\//.test(String(u)) || Date.now() < brakeUntil) return; brakeUntil = Date.now() + 6e5; postMessage({ type: "brake", until: brakeUntil, status: st }); };
+      const tf = (u, o) => { const ac = new AbortController(); const t = setTimeout(() => ac.abort(), 45000); const pr = fetch(u, { ...o, signal: ac.signal, credentials: "include" }).finally(() => clearTimeout(t)); const rep = (k) => { const path = String(u).replace(/^https?:\/\/[^/]+/, "").split("&")[0].slice(0, 60), key = path + "|" + k; if (repAt[key] && Date.now() - repAt[key] < 3e4) return; repAt[key] = Date.now(); postMessage({ type: "log", msg: `⚠要報告：${path}（${k}）` }); }; pr.then((r) => { if (r.status === 403 || r.status === 503) brakeHit(u, r.status); if (r.status >= 400 && r.status !== 503) rep(r.status); }, (e) => rep(e && e.name === "AbortError" ? "時間切れ" : "通信エラー")); return pr; };
       const cartHtml = async () => { try { const r = await tf(P.origin + "/sale/cart/", { cache: "no-store" }); let h = await r.text(); h = h.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<style[\s\S]*?<\/style>/gi, "").replace(/<!--[\s\S]*?-->/g, ""); const b = h.search(/<body/i); return b >= 0 ? h.slice(b) : h; } catch (e) { return ""; } };
       // その商品の行（SRCODE のリンクがあり、［削除］がある行）
       // 4.10.385：商品の範囲は「その商品のリンクから、次の別の商品のリンクまで」。中に［削除］のボタン（またはリンク）があればカートの中
@@ -4241,6 +4245,7 @@
       async function loop() {
         postMessage({ type: "hb", at: Date.now() });
         if (!P.active || busy) return;
+        if (Date.now() < Math.max(brakeUntil, P.brake || 0)) return;   // 4.10.459：ブレーキ中は送らない
         const now = Date.now(), ok0 = (i) => i.add && i.exp - now > -3600000 && !(tried[i.code] && now - tried[i.code] < 180000);
         let due = P.items.filter((i) => ok0(i) && i.exp - now <= P.left);
         if (!due.length) return;
@@ -4328,7 +4333,7 @@
     }
     function rcwPlan(active) {
       if (!RCW.w) return;
-      try { RCW.w.postMessage({ type: "plan", active: !!active, origin: location.origin, hold: CART_HOLD, left: RECART_LEFT, items: rcItems() }); } catch (e) {}
+      try { RCW.w.postMessage({ type: "plan", active: !!active, origin: location.origin, hold: CART_HOLD, left: RECART_LEFT, brake: (() => { try { return +localStorage.getItem("jprAddBrake") || 0; } catch (e) { return 0; } })(), items: rcItems() }); } catch (e) {}
     }
     function rcwStart() {
       if (RCW.w || !window.Worker) return;
@@ -4338,6 +4343,7 @@
         const m = e.data || {};
         if (m.type === "hb") { RCW.hb = m.at; return; }
         if (m.type === "log") { arLog(`${T(w())} ${m.msg}`); return; }
+        if (m.type === "brake") { try { if (!(+localStorage.getItem("jprAddBrake") > Date.now())) localStorage.setItem("jprAddBrake", String(m.until)); } catch (e) {} arLog(`${T(w())} 働き手：じゃんぱらが拒否（${m.status}）→ 10分はカートへの削除・追加・読み取りを止める`); return; }
         if (m.type === "start") { RCW.busy = Date.now(), RCW.lastStart = Date.now(); rcTouch(m.codes); try { const rd = E("cartReadd", {}) || {}; for (const c of m.codes) rd[c] = m.at; $("cartReadd", rd); } catch (e) {} arLog(`${T(m.at)} 働き手が再カート：${m.codes.length}点（${m.codes.slice(0, 3).join("・")}）${m.back && m.back.length ? `・うち${m.back.length}点はカートに無いので入れ直して戻す` : ""}${m.blind ? "・カートの読み取りが怪しいので確かめずに送った" : ""}`); return; }
         if (m.type === "missing") {
           // 4.10.383：画面にはボタンがあるのに働き手が「無い」と言う時は、働き手の読み違い。30分は働き手を信用せず、画面のボタンで再カートする
